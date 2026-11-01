@@ -6,7 +6,7 @@
 * [Cannot boot macOS without the USB](#cannot-boot-macos-without-the-usb)
 * [Infinite Recovery OS Booting](#infinite-recovery-os-booting)
 * [Stuck on boot after root patching](#stuck-on-boot-after-root-patching)
-* [Booting Recovery through BridgePatcher](#booting-recovery-through-opencore-legacy-patcher-t2)
+* [Booting Recovery through BridgePatcher](#booting-recovery-through-bridgepatcher)
 * [Black Screen on MacBookPro11,3 in macOS Monterey](#black-screen-on-macbookpro11-3-in-macos-monterey)
 
 #### Installer
@@ -33,7 +33,7 @@ However, if the 🚫 Symbol only appears after the boot process has already star
 
 ## Cannot boot macOS without the USB
 
-By default, the OpenCore Patcher won't install OpenCore onto the internal drive itself during installs.
+By default, BridgePatcher won't install OpenCore onto the internal drive itself during installs.
 
 After installing macOS, BridgePatcher should automatically prompt you to install OpenCore onto the internal drive. However, if it doesn't show the prompt, you'll need to either [manually transfer](https://dortania.github.io/OpenCore-Post-Install/universal/oc2hdd.html) OpenCore to the internal drive's EFI or Build and Install again and select your internal drive.
 

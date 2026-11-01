@@ -22,7 +22,7 @@ Falls dein internes Laufwerk nicht erkannt wird, findest du Hilfe unter [Interne
 
 ## Nahtlos ohne Bootpicker booten
 
-Starte dazu den OpenCore Patcher, öffne die Patcher-Einstellungen und deaktiviere im Tab „Build“ die Option „Show OpenCore Bootpicker“:
+Starte dazu BridgePatcher, öffne die Patcher-Einstellungen und deaktiviere im Tab „Build“ die Option „Show OpenCore Bootpicker“:
 
 
 <div align="left">

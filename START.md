@@ -2,7 +2,7 @@
 
 OpenCore is a sophisticated boot loader used to inject and patch data in memory, instead of on disk. This means that we're able to achieve a near-native experience on many unsupported Macs. 
 
-We recommend viewing the [OpenCore Patcher T2 Terminology Page](./TERMS.md) if you have questions.
+We recommend viewing the [BridgePatcher Terminology Page](./TERMS.md) if you have questions.
 
 For troubleshooting, see our troubleshooting pages below or ask in our [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions).
 

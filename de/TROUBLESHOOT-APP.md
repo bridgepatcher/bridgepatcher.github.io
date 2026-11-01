@@ -1,6 +1,6 @@
 # Probleme mit der App
 
-* [BridgePatcher startet nicht](#opencore-legacy-patcher-t2-startet-nicht)
+* [BridgePatcher startet nicht](#bridgepatcher-startet-nicht)
 * [Fehler „You don't have permission to save...“ beim Erstellen des USB-Installers](#fehler-„you-don-t-have-permission-to-save-beim-erstellen-des-usb-installers)
 * [Internes Laufwerk fehlt beim Erstellen von OpenCore](#internes-laufwerk-fehlt-beim-erstellen-von-opencore)
 * [„Unable to resolve dependencies, error code 71“ beim Root-Patching](#„unable-to-resolve-dependencies-error-code-71-beim-root-patching)
@@ -12,7 +12,7 @@
 Wenn die App nicht startet (z. B. das Symbol im Dock nur hüpft), versuche, BridgePatcher über das Terminal mit folgendem Befehl zu starten:
 
 ```sh
-/Library/Application\ Support/albert-mueller/OpenCore-Patcher-T2/OpenCore-Patcher-T2.app/Contents/MacOS/OpenCore-Patcher-T2
+/Library/Application\ Support/albert-mueller/OpenCore-Patcher-T2/BridgePatcher.app/Contents/MacOS/BridgePatcher
 ```
 
 
@@ -32,11 +32,11 @@ Um das zu beheben, kannst du versuchen, BridgePatcher den „Festplattenvollzugr
 
 * Big Sur und Monterey: Systemeinstellungen -> Sicherheit & Datenschutz -> Festplattenvollzugriff
 
-Aktiviere OpenCore-Patcher-T2 in der Liste. Falls es dort nicht aufgeführt ist, klicke auf das Pluszeichen, um einen neuen Eintrag hinzuzufügen, und wähle OpenCore-Patcher-T2 im Ordner „Programme“ aus.
+Aktiviere BridgePatcher in der Liste. Falls es dort nicht aufgeführt ist, klicke auf das Pluszeichen, um einen neuen Eintrag hinzuzufügen, und wähle BridgePatcher im Ordner „Programme“ aus.
 
 Starte BridgePatcher neu und versuche erneut, deinen USB-Stick zu erstellen.
 
-Optional: Nachdem du deinen USB-Stick erstellt hast, kannst du OpenCore-Patcher-T2 wieder aus dem Festplattenvollzugriff entfernen.
+Optional: Nachdem du deinen USB-Stick erstellt hast, kannst du BridgePatcher wieder aus dem Festplattenvollzugriff entfernen.
 
 ## Internes Laufwerk fehlt beim Erstellen von OpenCore
 

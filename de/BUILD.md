@@ -2,11 +2,11 @@
 
 Jetzt, wo wir einen macOS-Installer haben, erstellen wir unsere OpenCore-Konfiguration!
 
-Falls du OpenCore Patcher noch nicht heruntergeladen hast, hol das jetzt nach:
+Falls du BridgePatcher noch nicht heruntergeladen hast, hol das jetzt nach:
 
 * [BridgePatcher Releases](https://github.com/oclp-t2/BridgePatcher/releases)
 
-Starte als Nächstes die `OpenCore-Patcher-T2.app`.
+Starte als Nächstes die `BridgePatcher.app`.
 
 Hier wählen wir `OpenCore` und klicken auf `Install OpenCore`:
 

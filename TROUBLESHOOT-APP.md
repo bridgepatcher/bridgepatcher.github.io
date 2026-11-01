@@ -1,6 +1,6 @@
 # Application issues
 
-* [BridgePatcher not launching](#opencore-legacy-patcher-t2-not-launching)
+* [BridgePatcher not launching](#bridgepatcher-not-launching)
 * ["You don't have permission to save..." error when creating USB installer](#you-don-t-have-permission-to-save-error-when-creating-usb-installer)
 * [Internal disk missing when building OpenCore](#internal-disk-missing-when-building-opencore)
 * ["Unable to resolve dependencies, error code 71" when root patching](#unable-to-resolve-dependencies-error-code-71-when-root-patching)
@@ -12,7 +12,7 @@
 If the application won't launch (e.g. icon will bounce in the Dock), try launching BridgePatcher via Terminal by typing the following command.
 
 ```sh
-/Library/Application\ Support/albert-mueller/OpenCore-Patcher-T2/OpenCore-Patcher-T2.app/Contents/MacOS/OpenCore-Patcher-T2
+/Library/Application\ Support/albert-mueller/OpenCore-Patcher-T2/BridgePatcher.app/Contents/MacOS/BridgePatcher
 ```
 
 
@@ -32,11 +32,11 @@ To resolve this, you may try adding Full Disk Access permission for BridgePatche
 
 * Big Sur and Monterey: Go to System Preferences -> Security and Privacy -> Full Disk Access
 
-Enable OpenCore-Patcher-T2 in the list. If not found on the list, press the + sign to add a new entity and find OpenCore-Patcher-T2 from Applications.
+Enable BridgePatcher in the list. If not found on the list, press the + sign to add a new entity and find BridgePatcher in Applications.
 
 Restart BridgePatcher and try creating your USB drive again.
 
-Optional: After you've created your USB drive, you can remove OpenCore-Patcher-T2 from Full Disk Access again.
+Optional: After you've created your USB drive, you can remove BridgePatcher from Full Disk Access again.
 
 ## Internal disk missing when building OpenCore
 

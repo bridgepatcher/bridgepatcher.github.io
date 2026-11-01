@@ -22,7 +22,7 @@ If you're having issues with undetected internal disk, refer to [Internal disk m
 
 ## Booting seamlessly without Boot Picker
 
-To do this, run the OpenCore Patcher and head to Patcher Settings, then uncheck "Show OpenCore Bootpicker" on the Build tab:
+To do this, run BridgePatcher and head to Patcher Settings, then uncheck "Show OpenCore Bootpicker" on the Build tab:
 
 
 <div align="left">

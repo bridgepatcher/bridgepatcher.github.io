@@ -176,10 +176,26 @@ ART_MAX_BYTES = 20_000_000
 IMAGE_EXT = (".png", ".icns", ".jpg", ".jpeg", ".gif", ".webp", ".tif", ".tiff", ".bmp", ".ico")
 TEXT_EXT = (".md", ".markdown", ".html", ".htm", ".js", ".mjs", ".jsx", ".ts", ".mts", ".tsx", ".vue", ".css",
             ".scss", ".py", ".plist", ".json", ".yml", ".yaml", ".txt", ".rst")
-# The project's former name. "OpenCore Legacy Patcher T2" / "OCLP-T2" now counts as a typosquat
-# of BridgePatcher (and of Dortania's project), so it must not appear in page text any more.
-# Case-sensitive on purpose: lowercase URLs, anchors and storage keys (oclp-t2/...) are fine.
-OLD_NAME_RE = re.compile(r"(?<![\w/#.-])(?:OpenCore[ -]Legacy[ -]Patcher[ -]T2|OCLP[- ]T2)(?![\w])")
+# The project's former name. "OpenCore Legacy Patcher T2" / "OpenCore Patcher T2" / "OCLP-T2"
+# now counts as a typosquat of BridgePatcher (and of Dortania's project), so it must not appear
+# in page text any more. The spelled-out forms match in any case and with or without "Legacy";
+# "OCLP-T2"/"OCLPT2" is case-sensitive on purpose: lowercase URLs, anchors and storage keys
+# (oclp-t2/...) are fine. Without "Legacy" only spaces count as separators, because
+# "OpenCore-Patcher-T2" is the old app bundle name (LEGACY_APP_RE below).
+OLD_NAME_RE = re.compile(
+    r"(?<![\w/#.-])(?:(?i:Open[ -]?Core[ -]+Legacy[ -]+Patcher[ -]+T2|Open\s?Core[ \t]+Patcher[ \t-]+T2)"
+    r"|OCLP[- ]?T2)(?![\w])")
+# The app bundle/executable was called OpenCore-Patcher-T2 before the rename; it is BridgePatcher.app
+# (executable BridgePatcher) now. Telling users to run, find or allow "OpenCore-Patcher-T2" is out of
+# date. Still correct and never matched: the install directory (.../OpenCore-Patcher-T2/), the legacy
+# installer asset OpenCore-Patcher-T2.pkg, and lines that talk about builds from before the rename.
+LEGACY_APP_RE = re.compile(
+    r"OpenCore-Patcher-T2\.app(?![\w-])"
+    r"|/MacOS/OpenCore-Patcher-T2(?![\w.-])"
+    r"|(?<![\w/#.'\"-])OpenCore-Patcher-T2(?![\w./-])")
+LEGACY_APP_OK_RE = re.compile(
+    r"(?i)before the rename|pre-rename|legacy|older (?:build|release|version)s?"
+    r"|vor der Umbenennung|ältere[nrs]? (?:Build|Version|Release)")
 # Dortania's app name used as the name of THIS project in page text, titles or config
 # ("With OpenCore Legacy Patcher 2.0.0 we ...", a window title, a nav label). BSD licence:
 # the upstream name must not be used to endorse or promote the fork. Allowed only where the
@@ -655,19 +671,27 @@ def scan_artwork(head, add):
                 add("violation", path, "Link to Dortania's Discord server (OpenCore Patcher Paradise)",
                     [f"  line {n}: {show(l)}" for n, l in invites[:5]] + (["  …"] if len(invites) > 5 else []) +
                     ["  Don't send BridgePatcher users to the upstream project's Discord for support.",
-                     "  Link our GitHub Discussions (https://github.com/oclp-t2/BridgePatcher/discussions) instead."])
+                     "  Link our GitHub Discussions (https://github.com/bridgepatcher/BridgePatcher/discussions) instead."])
             # The licence pages themselves name Dortania's project on purpose - they must stay as they are.
             if low.endswith(OLD_NAME_EXT) and not LICENSE_FILE_RE.search(path):
-                old, upstream = [], []
+                old, upstream, legacy_app = [], [], []
                 for n, l in enumerate(text.splitlines(), 1):
                     if OLD_NAME_RE.search(l):
                         old.append((n, l))
                     elif UPSTREAM_NAME_RE.search(l) and not UPSTREAM_NAME_OK_RE.search(l):
                         upstream.append((n, l))
+                    if LEGACY_APP_RE.search(l) and not LEGACY_APP_OK_RE.search(l):
+                        legacy_app.append((n, l))
                 if old:
-                    add("violation", path, "Former project name (OpenCore Legacy Patcher T2 / OCLP-T2)",
+                    add("violation", path, "Former project name (OpenCore (Legacy) Patcher T2 / OCLP-T2)",
                         [f"  line {n}: {show(l)}" for n, l in old[:5]] + (["  …"] if len(old) > 5 else []) +
                         ["  Use BridgePatcher instead; the old name is treated as a typosquat."])
+                if legacy_app:
+                    add("warning", path, "Former app name (OpenCore-Patcher-T2)",
+                        [f"  line {n}: {show(l)}" for n, l in legacy_app[:5]] +
+                        (["  …"] if len(legacy_app) > 5 else []) +
+                        ["  The app is BridgePatcher.app (executable BridgePatcher) now. The install folder",
+                         "  .../OpenCore-Patcher-T2/ and OpenCore-Patcher-T2.pkg keep their names."])
                 if upstream:
                     add("violation", path, "Dortania's app name used for this project (OpenCore Legacy Patcher)",
                         [f"  line {n}: {show(l)}" for n, l in upstream[:5]] + (["  …"] if len(upstream) > 5 else []) +

@@ -6,7 +6,7 @@
 * [macOS bootet nicht ohne den USB-Stick](#macos-bootet-nicht-ohne-den-usb-stick)
 * [Endlosschleife beim Booten in die Recovery](#endlosschleife-beim-booten-in-die-recovery)
 * [Hängt beim Booten nach dem Root-Patching](#hangt-beim-booten-nach-dem-root-patching)
-* [Recovery über BridgePatcher booten](#recovery-uber-opencore-legacy-patcher-t2-booten)
+* [Recovery über BridgePatcher booten](#recovery-uber-bridgepatcher-booten)
 * [Schwarzer Bildschirm auf dem MacBookPro11,3 unter macOS Monterey](#schwarzer-bildschirm-auf-dem-macbookpro11-3-unter-macos-monterey)
 
 #### Installer
@@ -33,7 +33,7 @@ Erscheint das 🚫-Symbol jedoch erst, nachdem der Bootvorgang bereits begonnen 
 
 ## macOS bootet nicht ohne den USB-Stick
 
-Standardmäßig installiert der OpenCore Patcher OpenCore während der Installation nicht selbst auf dem internen Laufwerk.
+Standardmäßig installiert BridgePatcher OpenCore während der Installation nicht selbst auf dem internen Laufwerk.
 
 Nach der Installation von macOS sollte BridgePatcher dich automatisch auffordern, OpenCore auf dem internen Laufwerk zu installieren. Erscheint diese Aufforderung nicht, musst du OpenCore entweder [manuell](https://dortania.github.io/OpenCore-Post-Install/universal/oc2hdd.html) auf die EFI des internen Laufwerks übertragen oder erneut „Build and Install“ ausführen und dein internes Laufwerk auswählen.
 
