@@ -44,7 +44,7 @@ jobs:
   dependencies:
     name: Dependency vulnerabilities
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'oclp-t2'
+    if: github.repository_owner == 'bridgepatcher'
     permissions:
       contents: write    # push the fix to main
       actions: write     # start build-site.yml afterwards
@@ -189,7 +189,7 @@ jobs:
   code-alerts:
     name: Open code scanning alerts
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'oclp-t2'
+    if: github.repository_owner == 'bridgepatcher'
     permissions:
       security-events: read
     steps:

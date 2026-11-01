@@ -31,7 +31,7 @@ jobs:
   update:
     name: Update dependencies
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'oclp-t2'
+    if: github.repository_owner == 'bridgepatcher'
     permissions:
       contents: write    # push the update commit to main
       actions: write     # start build-site.yml afterwards
