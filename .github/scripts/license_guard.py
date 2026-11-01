@@ -153,6 +153,15 @@ UPSTREAM_NAME_OK_RE = re.compile(
     r"|\b(?:based on|fork of|forked from|derived from|basiert auf|Fork von|abgeleitet von)\b")
 OLD_NAME_EXT = (".md", ".markdown", ".html", ".htm", ".vue", ".mts", ".ts", ".js", ".json", ".webmanifest", ".xsl")
 
+# Invite links to the upstream project's Discord server (OpenCore Patcher Paradise, the server
+# Dortania's OCLP docs send users to). Pointing BridgePatcher users there for support implies
+# the upstream project endorses or supports the fork - send them to our own channels instead.
+# Invite codes are case-sensitive, so the code is matched exactly.
+UPSTREAM_DISCORD_CODES = ("rqdPgH8xSN",)
+UPSTREAM_DISCORD_RE = re.compile(
+    r"(?i:(?:https?://)?(?:www\.)?(?:discord\.gg/|discord(?:app)?\.com/invite/))(?:"
+    + "|".join(map(re.escape, UPSTREAM_DISCORD_CODES)) + r")(?![A-Za-z0-9])")
+
 # Dortania's images used directly from their repo or website (e.g. the old README logo).
 HOTLINK_RE = re.compile(
     r"(?:raw\.githubusercontent\.com/dortania/|github\.com/dortania/[^\s\"'()<>]*/(?:raw|blob)/"
@@ -431,6 +440,12 @@ def scan_artwork(head, add):
             if urls:
                 add("violation", path, "Dortania artwork used from Dortania's servers",
                     [f"- {u}" for u in urls[:10]])
+            invites = [(n, l) for n, l in enumerate(text.splitlines(), 1) if UPSTREAM_DISCORD_RE.search(l)]
+            if invites:
+                add("violation", path, "Link to Dortania's Discord server (OpenCore Patcher Paradise)",
+                    [f"  line {n}: {show(l)}" for n, l in invites[:5]] + (["  …"] if len(invites) > 5 else []) +
+                    ["  Don't send BridgePatcher users to the upstream project's Discord for support.",
+                     "  Link our GitHub Discussions (https://github.com/oclp-t2/BridgePatcher/discussions) instead."])
             # The licence pages themselves name Dortania's project on purpose - they must stay as they are.
             if low.endswith(OLD_NAME_EXT) and not LICENSE_FILE_RE.search(path):
                 old, upstream = [], []
@@ -612,7 +627,9 @@ def main():
             "own artwork. Screenshots and banners must not show Dortania's app name either.", "",
             "The licence also forbids using the upstream name to endorse or promote the fork, so pages, titles and "
             "screenshots must say BridgePatcher, not \"OpenCore Legacy Patcher\" (or the former name OCLP-T2). "
-            "Naming Dortania's project when crediting it or referring to its releases is fine.",
+            "Naming Dortania's project when crediting it or referring to its releases is fine.", "",
+            "For the same reason, pages must not send users to Dortania's Discord server (OpenCore Patcher "
+            "Paradise) for help with BridgePatcher; link BridgePatcher's own support channels instead.",
             "", "</details>"]
 
     report = "\n".join(out) + "\n"

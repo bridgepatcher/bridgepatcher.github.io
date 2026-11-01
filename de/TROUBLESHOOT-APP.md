@@ -95,11 +95,6 @@ Es gibt einige Möglichkeiten, das zu beheben:
    * Das funktioniert nur, wenn die neuere Version derzeit von BridgePatcher unterstützt wird.
 2. Installiere macOS neu.
    * Du kannst eine Installation über das bestehende System ohne Löschen des Laufwerks versuchen, um deine Daten zu behalten. Das klappt aber möglicherweise nicht, da das System teilweise schon auf der neueren Version ist und die Installation dann ein Downgrade bemängelt.
-3. Nutze das experimentelle Werkzeug „PurgePendingUpdate“ [vom Discord-Server](https://discord.gg/rqdPgH8xSN).
-   * Gehe zu `support-forum` und dann zum Beitrag `Information and known issues`, um den Link zum Werkzeug zu finden.
-   * Lade es herunter und führe es im Terminal aus, um das ausstehende Update zu entfernen, und patche dann erneut. Falls „purge failed“ erscheint, kannst du das ignorieren.
-   * Manchmal musst du der Datei vorher mit `chmod +x` Ausführungsrechte geben (den Pfad zur Datei nach dem Befehl eintippen oder die Datei ins Terminal ziehen), bevor das Werkzeug ausgeführt werden kann.
-   * Möglicherweise wird das später in BridgePatcher integriert, einen Zeitplan gibt es dafür aber noch nicht.
 
 **Nach der Wiederherstellung wird dringend empfohlen, automatische macOS-Updates zu deaktivieren, damit das nicht erneut passiert.**
 

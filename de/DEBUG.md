@@ -1,6 +1,6 @@
 # Debuggen mit OpenCore
 
-Wenn du auf einen seltsamen Fehler gestoßen bist und nicht sicher bist, ob es sich um einen Bedienfehler oder ein Problem im Patcher handelt, empfehlen wir, auf dem [OpenCore Patcher Paradise Discord-Server](https://discord.gg/rqdPgH8xSN) um Hilfe zu bitten.
+Wenn du auf einen seltsamen Fehler gestoßen bist und nicht sicher bist, ob es sich um einen Bedienfehler oder ein Problem im Patcher handelt, empfehlen wir, in unseren [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions) um Hilfe zu bitten.
 
 ## Selbst debuggen
 
