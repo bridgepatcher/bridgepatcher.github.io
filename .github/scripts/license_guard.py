@@ -144,6 +144,16 @@ UPSTREAM_ICONS = {
     "dortania-installer-icon": ("payloads/Icon/AppIcons/OC-Installer.icns",
                                 "Dortania's \"Create macOS Installer\" icon (mac OS disc with arrow)"),
     "dortania-support-icon": ("payloads/Icon/AppIcons/OC-Support.icns", "Dortania's \"Support\" icon (Dortania manual)"),
+    # Volume icons Dortania's app copies onto the EFI partition, so they show up in the boot picker
+    # ("EFI Boot"), in Finder and on the Desktop: the OpenCore logo with a drive in front of it.
+    "dortania-external-drive-icon": ("payloads/Icon/DriveIcons/External/.VolumeIcon.icns",
+                                     "Dortania's external drive icon (OpenCore logo with a gold drive)"),
+    "dortania-internal-drive-icon": ("payloads/Icon/DriveIcons/Internal/.VolumeIcon.icns",
+                                     "Dortania's internal drive icon (OpenCore logo with a hard disk)"),
+    "dortania-sd-card-drive-icon": ("payloads/Icon/DriveIcons/SD-Card/.VolumeIcon.icns",
+                                    "Dortania's SD card drive icon (OpenCore logo with an SD card)"),
+    "dortania-ssd-drive-icon": ("payloads/Icon/DriveIcons/SSD/.VolumeIcon.icns",
+                                "Dortania's SSD drive icon (OpenCore logo with an NVMe SSD)"),
 }
 ICON_VERSION = 1        # bump to invalidate cached results after changing the settings below
 ICON_T = 48             # template size (px)
@@ -155,6 +165,11 @@ ICON_MAX_WORK = 2400    # longest side of a scaled copy; tinier icons in huge im
 # at most 0.70 (BridgePatcher's own icons 0.67).
 ICON_VIOLATION = 0.76
 ICON_WARNING = 0.72
+# Per-icon (warning, violation) where the defaults above don't fit. Drive icons, measured on this repo:
+# the boot picker screenshot with the external drive icon 0.97, synthetic copies 96px+ 0.79-0.98;
+# everything else at most 0.65 - except for the SSD icon, whose plain dark card shape also scores
+# up to 0.77 on unrelated screenshots and charts, so it needs a stricter threshold.
+ICON_THRESHOLDS = {"dortania-ssd-drive-icon": (0.80, 0.88)}
 # Results per blob, so the second scan of a PR (base branch) doesn't redo every image.
 ART_CACHE = os.environ.get("ART_CACHE", ".license-guard-art-cache.json")
 ART_MAX_BYTES = 20_000_000
@@ -346,8 +361,8 @@ def find_embedded(data, known_bits):
 # "OpenCore Legacy Patcher" (also "... T2" / "...-T2"). Found with OCR (tesseract), so it only runs
 # where tesseract is installed. Lines with a copyright notice are skipped on purpose - the upstream
 # notice ("Copyright © 2020-2026 Dortania and OpenCore Legacy Patcher contributors") must stay.
-# Technical identifiers written without spaces (OCLP-Version, OpenCore-Legacy-Patcher repo/folder,
-# Dortania's URLs) are not matched: they are literal names, not the product name.
+# Technical identifiers written without spaces (OCLP-Version, Dortania's URLs) are not matched here;
+# folder/volume names such as "OpenCore-Legacy-Patcher" are covered by IMG_FOLDER_RE below.
 IMG_NAME_RE = re.compile(r"(?i)\bOpen\s?Core\s+Legacy\s+Patcher\b")
 IMG_NAME_WRAP = (re.compile(r"(?i)\bOpen\s?Core(\s+Legacy)?\s*$"), re.compile(r"(?i)^\s*(Legacy\s+)?Patcher\b"))
 IMG_COPYRIGHT_RE = re.compile(r"(?i)(©|\(c\))\s*\d|copyright|contributors")
@@ -405,6 +420,29 @@ def find_old_name_in_image(passes):
                                             and not IMG_COPYRIGHT_RE.search(nxt)):
                 if line not in hits:
                     hits.append(line)
+    return hits
+
+
+# Dortania's project name used as a FOLDER or VOLUME name in a screenshot: the Finder sidebar
+# ("Opencore-Legacy-Pat..."), path bars and Terminal ("~/Developer/OpenCore-Legacy-Patcher"),
+# "Apple-Binaries-OCLP". BridgePatcher is cloned into a "BridgePatcher" folder, so these are
+# Dortania's screenshots. Not matched: URLs (github.com/dortania/OpenCore-Legacy-Patcher), file names
+# (OpenCore-Legacy-Patcher.plist) and the OCLP-* identifiers BridgePatcher itself still uses
+# (NVRAM keys OCLP-Version/-Settings/..., the OCLP-Installer volume) - a screenshot showing those is accurate.
+IMG_FOLDER_RE = re.compile(r"(?i)(?<![\w/.-])Open\s?Core[-_]Legacy(?:[-_][A-Za-z]*)?(?![\w-])(?!\.[A-Za-z])")
+IMG_OCLP_TOKEN_RE = re.compile(r"(?<![\w/.-])((?:[A-Za-z0-9]+[-_\u2013\u2014])*OCLP(?:[-_\u2013\u2014][A-Za-z0-9]+)*)(?![\w/-])")
+IMG_OCLP_OK_RE = re.compile(r"^OCLP-(?:Version|Settings|Model|Spoofed-\w+|Installer|Helper|MOD)$")
+
+
+def find_upstream_folder_in_image(passes):
+    hits = []
+    for lines in passes:
+        for line in lines:
+            if IMG_COPYRIGHT_RE.search(line) or line in hits:
+                continue
+            tokens = [re.sub("[\u2013\u2014_]", "-", m.group(1)) for m in IMG_OCLP_TOKEN_RE.finditer(line)]
+            if IMG_FOLDER_RE.search(line) or any(t != "OCLP" and not IMG_OCLP_OK_RE.match(t) for t in tokens):
+                hits.append(line)
     return hits
 
 
@@ -549,6 +587,13 @@ def scan_artwork(head, add):
                         [f"  Text read in the image: {show(n)}" for n in names[:3]] +
                         ["  Screenshots/banners must show BridgePatcher, not Dortania's app name.",
                          "  Retake the screenshot or edit the text. Copyright lines are not affected."])
+                folders = find_upstream_folder_in_image(cache.get(f"ocr{OCR_VERSION}:{sha}", [[], []]))
+                if folders:
+                    add("violation", path, "Upstream project name as a folder/volume name in image (OpenCore-Legacy-Patcher / OCLP)",
+                        [f"  Text read in the image: {show(n)}" for n in folders[:3]] +
+                        ["  A folder or volume in this screenshot is named after Dortania's project",
+                         "  (e.g. \"Opencore-Legacy-Pat...\" in the Finder sidebar, \"Apple-Binaries-OCLP\").",
+                         "  Rename it (BridgePatcher, PatcherSupportPkg, ...) and retake the screenshot, or edit the name."])
                 authors = find_author_in_image(cache.get(f"ocr{OCR_VERSION}:{sha}", [[], []]))
                 if authors:
                     add("violation", path, "Upstream author's name in image (Mykola Grymalyuk)",
@@ -556,13 +601,21 @@ def scan_artwork(head, add):
                         ["  This is a screenshot from Mykola Grymalyuk's Mac (his user name, Mac or account name).",
                          "  The licence forbids using his name to promote BridgePatcher: retake the",
                          "  screenshot on your own Mac or edit the name out. Copyright lines are not affected."])
-            for key, (score, size_px, x, y) in (cache.get(icon_ck(sha)) or {}).items() if icon_tpls else ():
-                if key in whole or score < ICON_WARNING:
+            # Best match first; similar icons (the drive icons share the logo) found at the same spot
+            # are one finding, not one per icon.
+            reported = []
+            for key, (score, size_px, x, y) in sorted((cache.get(icon_ck(sha)) or {}).items() if icon_tpls else (),
+                                                      key=lambda kv: -kv[1][0]):
+                warn_at, violation_at = ICON_THRESHOLDS.get(key, (ICON_WARNING, ICON_VIOLATION))
+                if key in whole or score < warn_at:
                     continue
+                if any(abs(x - rx) < rs / 2 and abs(y - ry) < rs / 2 for rx, ry, rs in reported):
+                    continue
+                reported.append((x, y, size_px))
                 whole.add(key)  # don't report the same icon again from the dHash search below
                 name = UPSTREAM_ICONS[key][1]
                 where = f"  Found at x={x}, y={y}, about {size_px}px (match {score:.2f})."
-                if score >= ICON_VIOLATION:
+                if score >= violation_at:
                     add("violation", path, f"Contains {name}",
                         [where, "  Dortania's artwork is part of this screenshot/graphic, e.g. small, dimmed or in the Dock.",
                          "  Retake the screenshot with BridgePatcher's own icons, or replace the icon."])
