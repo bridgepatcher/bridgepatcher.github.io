@@ -117,6 +117,12 @@ Patches können auch kaputtgehen, wenn automatische Updates aktiviert sind und e
 
 Wenn deine macOS-Installation noch frisch ist, beginnt Spotlight, einen vollständigen Index des Laufwerks zu erstellen. Das kann hohe CPU-Last, hohe Temperaturen und allgemeine Langsamkeit verursachen. Wir empfehlen, das System ein paar Stunden laufen zu lassen; sobald Spotlight fertig indiziert hat, lässt die Last nach. Ob Spotlight die Ursache ist, prüfst du, indem du die Aktivitätsanzeige öffnest, im Menü „Darstellung“ die Option „Alle Prozesse“ wählst und nach CPU sortierst. Achte darauf, ob ein Prozess namens ```mds_stores``` viel CPU-Leistung beansprucht.
 
+#### Festplatte (HDD) oder Hybridfestplatte (SSHD)
+
+macOS ist seit Jahren auf SSDs ausgelegt, und APFS, das Dateisystem, das neuere macOS-Versionen voraussetzen, läuft auf klassischen Festplatten (HDD) deutlich langsamer. Auf einer HDD oder einer Hybridfestplatte (SSHD, die nur einen kleinen Flash-Cache hat) dauern Starten, Anmelden, das Öffnen von Apps, Updates und die Spotlight-Indizierung oft viel länger, und das System kann sich auch mit installierten Root-Patches insgesamt langsam anfühlen. Dasselbe kann für Fusion Drives mit nur kleinem SSD-Anteil gelten.
+
+Welches Laufwerk dein Mac hat, siehst du in den Systeminformationen (Programme > Dienstprogramme) unter Hardware > Speicher: Steht beim **Medientyp** ein rotierendes Medium („Rotational“), ist es eine HDD; bei **Solid State** ist es eine SSD. Wenn dein Mac noch eine HDD oder SSHD nutzt, ist der Austausch gegen eine SSD das größte Geschwindigkeits-Upgrade, das du für neuere macOS-Versionen machen kannst.
+
 #### Anspruchsvollere macOS-Versionen
 
 Neuere Betriebssysteme sind anspruchsvoller und können sich langsamer anfühlen. In diesem Fall lässt sich nicht viel dagegen tun.
