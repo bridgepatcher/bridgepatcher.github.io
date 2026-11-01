@@ -70,9 +70,10 @@ jobs:
           python-version: "3.12"
 
       # Pillow decodes the images, numpy runs the search for artwork embedded in
-      # screenshots/banners (e.g. Dortania's icon inside an app screenshot).
-      - name: Install Pillow and numpy
-        run: python -m pip install --disable-pip-version-check "pillow==11.3.0" "numpy==2.2.6"
+      # screenshots/banners (e.g. Dortania's icon inside an app screenshot), and OpenCV
+      # finds Dortania's app/button icons even when small or dimmed (UPSTREAM_ICONS).
+      - name: Install Pillow, numpy and OpenCV
+        run: python -m pip install --disable-pip-version-check "pillow==11.3.0" "numpy==2.2.6" "opencv-python-headless==4.11.0.86"
 
       # tesseract reads the text in screenshots/banners, so Dortania's app name
       # ("OpenCore Legacy Patcher") shown inside an image is found too.
