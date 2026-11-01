@@ -130,6 +130,31 @@ EMBED_COPY_MAX = 44    # -> violation
 EMBED_WARN_MAX = 50    # -> warning
 EMBED_MIN_PX = 40      # smallest icon size searched for (after downscaling, see below)
 EMBED_MAX_DIM = 1400   # large screenshots are downscaled to this first (speed)
+# Dortania's app and main-menu button icons shown INSIDE screenshots - often small, dimmed behind
+# a dialog, or on a coloured background (Dock, window). The dHash search above misses those, so
+# each icon is also searched with OpenCV template matching: the whole icon, masked by its own
+# transparency (so the background around it doesn't matter), in greyscale with normalised
+# correlation (so dimming and brightness don't matter), at every size from ICON_MIN_PX up.
+# The references are read from Dortania's tree at run time (the left side of the audit range),
+# so no copy of the artwork is stored in this repository.
+UPSTREAM_ICONS = {
+    "dortania-oclp-icon": ("payloads/Icon/AppIcons/OC-Patcher.icns", "Dortania's OpenCore Legacy Patcher icon"),
+    "dortania-build-icon": ("payloads/Icon/AppIcons/OC-Build.icns",
+                            "Dortania's \"Build and Install OpenCore\" icon (logo with screwdriver)"),
+    "dortania-installer-icon": ("payloads/Icon/AppIcons/OC-Installer.icns",
+                                "Dortania's \"Create macOS Installer\" icon (mac OS disc with arrow)"),
+    "dortania-support-icon": ("payloads/Icon/AppIcons/OC-Support.icns", "Dortania's \"Support\" icon (Dortania manual)"),
+}
+ICON_VERSION = 1        # bump to invalidate cached results after changing the settings below
+ICON_T = 48             # template size (px)
+ICON_MIN_PX = 40        # smallest icon searched for, in the image's own pixels
+ICON_STEP = 1.12        # size step between searches
+ICON_MAX_WORK = 2400    # longest side of a scaled copy; tinier icons in huge images are skipped (speed)
+# Correlation, measured on this repo: screenshots with the icons 0.79-0.93 (dimmed behind a dialog,
+# in the Dock, on a banner); synthetic copies 48-160px, dimmed or not, 0.74-0.98; everything else
+# at most 0.70 (BridgePatcher's own icons 0.67).
+ICON_VIOLATION = 0.76
+ICON_WARNING = 0.72
 # Results per blob, so the second scan of a PR (base branch) doesn't redo every image.
 ART_CACHE = os.environ.get("ART_CACHE", ".license-guard-art-cache.json")
 ART_MAX_BYTES = 20_000_000
@@ -181,6 +206,76 @@ def dhash256(data, bg):
         for c in range(16):
             bits = (bits << 1) | (g[r * 17 + c] > g[r * 17 + c + 1])
     return bits
+
+
+def icon_template(data):
+    """Greyscale template of an icon, cropped to its visible part, plus a mask of its opaque pixels."""
+    import numpy as np
+    from PIL import Image
+    with Image.open(io.BytesIO(data)) as im:
+        im.load()
+        im = im.convert("RGBA")
+    ys, xs = np.where(np.array(im)[..., 3] > 10)
+    im = im.crop((xs.min(), ys.min(), xs.max() + 1, ys.max() + 1))
+    f = ICON_T / max(im.size)
+    im = im.resize((max(8, round(im.width * f)), max(8, round(im.height * f))), Image.LANCZOS)
+    arr = np.array(im).astype(np.float32)
+    grey = arr[..., :3] @ np.array([0.299, 0.587, 0.114], np.float32)
+    return grey, (arr[..., 3] > 200).astype(np.float32)
+
+
+def icon_scores(data, templates):
+    """Best match of each icon anywhere in the image: {key: [score, size_px, x, y]}."""
+    import cv2
+    import numpy as np
+    from PIL import Image
+    with Image.open(io.BytesIO(data)) as im:
+        im.load()
+        im = im.convert("RGBA")
+    base = Image.new("RGBA", im.size, (128, 128, 128, 255))
+    base.alpha_composite(im)
+    grey = np.array(base.convert("L")).astype(np.float32)
+    H, W = grey.shape
+    out = {}
+    for key, (tpl, mask) in templates.items():
+        best, d = [-1.0, 0, 0, 0], float(ICON_MIN_PX)
+        while d <= min(H, W):
+            f = ICON_T / d
+            if max(W, H) * f <= ICON_MAX_WORK:
+                small = cv2.resize(grey, (max(tpl.shape[1], round(W * f)), max(tpl.shape[0], round(H * f))),
+                                   interpolation=cv2.INTER_AREA if f < 1 else cv2.INTER_LINEAR)
+                r = cv2.matchTemplate(small, tpl, cv2.TM_CCOEFF_NORMED, mask=mask)
+                r[~np.isfinite(r)] = -1
+                _, v, _, loc = cv2.minMaxLoc(r)
+                if v > best[0]:
+                    best = [round(float(v), 3), round(d), round(loc[0] / f), round(loc[1] / f)]
+            d *= ICON_STEP
+        out[key] = best
+    return out
+
+
+def load_icon_templates(add):
+    """Templates of Dortania's icons from the upstream tree, or {} (with a warning) if unavailable."""
+    try:
+        import cv2  # noqa: F401
+    except ImportError:
+        add("warning", "-", "Icon-in-screenshot check skipped: opencv-python-headless is not installed")
+        return {}
+    upstream = os.environ.get("ICON_REF") or re.split(r"\.\.\.?", DIFF_RANGE)[0].split(":")[0]
+    templates, missing = {}, []
+    for key, (ref_path, _) in UPSTREAM_ICONS.items():
+        ref = subprocess.run(["git", "show", f"{upstream}:{ref_path}"], capture_output=True)
+        try:
+            templates[key] = icon_template(ref.stdout) if ref.returncode == 0 else None
+        except Exception:
+            templates[key] = None
+        if templates[key] is None:
+            del templates[key]
+            missing.append(ref_path)
+    if missing:
+        add("warning", "-", f"Icon-in-screenshot check incomplete: not found in {upstream}",
+            [f"  {p}" for p in missing])
+    return templates
 
 
 def _bits(h):
@@ -379,6 +474,30 @@ def scan_artwork(head, add):
         with ThreadPoolExecutor(max_workers=os.cpu_count() or 2) as ex:
             for sha, passes in ex.map(run, todo):
                 cache[f"ocr{OCR_VERSION}:{sha}"] = passes
+    # Dortania's icons inside screenshots: also slow, so all uncached images in parallel up front
+    # (OpenCV releases the GIL while matching).
+    icon_tpls = load_icon_templates(add)
+    icon_ck = lambda sha: f"icon{ICON_VERSION}:{','.join(sorted(icon_tpls))}:{sha}"
+    if icon_tpls:
+        from concurrent.futures import ThreadPoolExecutor
+        todo = {}
+        for row in rows:
+            meta, path = row.split("\t", 1)
+            _, kind, sha, size = meta.split()
+            if (kind == "blob" and not is_self(path) and size != "-" and int(size) <= ART_MAX_BYTES
+                    and path.lower().endswith(IMAGE_EXT) and icon_ck(sha) not in cache):
+                todo[sha] = path
+
+        def run_icons(sha):
+            data = subprocess.run(["git", "cat-file", "blob", sha], capture_output=True, check=True).stdout
+            try:
+                return sha, icon_scores(data, icon_tpls)
+            except Exception:
+                return sha, {}
+
+        with ThreadPoolExecutor(max_workers=os.cpu_count() or 2) as ex:
+            for sha, scores in ex.map(run_icons, todo):
+                cache[icon_ck(sha)] = scores
     for row in rows:
         meta, path = row.split("\t", 1)
         _, kind, sha, size = meta.split()
@@ -412,6 +531,19 @@ def scan_artwork(head, add):
                         [f"  Text read in the image: {show(n)}" for n in names[:3]] +
                         ["  Screenshots/banners must show BridgePatcher, not Dortania's app name.",
                          "  Retake the screenshot or edit the text. Copyright lines are not affected."])
+            for key, (score, size_px, x, y) in (cache.get(icon_ck(sha)) or {}).items() if icon_tpls else ():
+                if key in whole or score < ICON_WARNING:
+                    continue
+                whole.add(key)  # don't report the same icon again from the dHash search below
+                name = UPSTREAM_ICONS[key][1]
+                where = f"  Found at x={x}, y={y}, about {size_px}px (match {score:.2f})."
+                if score >= ICON_VIOLATION:
+                    add("violation", path, f"Contains {name}",
+                        [where, "  Dortania's artwork is part of this screenshot/graphic, e.g. small, dimmed or in the Dock.",
+                         "  Retake the screenshot with BridgePatcher's own icons, or replace the icon."])
+                else:
+                    add("warning", path, f"Might contain {name}",
+                        [where, "  Check by hand; if it shows the icon, replace it."])
             if not embedded_bits:
                 continue
             if sha in cache:
@@ -624,7 +756,8 @@ def main():
             "Year bumps like `2020-2024` → `2020-2026` are ignored.", "",
             "Artwork such as Dortania's OpenCore Legacy Patcher icon, Apple's System Settings icon or Apple's "
             "macOS wallpapers is not covered by the code license and must not be shipped or hotlinked; use your "
-            "own artwork. Screenshots and banners must not show Dortania's app name either.", "",
+            "own artwork. Screenshots and banners must not show Dortania's app name or icons either (including "
+            "the main-menu button icons such as \"Build and Install OpenCore\").", "",
             "The licence also forbids using the upstream name to endorse or promote the fork, so pages, titles and "
             "screenshots must say BridgePatcher, not \"OpenCore Legacy Patcher\" (or the former name OCLP-T2). "
             "Naming Dortania's project when crediting it or referring to its releases is fine.", "",
