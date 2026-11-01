@@ -17,7 +17,7 @@ hero:
     # Direkter Download der neuesten Version (siehe README.md).
     - theme: alt
       text: Neueste Version herunterladen
-      link: https://github.com/oclp-t2/BridgePatcher/releases/latest/download/OpenCore-Patcher-T2.pkg
+      link: https://github.com/bridgepatcher/BridgePatcher/releases/latest/download/BridgePatcher.pkg
 
 features:
   - title: Nahezu native OTA-Updates
