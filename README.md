@@ -17,6 +17,8 @@ hero:
     # Direct download of the newest release. /releases/latest/download/ always
     # resolves to the latest (non-pre-)release on the server side, so it also
     # works in old Safari versions that can't render github.com pages.
+    # Falls back to OpenCore-Patcher-T2.pkg when the newest release has no
+    # BridgePatcher.pkg (see DOWNLOAD_FALLBACK in .vitepress/config.mts).
     - theme: alt
       text: Download latest version
       link: https://github.com/bridgepatcher/BridgePatcher/releases/latest/download/BridgePatcher.pkg

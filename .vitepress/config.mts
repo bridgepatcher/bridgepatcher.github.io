@@ -103,6 +103,124 @@ const HIDE_MAC_DOWNLOAD = `(function () {
   } catch (e) {}
 })();`
 
+// Homepage "Download latest version" button (README.md / de/index.md).
+// Releases ship the installer as BridgePatcher.pkg; older releases (and
+// builds made without the new name) only have OpenCore-Patcher-T2.pkg. A
+// plain link can't check which one exists, so the newest release is looked
+// up twice: once at build time (the site rebuilds hourly; also works without
+// JavaScript) and again in the browser when the button is clicked, so a
+// release published since the last build is picked up right away. The link
+// always keeps the /releases/latest/download/ form, which custom.css and
+// the scripts below match on.
+const RELEASE_REPO = 'bridgepatcher/BridgePatcher'
+const RELEASE_DOWNLOAD_BASE = `https://github.com/${RELEASE_REPO}/releases/latest/download/`
+// In order of preference.
+const INSTALLER_NAMES = ['BridgePatcher.pkg', 'OpenCore-Patcher-T2.pkg']
+
+const pickInstaller = (assetNames: string[]) =>
+    INSTALLER_NAMES.find((name) => assetNames.includes(name)) ?? null
+
+// Build-time lookup. null (no network, rate limit, no matching asset) keeps
+// the link from the page's frontmatter as it is.
+async function resolveLatestInstaller(): Promise<string | null> {
+    try {
+        const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN
+        const get = (auth: boolean) => fetch(`https://api.github.com/repos/${RELEASE_REPO}/releases/latest`, {
+            headers: {
+                Accept: 'application/vnd.github+json',
+                ...(auth ? { Authorization: `Bearer ${token}` } : {}),
+            },
+            signal: AbortSignal.timeout(15000),
+        })
+        let res = await get(!!token)
+        // A rejected token shouldn't break the lookup of a public release.
+        if (token && res.status === 401) res = await get(false)
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        const release = await res.json()
+        const name = pickInstaller((release.assets ?? []).map((a: { name: string }) => a.name))
+        if (!name) throw new Error(`no ${INSTALLER_NAMES.join(' / ')} in release ${release.tag_name}`)
+        console.log(`Download button: ${name} (release ${release.tag_name})`)
+        return name
+    } catch (e) {
+        console.warn(`Download button: could not check the latest release (${(e as Error).message}); keeping the link from the page.`)
+        return null
+    }
+}
+const latestInstaller = await resolveLatestInstaller()
+
+// Runs in <head>, in the browser: when the download button is clicked (or
+// hovered/focused/touched, to look it up early), asks the GitHub API which
+// installer the newest release has and sends the visitor to that one. If the
+// lookup fails or takes too long, the link is followed as it is. Kept ES5 so
+// it also runs in old Safari versions.
+const DOWNLOAD_FALLBACK = `(function () {
+  try {
+    var MATCH = '/releases/latest/download/';
+    var BASE = ${JSON.stringify(RELEASE_DOWNLOAD_BASE)};
+    var API = ${JSON.stringify(`https://api.github.com/repos/${RELEASE_REPO}/releases/latest`)};
+    var NAMES = ${JSON.stringify(INSTALLER_NAMES)};
+    var state = 0, found = null, waiting = [];
+    function finish(name) {
+      found = name; state = 2;
+      var w = waiting; waiting = [];
+      for (var i = 0; i < w.length; i++) w[i]();
+    }
+    function lookup() {
+      if (state) return;
+      state = 1;
+      try {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', API, true);
+        xhr.setRequestHeader('Accept', 'application/vnd.github+json');
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState !== 4) return;
+          var name = null;
+          try {
+            if (xhr.status === 200) {
+              var assets = JSON.parse(xhr.responseText).assets || [];
+              for (var n = 0; n < NAMES.length && !name; n++)
+                for (var a = 0; a < assets.length; a++)
+                  if (assets[a] && assets[a].name === NAMES[n]) { name = NAMES[n]; break; }
+            }
+          } catch (e) {}
+          finish(name);
+        };
+        xhr.send();
+      } catch (e) { finish(null); }
+    }
+    function downloadLink(el) {
+      for (; el && el.nodeType === 1; el = el.parentNode)
+        if (el.tagName === 'A' && (el.getAttribute('href') || '').indexOf(MATCH) !== -1) return el;
+      return null;
+    }
+    function apply(link) {
+      if (found) link.setAttribute('href', BASE + found);
+      return link.getAttribute('href');
+    }
+    function early(e) { if (downloadLink(e.target)) lookup(); }
+    document.addEventListener('mouseover', early, true);
+    document.addEventListener('focusin', early, true);
+    document.addEventListener('touchstart', early, true);
+    document.addEventListener('click', function (e) {
+      var link = downloadLink(e.target);
+      if (!link) return;
+      if (state === 2) { apply(link); return; }
+      // Ctrl/Cmd/Shift/middle click: don't hold up the new tab or window.
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || (e.button && e.button !== 0)) return;
+      e.preventDefault();
+      var gone = false;
+      var go = function () {
+        if (gone) return;
+        gone = true;
+        location.href = apply(link);
+      };
+      waiting.push(go);
+      setTimeout(go, 3000);
+      lookup();
+    }, true);
+  } catch (e) {}
+})();`
+
 // Runs in <head> before the page renders: on a device whose preferred language
 // is German, open the German version of the current page, unless the
 // visitor has already picked a language with the language switcher.
@@ -188,6 +306,7 @@ export default defineConfig({
     head: [
         ['script', {}, LANG_REDIRECT],
         ['script', {}, HIDE_MAC_DOWNLOAD],
+        ['script', {}, DOWNLOAD_FALLBACK],
         ['link', { rel: 'icon', href: '/favicon.ico?v=2' }],
         // Lets the site be installed as an app (needed for background checks of
         // the browser notifications, and for notifications at all on iOS).
@@ -214,6 +333,15 @@ export default defineConfig({
         if (/^(de\/)?(announcements|discussions|issues)\//.test(pageData.relativePath) && pageData.params?.title) {
             pageData.title = plainText(pageData.params.title)
             pageData.description = plainText(pageData.params.excerpt)
+        }
+        // Point the homepage download button at the installer the newest
+        // release actually has (see resolveLatestInstaller above).
+        if (latestInstaller) {
+            for (const action of pageData.frontmatter.hero?.actions ?? []) {
+                if (typeof action.link === 'string' && action.link.includes('/releases/latest/download/')) {
+                    action.link = RELEASE_DOWNLOAD_BASE + latestInstaller
+                }
+            }
         }
         const isDe = pageData.relativePath.startsWith('de/')
         const url = pageUrl(pageData.relativePath)
