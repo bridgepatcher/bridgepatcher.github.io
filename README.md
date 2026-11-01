@@ -19,7 +19,7 @@ hero:
     # works in old Safari versions that can't render github.com pages.
     - theme: alt
       text: Download latest version
-      link: https://github.com/bridgepatcher/BridgePatcher/releases/latest/download/BridgPatcher.pkg
+      link: https://github.com/bridgepatcher/BridgePatcher/releases/latest/download/BridgePatcher.pkg
 
 features:
   - title: Near-native OTA updates
