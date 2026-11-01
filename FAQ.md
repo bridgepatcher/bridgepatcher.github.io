@@ -117,6 +117,12 @@ Patches can also break if automatic updates are enabled and an update prematurel
 
 If your macOS installation is recent, Spotlight starts creating a full disk index which can cause high CPU load, high temps and general slowness. It's recommended to keep the system running for few hours, once Spotlight has indexed the load will ease. A way to check whether it's caused by Spotlight is to open Activity Monitor, choosing "All Processes" from the "View" menu item, then sorting by the CPU value to see if a process called ```mds_stores``` is using a lot of CPU resources.
 
+#### Hard drive (HDD) or hybrid drive (SSHD)
+
+macOS has been optimized for SSDs for years, and APFS, the file system newer macOS versions require, performs noticeably worse on spinning hard drives (HDD). On an HDD or a hybrid drive (SSHD, which only has a small flash cache), booting, logging in, opening apps, installing updates and Spotlight indexing can all take much longer, and the system can feel slow in general even with root patches installed. The same can apply to Fusion Drives with only a small SSD part.
+
+You can check which kind of drive your Mac has in System Information (Applications > Utilities), under Hardware > Storage: **Medium Type** shows **Rotational** for an HDD and **Solid State** for an SSD. If your Mac still uses an HDD or SSHD, replacing it with an SSD is the biggest speed upgrade you can make for newer macOS versions.
+
 #### Heavier macOS versions
 
 Newer operating systems are harder to run and can appear more slow. If this is the case, there is not a whole lot to do about it.
