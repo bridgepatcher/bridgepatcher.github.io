@@ -24,7 +24,7 @@ The patcher application requires **macOS High Sierra 10.13.6** or later to run.
 
 Due to limitations with Apple's `createinstallmedia` tool used for installer creation, the following are required:
 * **High Sierra 10.13** to make installers for macOS Sonoma and Sequoia.
-* **Catalina 10.14** to make installers for macOS Tahoe.
+* **Catalina 10.15** to make installers for macOS Tahoe.
 
 The patcher is designed to target **macOS Big Sur 11.x to macOS Sequoia 26.x**.
 
