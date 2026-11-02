@@ -137,7 +137,7 @@ Wenn du den Migrationsassistenten nutzen musst, um Daten auf deine neue macOS-In
 
 | Automatische Installationsaufforderung | Patchen abgeschlossen |
 | :--- | :--- |
-| ![](../images/OCLP-GUI-root-patch-update.png)<br>*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, App-Name und -Symbol durch die von BridgePatcher ersetzt.* | ![](../images/OCLP-GUI-Root-Patch-Finished.png) |
+| ![](../images/OCLP-GUI-root-patch-update.png)<br>*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, App-Name und -Symbol durch die von BridgePatcher ersetzt.* | ![](../images/OCLP-GUI-Root-Patch-Finished.png)<br>*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Fenstertitel in BridgePatcher geändert.* |
 
 Du kannst Root-Patches in der App auch manuell installieren und wieder entfernen.
 
