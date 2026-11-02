@@ -514,6 +514,15 @@ def find_author_in_image(passes):
 # dHash distance (of 256), measured on this repo: Dortania's screenshots with edited names 1-27,
 # BridgePatcher's own screenshots and artwork 40+.
 RELABEL_MAX = 30
+# Reviewed and kept on purpose (maintainer decision): the "Models capable of running macOS ..." banners
+# on the Ventura/Sonoma/Sequoia pages. They are based on Dortania's banners but list the models BridgePatcher
+# supports with its own version (3.0.0 alpha 4.1, 4.0.0 alpha 19); replacing them would confuse users.
+# Keyed by path AND blob SHA: an exemption only covers this exact image, so any later edit is checked again.
+RELABEL_KEEP = {
+    "images/OCLP-060-Initial-Support.png": "1dc91feb4b0987d00857119623078c5a4272a31c",
+    "images/OCLP-100-Initial-Support.png": "81d21c0e06188e051947fdbb590fab9b55ce1004",
+    "images/OCLP-200-Initial-Support.png": "1e61578c8724cdb282f0274d7a3303eda9bc2acd",
+}
 OWN_NAME_IMG_RE = re.compile(r"(?i)bridge\s?patcher")
 
 
@@ -698,7 +707,7 @@ def scan_artwork(head, add):
                          "  name changed. Use a screenshot of BridgePatcher itself, or remove the image."])
                 own_name = [l for ps in cache.get(f"ocr{OCR_VERSION}:{sha}", [[], []]) for l in ps
                             if OWN_NAME_IMG_RE.search(l) and not IMG_COPYRIGHT_RE.search(l)]
-                if own_name and upstream_hashes and sha not in upstream_hashes:
+                if own_name and upstream_hashes and sha not in upstream_hashes and RELABEL_KEEP.get(path) != sha:
                     d, _ = min((bin(h ^ uh).count("1"), us) for us, uh in upstream_hashes.items())
                     if d <= RELABEL_MAX:
                         add("violation", path, "Dortania's screenshot edited to show BridgePatcher",
