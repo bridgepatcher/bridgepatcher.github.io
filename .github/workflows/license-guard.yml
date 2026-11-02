@@ -164,7 +164,7 @@ jobs:
             }
 
             // Push / schedule / manual: keep ONE issue up to date, close it when clean.
-            // Warnings (e.g. Dortania's screenshots edited to show BridgePatcher) keep the issue open
+            // Warnings (e.g. icons that only might be Dortania's) keep the issue open
             // too - they don't take the site offline, but on main they were otherwise only visible
             // in the job summary.
             const label = 'license-guard';

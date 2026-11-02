@@ -509,7 +509,8 @@ def find_author_in_image(passes):
 # reads "BridgePatcher" is Dortania's screenshot (Dortania's Mac, Dortania's app and releases) passed
 # off as BridgePatcher's. Found by comparing every image with the images in Dortania's docs tree (the
 # left side of the audit range, read at run time) - no copy of them is stored here. Byte-identical
-# copies are left alone: they don't claim to show BridgePatcher.
+# copies are left alone: they don't claim to show BridgePatcher. An edited copy is a violation, not a
+# warning: it presents Dortania's app, Mac and work as BridgePatcher's (licence clause 4).
 # dHash distance (of 256), measured on this repo: Dortania's screenshots with edited names 1-27,
 # BridgePatcher's own screenshots and artwork 40+.
 RELABEL_MAX = 30
@@ -700,7 +701,7 @@ def scan_artwork(head, add):
                 if own_name and upstream_hashes and sha not in upstream_hashes:
                     d, _ = min((bin(h ^ uh).count("1"), us) for us, uh in upstream_hashes.items())
                     if d <= RELABEL_MAX:
-                        add("warning", path, "Dortania's screenshot edited to show BridgePatcher",
+                        add("violation", path, "Dortania's screenshot edited to show BridgePatcher",
                             [f"  Nearly identical to an image in Dortania's docs (distance {d}/256), but it reads:",
                              f"  {show(own_name[0])}",
                              "  Dortania's screenshot with the name changed is still Dortania's app, Mac and release.",
