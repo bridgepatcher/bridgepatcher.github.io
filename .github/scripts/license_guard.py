@@ -554,6 +554,8 @@ def upstream_image_hashes(cache):
 # Disclosed edits: an edited Dortania screenshot is fine when EVERY page that shows it says, right below
 # the image (same line or the next DISCLOSURE_LINES lines), that it is Dortania's screenshot - e.g.
 #   *Screenshot: Dortania's OpenCore Legacy Patcher documentation, folder and user names changed.*
+# In a Markdown table the caption must be in the SAME CELL as the image (e.g. after a <br>), so a caption
+# for one image doesn't also cover the other images in that row.
 # Typical case: Finder screenshots from Mykola Grymalyuk's Mac, where his user name and Dortania's folders
 # had to be removed (clause 4), so the unchanged original can't be used either. An image no page uses
 # can't be disclosed and stays a violation.
@@ -572,9 +574,15 @@ def image_references(head):
             continue
         lines = git("cat-file", "blob", sha).splitlines()
         for i, line in enumerate(lines):
+            in_table = line.lstrip().startswith("|")
             for m in ref_re.finditer(line):
-                near = lines[i:i + 1 + DISCLOSURE_LINES]
-                refs.setdefault(m.group(1), []).append((path, i + 1, any(DISCLOSURE_RE.search(l) for l in near)))
+                if in_table:
+                    start = line.rfind("|", 0, m.start()) + 1
+                    end = line.find("|", m.end())
+                    ok = bool(DISCLOSURE_RE.search(line[start:end if end != -1 else len(line)]))
+                else:
+                    ok = any(DISCLOSURE_RE.search(l) for l in lines[i:i + 1 + DISCLOSURE_LINES])
+                refs.setdefault(m.group(1), []).append((path, i + 1, ok))
     return refs
 
 
