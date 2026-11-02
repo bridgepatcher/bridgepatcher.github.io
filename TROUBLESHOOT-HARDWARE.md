@@ -248,7 +248,7 @@ Due to the Metal Backend, the enhanced color output of these apps seems to heavi
 
 ## Wake from sleep heavily distorted on ATI/AMD TeraScale 1 from macOS 11.3 to Monterey
 
-**Fixed for macOS Ventura starting from 0.6.6. Big Sur and Monterey will continue to exhibit the issue.**
+**Fixed for macOS Ventura starting from Dortania's OpenCore Legacy Patcher 0.6.6. Big Sur and Monterey will continue to exhibit the issue.**
 
 This issue affects TeraScale 1 GPUs (ie. ATI/AMD Radeon HD2000-4000). Only known solution is to downgrade to macOS 11.2.3 or older. Additionally, logging out and logging back in can resolve the issue without requiring a reboot.
 
@@ -277,7 +277,7 @@ Note: This driver only provides partial support in macOS, full graphics accelera
 
 Resolved with Dortania's OpenCore Legacy Patcher v0.4.2
 
-::: details Legacy Fix (prior to 0.4.2)
+::: details Legacy Fix (prior to Dortania's OpenCore Legacy Patcher 0.4.2)
 
 Due to an odd bug with ATI's TeraScale 2 GPUs, many users will experience erratic/strobing colours once finished installing accelerated patches and rebooting into macOS. The issue stems from an incorrect assumption in the GPU drivers where it will enforce the Billion Colour space on your display. To fix, simply force your Display into a lower color depth such as Million Colours.
 

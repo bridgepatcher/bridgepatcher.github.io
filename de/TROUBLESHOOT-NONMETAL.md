@@ -40,9 +40,9 @@ Zoom ist derzeit teilweise auf Metal angewiesen und benötigt daher einen kleine
 ## Apps können keine Sonderberechtigungen erteilt werden (z. B. Kamerazugriff für Zoom)
 Unter Ventura 13.3 und neuer sind die Berechtigungen wegen neuer erforderlicher Patches derzeit wieder defekt. Nutze TCCPlus aus dem aufklappbaren Bereich „Workaround“, um das Problem zu umgehen.
 
-Für 13.2.1 und älter ist das Problem ab Version 0.2.5 vollständig behoben.
+Für 13.2.1 und älter ist das Problem ab Dortanias OpenCore Legacy Patcher 0.2.5 vollständig behoben.
 
-::: details Workaround für 0.2.4, Ventura 13.3+
+::: details Workaround für Ventura 13.3+ (und Dortanias OpenCore Legacy Patcher 0.2.4 und älter)
 
 Durch die Verwendung von amfi_get_out_of_my_way=1 fragt macOS beim App-Start nicht nach Sonderberechtigungen und lässt die Einträge in den Systemeinstellungen weg. Um das zu umgehen, empfehlen wir, tccplus zur Verwaltung der Berechtigungen zu installieren.
 

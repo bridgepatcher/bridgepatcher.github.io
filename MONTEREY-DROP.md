@@ -45,7 +45,7 @@ Due to the display being routed through the NVIDIA Kepler card and macOS being r
 
 ## Previously Broken Hardware
 
-::: details iMac15,1 5K Display Output Issue (Resolved in 0.3.2 and newer)
+::: details iMac15,1 5K Display Output Issue (Resolved in Dortania's OpenCore Legacy Patcher 0.3.2 and newer)
 
 * Documentation:
   * [5K iMac and UEFI: Fixing the dreaded output limitation](https://khronokernel.github.io/macos/2021/12/08/5K-UEFI.html)
@@ -54,7 +54,7 @@ Due to the display being routed through the NVIDIA Kepler card and macOS being r
 
 :::
 
-::: details macOS 12.0 Beta 4 issue on 2012 to early 2013 machines (Resolved in 0.2.5 and newer)
+::: details macOS 12.0 Beta 4 issue on 2012 to early 2013 machines (Resolved in Dortania's OpenCore Legacy Patcher 0.2.5 and newer)
 
 Currently in macOS 12.0 Beta 4, many Ivy Bridge Macs have experienced Bluetooth issues relating to their BCM20702 chipset. Currently the exact issue is unknown however is assumed to be a bug on Apple's end. Recommend downgrading to macOS 12.0 Beta 3 till resolved:
 
@@ -69,7 +69,7 @@ sudo killall -9 BlueTool bluetoothd
 
 :::
 
-::: details Wireless Support Dropped (Resolved in 0.2.5 and newer)
+::: details Wireless Support Dropped (Resolved in Dortania's OpenCore Legacy Patcher 0.2.5 and newer)
 
 * Broadcom BCM94328, BCM94322 and Atheros Wireless Chipsets lost support
 
@@ -87,7 +87,7 @@ Note: BCM943224, BCM94331, BCM94360 and BCM943602 are still fully supported by B
 
 :::
 
-::: details Bluetooth Support Dropped (Resolved in 0.2.5 and newer)
+::: details Bluetooth Support Dropped (Resolved in Dortania's OpenCore Legacy Patcher 0.2.5 and newer)
 
 * BRCM2046 and BRCM2070 Bluetooth Chipsets lost support
 
@@ -125,7 +125,7 @@ Here are the firmwares macOS Monterey Dropped (previously located within IOBluet
 
 :::
 
-::: details Ivy Bridge iGPU Acceleration (Resolved in 0.1.7 and newer)
+::: details Ivy Bridge iGPU Acceleration (Resolved in Dortania's OpenCore Legacy Patcher 0.1.7 and newer)
 
 * Intel HD4000 iGPUs lost support
 
@@ -138,7 +138,7 @@ By default these machines require root volume patches to gain graphics accelerat
 
 :::
 
-::: details NVIDIA Kepler dGPU Acceleration (Resolved in 0.2.5 and newer)
+::: details NVIDIA Kepler dGPU Acceleration (Resolved in Dortania's OpenCore Legacy Patcher 0.2.5 and newer)
 
 * NVIDIA Kepler dGPUs lost support
 
@@ -152,7 +152,7 @@ By default these machines require root volume patches to gain graphics accelerat
 
 :::
 
-::: details Non-Metal Acceleration (Resolved in 0.2.5 and newer)
+::: details Non-Metal Acceleration (Resolved in Dortania's OpenCore Legacy Patcher 0.2.5 and newer)
 
 * Non-Metal GPUs no longer have working acceleration patches:
   * Intel Ironlake and Sandy Bridge iGPUs

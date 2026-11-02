@@ -248,7 +248,7 @@ Wegen des Metal-Backends scheint die erweiterte Farbausgabe dieser Apps die Bedi
 
 ## Stark verzerrte Darstellung nach dem Ruhezustand auf ATI/AMD TeraScale 1 von macOS 11.3 bis Monterey
 
-**Für macOS Ventura ab 0.6.6 behoben. Unter Big Sur und Monterey tritt das Problem weiterhin auf.**
+**Für macOS Ventura ab Dortanias OpenCore Legacy Patcher 0.6.6 behoben. Unter Big Sur und Monterey tritt das Problem weiterhin auf.**
 
 Betroffen sind TeraScale-1-GPUs (also ATI/AMD Radeon HD2000–4000). Die einzige bekannte Lösung ist ein Downgrade auf macOS 11.2.3 oder älter. Außerdem kann Ab- und erneutes Anmelden das Problem ohne Neustart beheben.
 
@@ -277,7 +277,7 @@ Hinweis: Dieser Treiber bietet unter macOS nur eingeschränkte Unterstützung; v
 
 Behoben mit Dortanias OpenCore Legacy Patcher v0.4.2.
 
-::: details Alte Lösung (vor 0.4.2)
+::: details Alte Lösung (vor Dortanias OpenCore Legacy Patcher 0.4.2)
 
 Wegen eines merkwürdigen Fehlers bei ATIs TeraScale-2-GPUs sehen viele Nutzer nach der Installation der Beschleunigungs-Patches und dem Neustart in macOS fehlerhafte bzw. flackernde Farben. Ursache ist eine falsche Annahme in den GPU-Treibern, die dem Bildschirm den Farbraum „Milliarden Farben“ aufzwingt. Zur Behebung stellst du deinen Bildschirm einfach auf eine geringere Farbtiefe wie „Millionen Farben“ um.
 

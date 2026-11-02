@@ -45,7 +45,7 @@ Da das Display über die NVIDIA-Kepler-Karte angebunden ist, macOS aber auf der 
 
 ## Früher nicht funktionierende Hardware
 
-::: details Problem mit der 5K-Displayausgabe beim iMac15,1 (behoben in 0.3.2 und neuer)
+::: details Problem mit der 5K-Displayausgabe beim iMac15,1 (behoben in Dortanias OpenCore Legacy Patcher 0.3.2 und neuer)
 
 * Dokumentation:
   * [5K iMac and UEFI: Fixing the dreaded output limitation](https://khronokernel.github.io/macos/2021/12/08/5K-UEFI.html)
@@ -54,7 +54,7 @@ Da das Display über die NVIDIA-Kepler-Karte angebunden ist, macOS aber auf der 
 
 :::
 
-::: details Problem mit macOS 12.0 Beta 4 auf Geräten von 2012 bis Anfang 2013 (behoben in 0.2.5 und neuer)
+::: details Problem mit macOS 12.0 Beta 4 auf Geräten von 2012 bis Anfang 2013 (behoben in Dortanias OpenCore Legacy Patcher 0.2.5 und neuer)
 
 Unter macOS 12.0 Beta 4 hatten viele Ivy-Bridge-Macs Bluetooth-Probleme im Zusammenhang mit ihrem BCM20702-Chipsatz. Die genaue Ursache ist derzeit unbekannt, vermutlich handelt es sich aber um einen Fehler auf Apples Seite. Bis zur Behebung empfehlen wir ein Downgrade auf macOS 12.0 Beta 3:
 
@@ -69,7 +69,7 @@ sudo killall -9 BlueTool bluetoothd
 
 :::
 
-::: details WLAN-Unterstützung entfernt (behoben in 0.2.5 und neuer)
+::: details WLAN-Unterstützung entfernt (behoben in Dortanias OpenCore Legacy Patcher 0.2.5 und neuer)
 
 * Die WLAN-Chipsätze Broadcom BCM94328, BCM94322 und Atheros werden nicht mehr unterstützt
 
@@ -87,7 +87,7 @@ Hinweis: BCM943224, BCM94331, BCM94360 und BCM943602 werden von BridgePatcher we
 
 :::
 
-::: details Bluetooth-Unterstützung entfernt (behoben in 0.2.5 und neuer)
+::: details Bluetooth-Unterstützung entfernt (behoben in Dortanias OpenCore Legacy Patcher 0.2.5 und neuer)
 
 * Die Bluetooth-Chipsätze BRCM2046 und BRCM2070 werden nicht mehr unterstützt
 
@@ -125,7 +125,7 @@ Folgende Firmwares hat macOS Monterey entfernt (früher in IOBluetoothUSBDFU.kex
 
 :::
 
-::: details iGPU-Beschleunigung bei Ivy Bridge (behoben in 0.1.7 und neuer)
+::: details iGPU-Beschleunigung bei Ivy Bridge (behoben in Dortanias OpenCore Legacy Patcher 0.1.7 und neuer)
 
 * Intel-HD4000-iGPUs werden nicht mehr unterstützt
 
@@ -138,7 +138,7 @@ Diese Geräte benötigen unter Monterey Root-Volume-Patches, um Grafikbeschleuni
 
 :::
 
-::: details dGPU-Beschleunigung bei NVIDIA Kepler (behoben in 0.2.5 und neuer)
+::: details dGPU-Beschleunigung bei NVIDIA Kepler (behoben in Dortanias OpenCore Legacy Patcher 0.2.5 und neuer)
 
 * NVIDIA-Kepler-dGPUs werden nicht mehr unterstützt
 
@@ -152,7 +152,7 @@ Diese Geräte benötigen unter Monterey Root-Volume-Patches, um Grafikbeschleuni
 
 :::
 
-::: details Non-Metal-Beschleunigung (behoben in 0.2.5 und neuer)
+::: details Non-Metal-Beschleunigung (behoben in Dortanias OpenCore Legacy Patcher 0.2.5 und neuer)
 
 * Für Non-Metal-GPUs gibt es keine funktionierenden Beschleunigungs-Patches mehr:
   * Intel-iGPUs Ironlake und Sandy Bridge

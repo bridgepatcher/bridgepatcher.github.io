@@ -219,6 +219,42 @@ UPSTREAM_APP_OK_RE = re.compile(r"(?i)dortania")
 OWN_NAME_OLD_VERSION_RE = re.compile(
     r"(?i)\bBridge\s?Patcher(?:'s)?(?:[ \t-]+(?:version|release|Versions?|Release))?[ \t]*[(\[]?[ \t]*v?\.?[ \t]?"
     r"([0-2]\.\d{1,2}(?:\.\d{1,2})?)(?![\d.]*\s?(?:GB|MB|KB|%))")
+# Dortania's release numbers on their own, without saying whose release they are: "(Resolved in 0.2.5 and
+# newer)", "starting from 0.6.6", "prior to 0.4.2", "Workaround for 0.2.4". Copied from Dortania's docs, on
+# BridgePatcher's site they read as BridgePatcher versions. The line must name Dortania ("Dortania's OpenCore
+# Legacy Patcher 0.2.5", "Dortania's OCLP 0.2.5"). Only x.y.z numbers below 3.0.0 (BridgePatcher's own versions
+# start at 3.0.0 alpha 4.1) that are Dortania releases count - the release list is read from Dortania's
+# CHANGELOG.md at run time (any 0.x-2.x.y if it is unavailable). Two-part numbers (USB 1.1, BT 2.1, GPL 2.0)
+# never match, nor do numbers that belong to another product named right before them (OpenCore 1.0.8,
+# Lilu.kext 1.6.6, macOS, BridgePatcher - the last one is OWN_NAME_OLD_VERSION_RE's job), URLs and code.
+BARE_VERSION_RE = re.compile(r"(?<![\w./-])v?([0-2]\.\d{1,2}\.\d{1,2})(?![\w-]|\.\d)")
+BARE_VERSION_OK_RE = re.compile(r"(?i)dortania")
+BARE_VERSION_EXT = (".md", ".markdown", ".html", ".htm", ".vue")   # page text only, not package.json etc.
+OTHER_PRODUCT_RE = re.compile(
+    r"(?i)(?:\bOpen\s?Core(?:Pkg)?|\bOC|\bLilu|WhateverGreen|AppleALC|RestrictEvents|FeatureUnlock"
+    r"|CryptexFixup|\w+\.kext|\bmacOS|\bOS ?X|Python|Xcode|Brigadier|PatcherSupportPkg|Bridge\s?Patcher(?:'s)?"
+    r"|tccplus|MountEFI)[ \t:-]*(?:v|version|Version)?[ \t]*$")
+CODE_SPAN_RE = re.compile(r"`[^`]*`")
+
+
+def upstream_releases():
+    """Dortania's release numbers (x.y.z) from CHANGELOG.md in the upstream tree, or None."""
+    ref = re.split(r"\.\.\.?", DIFF_RANGE)[0].split(":")[0]
+    r = subprocess.run(["git", "show", f"{ref}:CHANGELOG.md"], capture_output=True)
+    if r.returncode != 0:
+        return None
+    found = set(re.findall(r"(?m)^#+\s*v?(\d+\.\d+\.\d+)\b", r.stdout.decode("utf-8", "replace")))
+    return found or None
+
+
+def bare_versions(line, releases):
+    """Dortania release numbers in a line of page text that don't say they are Dortania's."""
+    bare = CODE_SPAN_RE.sub(" ", URL_RE.sub(" ", line))
+    if BARE_VERSION_OK_RE.search(bare):
+        return []
+    return [m.group(1) for m in BARE_VERSION_RE.finditer(bare)
+            if (releases is None or m.group(1) in releases) and not OTHER_PRODUCT_RE.search(bare[:m.start()])]
+
 
 # Invite links to the upstream project's Discord server (OpenCore Patcher Paradise, the server
 # Dortania's OCLP docs send users to). Pointing BridgePatcher users there for support implies
@@ -689,6 +725,7 @@ def scan_artwork(head, add):
         embedded_bits = {}
         add("warning", "-", "Embedded artwork check skipped: numpy is not installed")
     cache = _load_cache()
+    releases = upstream_releases()
     rows = git("ls-tree", "-r", "-l", head).splitlines()
     upstream_hashes = upstream_image_hashes(cache)
     image_refs = image_references(head)
@@ -888,8 +925,18 @@ def scan_artwork(head, add):
             # The licence pages themselves name Dortania's project on purpose - they must stay as they are.
             if low.endswith(OLD_NAME_EXT) and not LICENSE_FILE_RE.search(path):
                 old, upstream, legacy_app, abbrev, upstream_app, old_version = [], [], [], [], [], []
+                bare_rel, fence = [], None
                 for n, l in enumerate(text.splitlines(), 1):
                     bare = URL_RE.sub(" ", l)
+                    # Fenced code blocks show literal commands and output; leave them alone.
+                    fm = re.match(r"\s*(`{3,}|~{3,})", l)
+                    if fm and (fence is None or fm.group(1)[0] == fence[0] and len(fm.group(1)) >= len(fence)):
+                        fence = None if fence else fm.group(1)
+                    elif (fence is None and low.endswith(BARE_VERSION_EXT)
+                          and not OWN_NAME_OLD_VERSION_RE.search(bare)):
+                        vs = bare_versions(l, releases)
+                        if vs:
+                            bare_rel.append((n, l, vs))
                     if OLD_NAME_RE.search(l):
                         old.append((n, l))
                     # Exemptions are checked without URLs too: a link to Dortania's repo on the line
@@ -920,6 +967,15 @@ def scan_artwork(head, add):
                         (["  …"] if len(old_version) > 5 else []) +
                         ["  BridgePatcher's own versions start at 3.0.0 alpha 4.1; 0.x/1.x/2.x are releases of",
                          "  Dortania's OpenCore Legacy Patcher. Say \"Dortania's OpenCore Legacy Patcher 2.1.0\"."])
+                rel = {v for *_, vs in bare_rel for v in vs}
+                if bare_rel:
+                    add("violation", path, "Dortania's release number without saying it is Dortania's",
+                        [f"  line {n}: {show(l)}" for n, l, _ in bare_rel[:5]] +
+                        (["  …"] if len(bare_rel) > 5 else []) +
+                        [f"  {', '.join(sorted(rel))} {'is a release' if len(rel) == 1 else 'are releases'} of "
+                         "Dortania's OpenCore Legacy Patcher, not BridgePatcher versions.",
+                         "  Say whose release it is on the same line, e.g. \"(Resolved in Dortania's OpenCore Legacy",
+                         "  Patcher 0.2.5 and newer)\" / \"(behoben ab Dortanias OpenCore Legacy Patcher 0.2.5)\"."])
                 if old:
                     add("violation", path, "Former project name (OpenCore (Legacy) Patcher T2 / OCLP-T2)",
                         [f"  line {n}: {show(l)}" for n, l in old[:5]] + (["  …"] if len(old) > 5 else []) +
@@ -1102,7 +1158,8 @@ def main():
             "screenshots must say BridgePatcher, not \"OpenCore Legacy Patcher\" (or the former name OCLP-T2). "
             "Naming Dortania's project when crediting it or referring to its releases is fine. Calling Dortania's "
             "app or releases BridgePatcher's is not: \"OCLP\" for this project, Dortania's OpenCore-Patcher.app, "
-            "\"BridgePatcher 0.6.8\" (a Dortania version number) or Dortania's screenshots with the name "
+            "\"BridgePatcher 0.6.8\" (a Dortania version number), a bare Dortania version such as \"Resolved in "
+            "0.2.5 and newer\" that reads like a BridgePatcher release, or Dortania's screenshots with the name "
             "edited to BridgePatcher.", "",
             "Dortania's own screenshots, banners and charts may only be shown with a credit: every page that "
             "uses one must say right below it that it comes from Dortania's documentation (e.g. "

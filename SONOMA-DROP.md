@@ -46,7 +46,7 @@ Dual boots may also bring the issue back even after the reset.
 
 ### T1 Security chip
 
-**Resolved in 1.1.0 and newer, original explainer below**
+**Resolved in Dortania's OpenCore Legacy Patcher 1.1.0 and newer, original explainer below**
 
 ::: details Support for the T1 Security chip 
 

@@ -84,7 +84,7 @@ Unter den folgenden Links findest du weitere Informationen zur Unterstützung vo
 
 ### Behobene Probleme
 
-::: details Unterstützung für ältere WLAN-Karten (behoben in v0.6.0 und neuer)
+::: details Unterstützung für ältere WLAN-Karten (behoben in Dortanias OpenCore Legacy Patcher v0.6.0 und neuer)
 
 Für Systeme, die unter macOS Monterey Root-Patches für WLAN benötigten, hat macOS Ventura dieses Patch-Set leider unbrauchbar gemacht. Derzeit werden folgende WLAN-Karten nicht unterstützt:
 
@@ -107,7 +107,7 @@ BCM943224, BCM94331, BCM94360 und BCM943602 werden von BridgePatcher weiterhin v
 :::
 
 
-::: details Non-Metal-Grafikbeschleunigung (behoben in v0.6.0 und neuer)
+::: details Non-Metal-Grafikbeschleunigung (behoben in Dortanias OpenCore Legacy Patcher v0.6.0 und neuer)
 
 Das Team arbeitet mit Hochdruck daran, Non-Metal zum Laufen zu bringen – das ist jedoch unsere größte Herausforderung seit Big Sur.
 

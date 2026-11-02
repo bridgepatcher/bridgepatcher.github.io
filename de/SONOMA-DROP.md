@@ -46,7 +46,7 @@ Bei Dual-Boot-Systemen kann das Problem auch nach dem Reset zurückkehren.
 
 ### T1-Sicherheitschip
 
-**Behoben in 1.1.0 und neuer, die ursprüngliche Erklärung steht unten**
+**Behoben in Dortanias OpenCore Legacy Patcher 1.1.0 und neuer, die ursprüngliche Erklärung steht unten**
 
 ::: details Unterstützung für den T1-Sicherheitschip
 

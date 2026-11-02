@@ -84,7 +84,7 @@ Refer to the following links for more information about Legacy Metal and non-Met
 
 ### Resolved issues
 
-::: details Legacy Wireless Support (Resolved in v0.6.0 and newer)
+::: details Legacy Wireless Support (Resolved in Dortania's OpenCore Legacy Patcher v0.6.0 and newer)
 
 For systems that required Root Patches in macOS Monterey to achieve Wireless support, unfortunately macOS Ventura has broken the patch set. Currently the following Wifi cards are unsupported:
 
@@ -107,7 +107,7 @@ Currently BCM943224, BCM94331, BCM94360 and BCM943602 are still fully supported 
 :::
 
 
-::: details Non-Metal Graphics Acceleration (Resolved in v0.6.0 and newer)
+::: details Non-Metal Graphics Acceleration (Resolved in Dortania's OpenCore Legacy Patcher v0.6.0 and newer)
 
 Regarding non-Metal, the team is hard at work to get non-Metal working, however this is our greatest challenge since Big Sur.
 
