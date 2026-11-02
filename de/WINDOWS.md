@@ -88,6 +88,8 @@ Der Befehl `rsync` braucht eine Weile – hol dir also einen Kaffee und lehn dic
 
 ![](../images/windows-rsync-done.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Ordner- und Benutzernamen geändert.*
+
 * Stelle sicher, dass diese Ordner und Dateien im Stammverzeichnis des USB-Sticks liegen, sonst startet der Stick nicht.
 
 

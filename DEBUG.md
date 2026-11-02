@@ -31,6 +31,8 @@ Once you've mounted the EFI Partition of the drive you have macOS on, you should
              <img src="./images/logs-efi.png" alt="Mount EFI" width="800" />
 </div>
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with folder and user names changed.*
+
 ## Obtaining Kernel logs from macOS
 
 With "Enable Kext DEBUG" set, every boot will now have much more detailed logs stored in the OS. To get these logs, simply run the below command:

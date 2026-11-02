@@ -88,6 +88,8 @@ The `rsync` command will take some time, so get some coffee and sit back. Once f
 
 ![](./images/windows-rsync-done.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with folder and user names changed.*
+
 * Ensure that these folders and files are in the root of the USB drive, otherwise the USB will not boot.
 
 

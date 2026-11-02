@@ -34,6 +34,8 @@ Sobald du ein eigenes Bild hast, das du verwenden möchtest (zum Beispiel als Hi
 
 ![](../images/icnspack-folder.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Ordner- und Benutzernamen geändert.*
+
 Wechsle nun im Terminal mit `cd` in diesen Ordner und führe Folgendes aus:
 
 ```sh
@@ -43,6 +45,8 @@ Wechsle nun im Terminal mit `cd` in diesen Ordner und führe Folgendes aus:
 Danach findest du dein erzeugtes Symbol im Ordner von `icnspack`:
 
 ![](../images/icnspack-done.png)
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Ordner- und Benutzernamen geändert.*
 
 # Eigene Symbole für den Mac-Bootpicker
 

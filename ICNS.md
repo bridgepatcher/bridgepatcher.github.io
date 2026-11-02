@@ -34,6 +34,8 @@ Once you have a custom image you want to use(for example, as a background), down
 
 ![](./images/icnspack-folder.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with folder and user names changed.*
+
 Now `cd` to this folder in terminal and run the following:
 
 ```sh
@@ -43,6 +45,8 @@ Now `cd` to this folder in terminal and run the following:
 Once done, you'll see your custom icon generated in `icnspack`'s folder:
 
 ![](./images/icnspack-done.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with folder and user names changed.*
 
 # Custom Mac Boot Picker icons
 
