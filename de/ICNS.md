@@ -101,4 +101,6 @@ Die Symbole des Mac-Bootpickers zu aktualisieren ist eigentlich ganz einfach. Le
 
 ![](../images/mac-icns-drive.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Ordner- und Benutzernamen geändert.*
+
 Starte jetzt neu, und du siehst das neue Symbol!

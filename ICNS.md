@@ -101,4 +101,6 @@ Updating the Mac Boot Picker icons is actually quite simple. On the root of your
 
 ![](./images/mac-icns-drive.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with folder and user names changed.*
+
 Now reboot and you'll see the new icon!
