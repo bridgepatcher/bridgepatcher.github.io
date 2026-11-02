@@ -50,7 +50,7 @@ For users with 2008 to 2013 Mac Pros (MacPro3,1-6,1) and 2009 to 2011 iMacs (iMa
 
 * CPUs supporting AVX2.0 are Haswell or newer, which no pre-2019 Mac Pros can be upgraded with.
 
-Currently at this time, BridgePatcher only supports patching the AMD Polaris and Vega Graphics stack to no longer require AVX2.0. We're recently received an AMD RX 6600 donation, so hopefully in the future the project can support AMD Navi with pre-Haswell Macs. However, no time estimates can be given.
+Currently at this time, BridgePatcher only supports patching the AMD Polaris and Vega Graphics stack to no longer require AVX2.0. Dortania's OpenCore Legacy Patcher team received an AMD RX 6600 donation at the time, so support for AMD Navi with pre-Haswell Macs may come in the future. However, no time estimates can be given.
 
 Following GPUs are applicable:
 

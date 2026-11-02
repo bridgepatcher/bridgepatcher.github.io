@@ -163,20 +163,25 @@ jobs:
               return;
             }
 
-            // Push / schedule / manual: keep ONE issue up to date, close it when clean
+            // Push / schedule / manual: keep ONE issue up to date, close it when clean.
+            // Warnings (e.g. Dortania's screenshots edited to show BridgePatcher) keep the issue open
+            // too - they don't take the site offline, but on main they were otherwise only visible
+            // in the job summary.
             const label = 'license-guard';
             const open = await github.paginate(github.rest.issues.listForRepo,
               { owner, repo, state: 'open', labels: label, per_page: 100 });
             const issue = open.find(i => !i.pull_request);
-            if (violations === 0) {
+            if (violations === 0 && warnings === 0) {
               if (issue) {
                 await github.rest.issues.createComment({ owner, repo, issue_number: issue.number,
-                  body: '✅ License Guard: no violations left in the latest full audit, closing. The next build puts the website back online.' });
+                  body: '✅ License Guard: no violations or warnings left in the latest full audit, closing. The site is online.' });
                 await github.rest.issues.update({ owner, repo, issue_number: issue.number, state: 'closed' });
               }
               return;
             }
-            const title = `License Guard: ${violations} license violation(s) - website is offline`;
+            const title = violations > 0
+              ? `License Guard: ${violations} license violation(s) - website is offline`
+              : `License Guard: ${warnings} warning(s) to review - website stays online`;
             if (issue) {
               if (issue.body !== body || issue.title !== title) {
                 await github.rest.issues.update({ owner, repo, issue_number: issue.number, title, body });

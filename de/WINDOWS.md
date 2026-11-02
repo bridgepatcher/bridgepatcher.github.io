@@ -56,7 +56,7 @@ Wenn du das falsche Laufwerk löschst, kann das zu Datenverlust führen! Prüfe 
 
 Wenn du dasselbe Laufwerk für macOS und Windows nutzen möchtest, empfehlen wir eine eigene Partition nur für OpenCore. So hat Windows die ESP für sich allein, und OpenCore bleibt in seiner eigenen Blase.
 
-Die empfohlene Größe beträgt 200 MB, und das Partitionsformat **muss** FAT32 sein, damit OpenCore korrekt funktioniert. Installiere OpenCore danach auf der neuen Partition – entweder, indem du es mit [MountEFI](https://github.com/corpnewt/MountEFI) aus der ESP verschiebst, oder indem du die OpenCore-Patcher.app erneut ausführst.
+Die empfohlene Größe beträgt 200 MB, und das Partitionsformat **muss** FAT32 sein, damit OpenCore korrekt funktioniert. Installiere OpenCore danach auf der neuen Partition – entweder, indem du es mit [MountEFI](https://github.com/corpnewt/MountEFI) aus der ESP verschiebst, oder indem du die BridgePatcher.app erneut ausführst.
 
 * Hinweis 1: Bei Geräten mit einem eigenen Laufwerk für Windows ist eine separate OpenCore-Partition nicht nötig.
 * Hinweis 2: Eine separate OpenCore-Partition ist auch nicht nötig, wenn die Windows-Bootdateien entfernt werden, die der Standard-Bootpicker erkennt. Mehr dazu unter „Windows-Option aus dem Standard-Bootpicker entfernen“.

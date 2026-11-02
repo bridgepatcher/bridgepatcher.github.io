@@ -203,7 +203,7 @@ Refer to the following pages for more information
 
 ## What are FeatureUnlock and mediaanalysisd?
 
-**Important:** These features have the potential to cause instability in many places and as such a decision has been made to disable them by default (mediaanalysisd only on 3802-based* systems) starting from BridgePatcher version 2.1.0.  If you want to enable these features at the risk of additional instability, you can do so in the BridgePatcher settings and rebuilding OpenCore.
+**Important:** These features have the potential to cause instability in many places and as such a decision has been made to disable them by default (mediaanalysisd only on 3802-based* systems) starting from Dortania's OpenCore Legacy Patcher 2.1.0.  If you want to enable these features at the risk of additional instability, you can do so in the BridgePatcher settings and rebuilding OpenCore.
 
 FeatureUnlock may also have issues functioning with some OS versions and systems due to race condition during system bootup. If this happens to you, try rebooting multiple times or different (older) OS versions to see if it will remedy the issue.
 
