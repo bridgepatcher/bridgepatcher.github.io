@@ -29,6 +29,8 @@ To do this, run BridgePatcher and head to Patcher Settings, then uncheck "Show O
              <img src="./images/OCLP-GUI-Settings-ShowPicker.png" alt="GUI Settings ShowPicker" width="600" />
 </div>
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with the app name changed to BridgePatcher.*
+
 
 Once you've toggled it off, build your OpenCore EFI once again and install to your desired drive. Now to show the OpenCore selector, you can simply hold down the "ESC" key while clicking on EFI boot, and then you can release the "ESC" key when you see the cursor arrow at the top left.
 

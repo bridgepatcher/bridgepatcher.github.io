@@ -29,6 +29,8 @@ Starte dazu BridgePatcher, öffne die Patcher-Einstellungen und deaktiviere im T
              <img src="../images/OCLP-GUI-Settings-ShowPicker.png" alt="Einstellung „Show OpenCore Bootpicker“" width="600" />
 </div>
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, App-Name in BridgePatcher geändert.*
+
 
 Nachdem du die Option deaktiviert hast, erstelle deine OpenCore-EFI erneut und installiere sie auf das gewünschte Laufwerk. Um den OpenCore-Picker trotzdem anzuzeigen, halte einfach die Taste „ESC“ gedrückt, während du auf „EFI Boot“ klickst, und lass sie los, sobald du oben links den Mauszeiger siehst.
 
