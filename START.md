@@ -4,7 +4,7 @@ OpenCore is a sophisticated boot loader used to inject and patch data in memory,
 
 We recommend viewing the [BridgePatcher Terminology Page](./TERMS.md) if you have questions.
 
-For troubleshooting, see our troubleshooting pages below or ask in our [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions).
+For troubleshooting, see our troubleshooting pages below or ask in our [GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions).
 
 - [Application troubleshooting](./TROUBLESHOOT-APP.md)
 - [Booting, installer and other troubleshooting](./TROUBLESHOOT-MISC.md)

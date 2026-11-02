@@ -5,7 +5,7 @@ Die universelle Steuerung (Universal Control) wurde mit macOS 12 Monterey eingef
 
 ::: warning Hinweis
 
-Diese Funktionen werden nicht aktiv getestet und können jederzeit kaputtgehen. Diese Seite richtet sich vor allem an Bastler – abgesehen vom Support in unseren [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions) gibt es keine offizielle Unterstützung.
+Diese Funktionen werden nicht aktiv getestet und können jederzeit kaputtgehen. Diese Seite richtet sich vor allem an Bastler – abgesehen vom Support in unseren [GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions) gibt es keine offizielle Unterstützung.
 
 :::
 
@@ -33,7 +33,7 @@ Technische Anforderungen:
 * iPadOS 15.4 oder neuer (falls zutreffend)
 * Dortanias OpenCore Legacy Patcher 0.4.3 oder neuer bzw. jede BridgePatcher-Version
 
-In der [Modelltabelle](#modelltabelle) unten siehst du, ob du Hardware aufrüsten musst und welche Hardware bei den betroffenen Macs genau ausgetauscht werden muss. Hilfe zum Austausch der WLAN-Karte in älteren Modellen von 2008 bis 2011 bekommst du bei Bedarf in unseren [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions).
+In der [Modelltabelle](#modelltabelle) unten siehst du, ob du Hardware aufrüsten musst und welche Hardware bei den betroffenen Macs genau ausgetauscht werden muss. Hilfe zum Austausch der WLAN-Karte in älteren Modellen von 2008 bis 2011 bekommst du bei Bedarf in unseren [GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions).
 
 
 
@@ -341,4 +341,4 @@ Erstelle und installiere OpenCore abschließend erneut und starte wieder ins Bet
 
 
 
-Dein Mac sollte dich jetzt auffordern, dich erneut bei iCloud anzumelden. Wenn diese Aufforderung erscheint, hast du das SMBIOS-Spoofing erfolgreich eingerichtet. Andernfalls prüfe, ob du alle oben genannten Schritte korrekt befolgt hast, oder bitte in unseren [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions) um weitere Hilfe.
+Dein Mac sollte dich jetzt auffordern, dich erneut bei iCloud anzumelden. Wenn diese Aufforderung erscheint, hast du das SMBIOS-Spoofing erfolgreich eingerichtet. Andernfalls prüfe, ob du alle oben genannten Schritte korrekt befolgt hast, oder bitte in unseren [GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions) um weitere Hilfe.

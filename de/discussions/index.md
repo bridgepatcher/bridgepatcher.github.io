@@ -11,7 +11,7 @@ next: false
 
 Alle offenen Community-Diskussionen zu BridgePatcher (Fragen, Ideen,
 Anleitungen und mehr), automatisch gespiegelt aus den
-[GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions):
+[GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions):
 angeheftete zuerst, danach die neuesten. Offizielle Neuigkeiten der Maintainer findest du unter
 [Ankündigungen](/de/announcements/). Um zu antworten oder eine neue Diskussion zu starten, nutze GitHub.
 

@@ -5,7 +5,7 @@ Introduced in macOS 12 Monterey, Universal Control is a feature that allows a Ma
 
 ::: warning Note
 
-These features are not actively tested and may break at any time. The following page is primarily for tinkerers, no proper support is provided outside of our [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions).
+These features are not actively tested and may break at any time. The following page is primarily for tinkerers, no proper support is provided outside of our [GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions).
 
 :::
 
@@ -33,7 +33,7 @@ Technical requirements:
 * iPadOS 15.4 or newer (if applicable)
 * Dortania's OpenCore Legacy Patcher 0.4.3 or newer, or any BridgePatcher release
 
-Check the [table of models](#table-of-models) below to see whether you need to upgrade hardware and exactly what hardware is required to be changed based on the offending Macs listed. For help on how to upgrade the Wi-Fi card in older 2008-2011 models, ask in our [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions) if required.
+Check the [table of models](#table-of-models) below to see whether you need to upgrade hardware and exactly what hardware is required to be changed based on the offending Macs listed. For help on how to upgrade the Wi-Fi card in older 2008-2011 models, ask in our [GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions) if required.
 
 
 
@@ -341,4 +341,4 @@ Lastly, Build and install OpenCore again, and reboot back to the OS. Enable Univ
 
 
 
-You should now be prompted to log back into iCloud by your Mac. If you get this prompt, you have successfully configured SMBIOS spoofing. Otherwise, verify that you have correctly followed the steps listed above, or ask for further assistance in our [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions).
+You should now be prompted to log back into iCloud by your Mac. If you get this prompt, you have successfully configured SMBIOS spoofing. Otherwise, verify that you have correctly followed the steps listed above, or ask for further assistance in our [GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions).

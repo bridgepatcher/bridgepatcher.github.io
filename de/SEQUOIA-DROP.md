@@ -67,7 +67,7 @@ panic(cpu 0 caller 0xffffff801cd12509): "AppleSEPManager panic for "AppleKeyStor
 
 Die T2-Unterstützung befindet sich jedoch noch im **Alpha**-Stadium. Das verbleibende Problem: Die macOS-Installation endet derzeit vor dem Abschluss mit „Failed to install a software update“. Wir können noch nicht abschätzen, wann T2-Installationen vollständig funktionieren werden.
 
-Wenn du beim Testen helfen oder Ergebnisse teilen möchtest, nutze bitte die [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions).
+Wenn du beim Testen helfen oder Ergebnisse teilen möchtest, nutze bitte die [GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions).
 
 ### Unterstützung für USB 1.1 (OHCI/UHCI)
 
