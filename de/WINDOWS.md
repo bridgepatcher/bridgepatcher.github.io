@@ -41,11 +41,15 @@ Für die Installation brauchst du:
 
 ![](../images/windows-mbr-format.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 ### Ziellaufwerk formatieren
 
 Wähle anschließend im Festplattendienstprogramm das Laufwerk aus, auf dem Windows installiert werden soll, und lege eine ExFAT-Partition an (wenn du das gesamte Laufwerk formatierst, achte auf das Schema „GUID-Partitionstabelle“):
 
 ![](../images/windows-partition-1.png)
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
 
 
 :::warning Warnung
@@ -64,6 +68,8 @@ Die empfohlene Größe beträgt 200 MB, und das Partitionsformat **muss** FAT32 
 
 ![](../images/windows-partition-2.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 ## Windows-Installer erstellen
 
 Die neuesten Windows-Installationsabbilder kannst du über die folgenden Links bei Microsoft herunterladen:
@@ -76,6 +82,8 @@ Hänge das .iso-Abbild nach dem Download ein:
 
 ![](../images/windows-iso.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Benutzer- und Mac-Namen geändert.*
+
 Öffne dann das Terminal und verwende den Befehl `rsync` mit dem Abbild als Quelle und deinem USB-Stick als Ziel. (Ersetze „CCCOMA_X64“ durch den Partitionsnamen des eingehängten Abbilds und „InstallWin10“ durch den Namen deines USB-Sticks.)
 
 ```
@@ -83,6 +91,8 @@ rsync -r -P /Volumes/CCCOMA_X64/ /Volumes/InstallWin10
 ```
 
 ![](../images/rsync-progess.png)
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Benutzername geändert.*
 
 Der Befehl `rsync` braucht eine Weile – hol dir also einen Kaffee und lehn dich zurück. Danach sollte das Stammverzeichnis des USB-Sticks so aussehen:
 
@@ -124,29 +134,43 @@ Nachdem das Laufwerk bzw. die Partition gelöscht ist, klicke auf „Neu“, um 
 
 ![](../images/DISM-1.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Du wirst aufgefordert, das Anlegen der Systempartitionen zu bestätigen – klicke auf „OK“.
 
 ![](../images/DISM-2.png)
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
 
 Sobald die Partitionen angelegt sind, wähle die Hauptpartition (die größte) und klicke auf „Formatieren“. Dadurch wird die Partition mit dem Dateisystem NTFS formatiert.
 
 ![](../images/DISM-3.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Nachdem der Installer die Partition formatiert hat, öffne mit UMSCHALT + F10 die Eingabeaufforderung. Führe dann den Befehl `diskpart` und anschließend `list vol` aus. Du erhältst eine Liste der Volumes in deinem System – merke dir die Laufwerksbuchstaben der Windows-Hauptpartition (die größte, NTFS), der EFI-Partition (100 MB, FAT32) und des Windows-Installers (meist Laufwerk D). Beende diskpart mit `exit`.
 
 ![](../images/DISM-4.png)
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
 
 Lass dir nun mit `dism /Get-WimInfo /WimFile:D:\Sources\install.wim` die verfügbaren Windows-Editionen anzeigen (ersetze D durch den Laufwerksbuchstaben des Installers). In dieser Anleitung verwenden wir Option 6 für Windows 10 Pro.
 
 ![](../images/DISM-5.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Jetzt kannst du die Bereitstellung starten. Führe `dism /Apply-Image /ImageFile:D:\Sources\install.wim /index:6 /ApplyDir:E:` aus und ersetze dabei „D“ durch den Laufwerksbuchstaben des Installers, „6“ durch die Option der gewünschten Windows-Edition und „E“ durch den Laufwerksbuchstaben der Windows-Partition.
 
 ![](../images/DISM-6.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Wenn `dism` fertig ist, führe `bcdboot E:\Windows` aus und ersetze „E“ durch den Laufwerksbuchstaben der Windows-Hauptpartition, um die Bootdateien zu erstellen.
 
 ![](../images/DISM-7.png)
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
 
 Windows ist jetzt installiert. Es sollte im BridgePatcher-Bootpicker als „EFI Boot“ oder „Windows“ mit Boot-Camp-Symbol erkannt werden.
 
@@ -166,9 +190,13 @@ Wechsle dann mit `C:` in die EFI-Partition (ersetze „C“ durch den Laufwerksb
 
 ![](../images/DISM-8.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Mit dem Befehl `dir` kannst du prüfen, ob der Ordner `Boot` entfernt wurde:
 
 ![](../images/DISM-9.png)
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
 
 Falls du die Bootdateien aus irgendeinem Grund nicht im Windows-Setup entfernen kannst, fahre dein System herunter, boote macOS, hänge deine EFI-Partition mit [MountEFI](https://github.com/corpnewt/MountEFI) ein und entferne den Ordner `Boot` (er sollte ein aktuelles Änderungsdatum haben und `Bootx64.efi` enthalten).
 
@@ -187,9 +215,13 @@ Verschiebe Brigadier nach dem Download auf deinen Desktop, damit du leicht darau
 
 ![](../images/BOOTCAMP-1.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Führe dann `.\brigadier.exe --model=MODEL1,1` aus und ersetze „MODEL1,1“ durch das SMBIOS-Modell deines Geräts.
 
 ![](../images/BOOTCAMP-2.png)
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
 
 Sobald die Boot-Camp-Software heruntergeladen ist, kannst du sie installieren, indem du `Setup.exe` oder `\Drivers\Apple\BootCamp.msi` (bzw. `BootCamp64.msi`, falls vorhanden) ausführst.
 
@@ -205,9 +237,13 @@ Verschiebe Brigadier nach dem Download auf deinen Desktop, damit du leicht darau
 
 ![](../images/BOOTCAMP-1.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Führe dann `.\brigadier.exe --model=MacPro7,1` aus. Dadurch wird das neueste Boot-Camp-6-Paket heruntergeladen.
 
 ![](../images/BOOTCAMP-2.png)
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
 
 Sobald die Boot-Camp-Software heruntergeladen ist, kannst du Boot Camp 6 installieren, indem du `\Drivers\Apple\BootCamp.msi` in einer Eingabeaufforderung mit Administratorrechten ausführst.
 
@@ -219,7 +255,7 @@ Wenn du OpenCore mit SMBIOS-Spoofing der Stufe „Moderate“ oder höher erstel
 
 | Setup.exe | BootCamp.msi |
 | :--- | :--- |
-| ![](../images/windows-bootcamp-error.png) | ![](../images/windows-bootcamp-msi.png) |
+| ![](../images/windows-bootcamp-error.png)<br>*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.* | ![](../images/windows-bootcamp-msi.png)<br>*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.* |
 
 ::: details Besonderheiten von BootCamp.msi
 

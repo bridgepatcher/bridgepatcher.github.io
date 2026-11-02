@@ -2,6 +2,8 @@
 
 ![](./images/sonoma.png)
 
+*Banner: Dortania's OpenCore Legacy Patcher documentation.*
+
 *Well here we are again, it's always such a pleasure~*
 
 Apple has yet again dropped a bunch of models, continuing their journey on discontinuing Intel Macs. With the release of Dortania's OpenCore Legacy Patcher 1.0.0, early support for macOS Sonoma has been implemented.
@@ -25,6 +27,8 @@ BridgePatcher is based on Dortania's OpenCore Legacy Patcher. Version numbers su
 Dortania's OpenCore Legacy Patcher 1.0.0 supports Sonoma for all models below, however some challenges remain. You can find information about them further down on this page.
 
 <img width="625" alt="" src="./images/OCLP-100-Initial-Support.png">
+
+*Banner: based on Dortania's OpenCore Legacy Patcher documentation, with the models, version and icon changed to BridgePatcher's.*
 
 ## Issues
 

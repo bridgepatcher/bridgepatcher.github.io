@@ -25,6 +25,8 @@ Mit aktiviertem „Enable OpenCore DEBUG“ wird bei jedem Start eine .txt-Datei
              <img src="../images/mountefi.png" alt="EFI einhängen" width="600" />
 </div>
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Benutzername geändert.*
+
 Sobald du die EFI-Partition des Laufwerks eingehängt hast, auf dem macOS installiert ist, solltest du dort die Logs finden:
 
 <div align="left">

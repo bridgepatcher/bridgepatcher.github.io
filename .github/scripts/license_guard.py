@@ -504,19 +504,23 @@ def find_author_in_image(passes):
     return hits
 
 
-# Dortania's own screenshots with the app or folder name edited to "BridgePatcher". The website started
-# as a copy of Dortania's docs/ folder; an image that is (almost) one of Dortania's docs images but now
-# reads "BridgePatcher" is Dortania's screenshot (Dortania's Mac, Dortania's app and releases) passed
-# off as BridgePatcher's. Found by comparing every image with the images in Dortania's docs tree (the
-# left side of the audit range, read at run time) - no copy of them is stored here. Byte-identical
-# copies are left alone: they don't claim to show BridgePatcher. An edited copy is a violation, not a
-# warning: it presents Dortania's app, Mac and work as BridgePatcher's (licence clause 4).
-# dHash distance (of 256), measured on this repo: Dortania's screenshots with edited names 1-27,
-# BridgePatcher's own screenshots and artwork 40+.
+# Dortania's own images (screenshots, banners, charts) used on this site. The website started as a copy
+# of Dortania's docs/ folder, so many of its images are Dortania's: byte-identical copies, recompressed
+# or cropped copies, and screenshots with the app, folder or user names edited (e.g. to "BridgePatcher").
+# Every image is compared with the images in Dortania's docs tree (the left side of the audit range, read
+# at run time - no copy of them is stored here), as a whole and with its uniform border/padding cut off.
+# Any image that is (almost) one of Dortania's must be disclosed on every page that shows it (see
+# DISCLOSURE_RE); otherwise it is a violation: it presents Dortania's work as BridgePatcher's. An edited
+# copy that reads "BridgePatcher" gets its own, stronger message (Dortania's app, Mac and release passed
+# off as BridgePatcher's, licence clause 4).
+# dHash distance (of 256), measured on this repo: Dortania's images (unchanged, recompressed or with edited
+# names/icons) 0-24, BridgePatcher's own screenshots of the same app windows 46+, everything else 59+.
 RELABEL_MAX = 30
 # Reviewed and kept on purpose (maintainer decision): the "Models capable of running macOS ..." banners
 # on the Ventura/Sonoma/Sequoia pages. They are based on Dortania's banners but list the models BridgePatcher
 # supports with its own version (3.0.0 alpha 4.1, 4.0.0 alpha 19); replacing them would confuse users.
+# This only waives the "edited to show BridgePatcher" violation - like every Dortania image they must still be
+# disclosed below the image ("*Banner: based on Dortania's ...*").
 # Keyed by path AND blob SHA: an exemption only covers this exact image, so any later edit is checked again.
 RELABEL_KEEP = {
     "images/OCLP-060-Initial-Support.png": "1dc91feb4b0987d00857119623078c5a4272a31c",
@@ -526,8 +530,44 @@ RELABEL_KEEP = {
 OWN_NAME_IMG_RE = re.compile(r"(?i)bridge\s?patcher")
 
 
+# Below RELABEL_MAX, but up to this distance: a warning, "might be based on Dortania's image" (only while a
+# page shows it without a disclosure). Nothing on this site falls between 25 and 45 (see RELABEL_MAX).
+RELABEL_WARN = 40
+
+
+def dhash256_trimmed(data):
+    """dHash of the image with its uniform border (the padding/shadow around a window screenshot,
+    a background band) cut off, so a copy that was cropped to the window, or padded, still matches.
+    None when there is no border to cut or the content is too small."""
+    from PIL import Image, ImageChops
+    with Image.open(io.BytesIO(data)) as im:
+        im.load()
+        im = im.convert("RGBA")
+    base = Image.new("RGBA", im.size, (128, 128, 128, 255))
+    base.alpha_composite(im)
+    rgb = base.convert("RGB")
+    diff = ImageChops.difference(rgb, Image.new("RGB", rgb.size, rgb.getpixel((0, 0)))).convert("L")
+    box = diff.point(lambda v: 255 if v > 24 else 0).getbbox()
+    if not box or box == (0, 0) + rgb.size or box[2] - box[0] < 34 or box[3] - box[1] < 32:
+        return None
+    buf = io.BytesIO()
+    rgb.crop(box).save(buf, "PNG")
+    return dhash256(buf.getvalue(), (128, 128, 128))
+
+
+def _cached_hash(cache, key, fn):
+    if key not in cache:
+        try:
+            v = fn()
+            cache[key] = format(v, "064x") if v is not None else None
+        except Exception:
+            cache[key] = None
+    return int(cache[key], 16) if cache[key] else None
+
+
 def upstream_image_hashes(cache):
-    """{blob sha: dHash} of every image in the upstream tree (left side of the audit range)."""
+    """{blob sha: (path, dHash, trimmed dHash or None)} of every image in the upstream tree
+    (left side of the audit range)."""
     upstream = re.split(r"\.\.\.?", DIFF_RANGE)[0]
     out = {}
     try:
@@ -539,16 +579,25 @@ def upstream_image_hashes(cache):
         _, kind, sha, size = meta.split()
         if kind != "blob" or size == "-" or int(size) > ART_MAX_BYTES or not path.lower().endswith(IMAGE_EXT):
             continue
-        key = f"dhash:{sha}"
-        if key not in cache:
-            data = subprocess.run(["git", "cat-file", "blob", sha], capture_output=True, check=True).stdout
-            try:
-                cache[key] = format(dhash256(data, (128, 128, 128)), "064x")
-            except Exception:
-                cache[key] = None
-        if cache[key]:
-            out[sha] = int(cache[key], 16)
+        blob = lambda: subprocess.run(["git", "cat-file", "blob", sha], capture_output=True, check=True).stdout
+        h = _cached_hash(cache, f"dhash:{sha}", lambda: dhash256(blob(), (128, 128, 128)))
+        if h is not None:
+            out[sha] = (path, h, _cached_hash(cache, f"dhashT:{sha}", lambda: dhash256_trimmed(blob())))
     return out
+
+
+def upstream_match(h, data, sha, upstream, cache):
+    """Closest image in Dortania's docs: (its path, distance, how it matches)."""
+    if sha in upstream:
+        return upstream[sha][0], 0, "Byte-identical copy of"
+    d, path = min((bin(h ^ uh).count("1"), p) for p, uh, _ in upstream.values())
+    t = _cached_hash(cache, f"dhashT:{sha}", lambda: dhash256_trimmed(data))
+    for p, uh, ut in upstream.values():
+        # Trimmed against trimmed, and trimmed against full (one side cropped, the other not).
+        for a, b in ((t, ut), (t, uh), (h, ut)):
+            if a is not None and b is not None and bin(a ^ b).count("1") < d:
+                d, path = bin(a ^ b).count("1"), p
+    return path, d, f"Nearly identical (distance {d}/256) to"
 
 
 # Disclosed edits: an edited Dortania screenshot is fine when EVERY page that shows it says, right below
@@ -559,7 +608,11 @@ def upstream_image_hashes(cache):
 # Typical case: Finder screenshots from Mykola Grymalyuk's Mac, where his user name and Dortania's folders
 # had to be removed (clause 4), so the unchanged original can't be used either. An image no page uses
 # can't be disclosed and stays a violation.
-DISCLOSURE_RE = re.compile(r"(?i)dortania.{0,160}(?:screenshot|bildschirmfoto)|(?:screenshot|bildschirmfoto).{0,160}dortania")
+# Banners, charts and diagrams can be captioned the same way, as "*Banner: ... Dortania ...*" (also "Image:",
+# "Chart:", "Diagram:", German "Grafik:", "Bild:", "Abbildung:", "Diagramm:").
+DISCLOSURE_RE = re.compile(
+    r"(?i)dortania.{0,160}(?:screenshot|bildschirmfoto)|(?:screenshot|bildschirmfoto).{0,160}dortania"
+    r"|\b(?:banner|image|chart|diagram|grafik|bild|abbildung|diagramm)\s*:.{0,160}dortania")
 DISCLOSURE_LINES = 4
 
 
@@ -741,26 +794,42 @@ def scan_artwork(head, add):
                         ["  BridgePatcher's own versions start at 3.0.0 alpha 4.1; 0.x/1.x/2.x are releases of",
                          "  Dortania's OpenCore Legacy Patcher. This is Dortania's screenshot or banner with the",
                          "  name changed. Use a screenshot of BridgePatcher itself, or remove the image."])
+            # Every image that is (almost) one of Dortania's docs images must be disclosed - unchanged
+            # copies too, not only the ones edited to read "BridgePatcher" (see DISCLOSURE_RE).
+            if upstream_hashes:
+                up_name, d, how = upstream_match(h, data, sha, upstream_hashes, cache)
+                refs = image_refs.get(path.rsplit("/", 1)[-1], [])
+                missing = [f"  no disclosure: {page}:{n}" for page, n, ok in refs if not ok]
                 own_name = [l for ps in cache.get(f"ocr{OCR_VERSION}:{sha}", [[], []]) for l in ps
                             if OWN_NAME_IMG_RE.search(l) and not IMG_COPYRIGHT_RE.search(l)]
-                if own_name and upstream_hashes and sha not in upstream_hashes and RELABEL_KEEP.get(path) != sha:
-                    d, _ = min((bin(h ^ uh).count("1"), us) for us, uh in upstream_hashes.items())
-                    refs = image_refs.get(path.rsplit("/", 1)[-1], [])
-                    if d <= RELABEL_MAX and refs and all(ok for _, _, ok in refs):
-                        add("info", path, "Dortania's screenshot, edited and disclosed",
-                            [f"  Nearly identical to an image in Dortania's docs (distance {d}/256);",
-                             "  every page that shows it says it is Dortania's screenshot:"] +
-                            [f"  {page}:{n}" for page, n, _ in refs[:6]])
-                    elif d <= RELABEL_MAX:
-                        missing = [f"  no disclosure: {page}:{n}" for page, n, ok in refs if not ok]
-                        add("violation", path, "Dortania's screenshot edited to show BridgePatcher",
-                            [f"  Nearly identical to an image in Dortania's docs (distance {d}/256), but it reads:",
-                             f"  {show(own_name[0])}"] + missing[:6] +
-                            (["  (not used on any page)"] if not refs else []) +
-                            ["  Dortania's screenshot with the name changed is still Dortania's app, Mac and release.",
-                             "  Take a new screenshot of BridgePatcher, or say right below the image, on every page",
-                             "  that uses it, that it's Dortania's screenshot, e.g.:",
-                             "  *Screenshot: Dortania's OpenCore Legacy Patcher documentation, names changed.*"])
+                if own_name and RELABEL_KEEP.get(path) == sha:
+                    own_name = []   # reviewed banner: only the disclosure is still required
+                same = f"  {how} {up_name} in Dortania's docs"
+                if d <= RELABEL_MAX and refs and not missing:
+                    add("info", path, "Dortania's image, disclosed",
+                        [same + ";", "  every page that shows it says it is from Dortania's documentation:"] +
+                        [f"  {page}:{n}" for page, n, _ in refs[:6]])
+                elif d <= RELABEL_MAX and own_name:
+                    add("violation", path, "Dortania's screenshot edited to show BridgePatcher",
+                        [same + ", but it reads:", f"  {show(own_name[0])}"] + missing[:6] +
+                        (["  (not used on any page)"] if not refs else []) +
+                        ["  Dortania's screenshot with the name changed is still Dortania's app, Mac and release.",
+                         "  Take a new screenshot of BridgePatcher, or say right below the image, on every page",
+                         "  that uses it, that it's Dortania's screenshot, e.g.:",
+                         "  *Screenshot: Dortania's OpenCore Legacy Patcher documentation, names changed.*"])
+                elif d <= RELABEL_MAX:
+                    add("violation", path, "Dortania's image used without disclosure",
+                        [same + "."] + missing[:6] +
+                        (["  …"] if len(missing) > 6 else []) +
+                        (["  Not used on any page: delete it."] if not refs else
+                         ["  Say right below the image, on every page that uses it (in a table: in the same cell),",
+                          "  that it comes from Dortania's documentation, e.g.:",
+                          "  *Screenshot: Dortania's OpenCore Legacy Patcher documentation.*",
+                          "  or take your own screenshot instead."]))
+                elif d <= RELABEL_WARN and missing:
+                    add("warning", path, "Might be based on Dortania's image",
+                        [f"  Similar to {up_name} in Dortania's docs (distance {d}/256)."] + missing[:6] +
+                        ["  Check by hand: if it is Dortania's screenshot or banner, add a disclosure below it."])
             # Best match first; similar icons (the drive icons share the logo) found at the same spot
             # are one finding, not one per icon.
             reported = []
@@ -1019,7 +1088,7 @@ def main():
     if i:
         # Info is your own additions next to kept notices and relocated files - collapsed, nothing to fix.
         out += ["", f"<details><summary>ℹ️ Info ({len(i)}): copyright lines you added next to kept "
-                "upstream notices, relocated files, disclosed Dortania screenshots - nothing to fix</summary>", "", *section(i), "", "</details>"]
+                "upstream notices, relocated files, disclosed Dortania images - nothing to fix</summary>", "", *section(i), "", "</details>"]
     out += ["", "<details><summary>Why this matters</summary>", "",
             f"{HOLDER}'s code is under licenses that require keeping every existing copyright notice and "
             "the license text in redistributed source (e.g. BSD 3-Clause, clause 1). Adding your own "
@@ -1035,6 +1104,9 @@ def main():
             "app or releases BridgePatcher's is not: \"OCLP\" for this project, Dortania's OpenCore-Patcher.app, "
             "\"BridgePatcher 0.6.8\" (a Dortania version number) or Dortania's screenshots with the name "
             "edited to BridgePatcher.", "",
+            "Dortania's own screenshots, banners and charts may only be shown with a credit: every page that "
+            "uses one must say right below it that it comes from Dortania's documentation (e.g. "
+            "*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*), or use your own screenshot.", "",
             "For the same reason, pages must not send users to Dortania's Discord server (OpenCore Patcher "
             "Paradise) for help with BridgePatcher; link BridgePatcher's own support channels instead.",
             "", "</details>"]

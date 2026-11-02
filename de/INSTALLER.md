@@ -39,6 +39,6 @@ Jetzt beginnt der Patcher, den Installer auf den Stick zu schreiben!
 
 | Schreibvorgang | Erfolgsmeldung | Schreibvorgang abgeschlossen |
 | :--- | :--- | :--- |
-| ![](../images/OCLP-GUI-Installer-Flashing-Process.png) | ![](../images/OCLP-GUI-Installer-Sucess-Prompt.png) | ![](../images/OCLP-GUI-Installer-Finished-Script.png) |
+| ![](../images/OCLP-GUI-Installer-Flashing-Process.png) | ![](../images/OCLP-GUI-Installer-Sucess-Prompt.png)<br>*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.* | ![](../images/OCLP-GUI-Installer-Finished-Script.png) |
 
 # Wenn du fertig bist, geht es weiter mit [OpenCore erstellen und installieren](./BUILD.md)

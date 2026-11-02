@@ -2,6 +2,8 @@
 
 ![](../images/macos-sequoia.png)
 
+*Banner: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Ein neues Jahr, ein neues Release.
 
 Diesmal hat Apple überraschend wenige Macs fallen gelassen. Mit der Veröffentlichung von Dortanias OpenCore Legacy Patcher 2.0.0 wurde erste Unterstützung für macOS Sequoia implementiert.
@@ -21,6 +23,8 @@ BridgePatcher basiert auf Dortanias OpenCore Legacy Patcher. Versionsnummern wie
 Dortanias OpenCore Legacy Patcher 2.0.0 unterstützt Sequoia auf den unten aufgeführten Modellen, einige Herausforderungen bleiben jedoch bestehen. Informationen dazu findest du weiter unten auf dieser Seite.
 
 <img width="625" alt="" src="../images/OCLP-200-Initial-Support.png">
+
+*Banner: basiert auf der Dokumentation von Dortanias OpenCore Legacy Patcher, Modelle, Version und Symbol durch die von BridgePatcher ersetzt.*
 
 Die T2-bezogene AppleKeyStore-Panic, die die kürzlich fallen gelassenen MacBookAir8,x-Modelle (und andere nicht unterstützte T2-Macs) am Booten über OpenCorePkg gehindert hat, wurde in BridgePatcher behoben. Die T2-Unterstützung befindet sich aber noch im Alpha-Stadium: Die Installation wird noch nicht abgeschlossen. Den aktuellen Stand findest du unten unter [T2-Sicherheitschip](#t2-sicherheitschip).
 

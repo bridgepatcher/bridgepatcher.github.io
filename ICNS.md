@@ -62,9 +62,13 @@ Head to [developer.apple's More Downloads page](https://developer.apple.com/down
 
 ![](./images/graphics-download.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 Once downloaded, open the disk image and you'll find Icon Composer.app:
 
 ![Graphics Open](./images/graphics-open.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 Now run the app and simply drag the images to each section as so:
 
@@ -81,6 +85,8 @@ To install, please ensure that Vault was disabled when you built OpenCore. If yo
 Now that you've verified that you can edit OpenCore safely, you'll need to mount the drive that OpenCore is stored on. To do this, download [MountEFI](https://github.com/corpnewt/MountEFI) and run it:
 
 ![](./images/mountefi.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with the user name changed.*
 
 Select the drive you installed OpenCore to and mount it.
 

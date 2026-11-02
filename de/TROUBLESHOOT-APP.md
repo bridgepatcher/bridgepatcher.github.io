@@ -25,6 +25,8 @@ In manchen Fällen erscheint der Fehler „The bless of the installer disk faile
              <img src="../images/Error-No-Permission-To-Save.png" alt="Keine Berechtigung zum Sichern" width="600" />
 </div>
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 
 Um das zu beheben, kannst du versuchen, BridgePatcher den „Festplattenvollzugriff“ zu erteilen. Gehe dazu zunächst in die Einstellungen:
 
@@ -57,6 +59,8 @@ Es gibt zwei Möglichkeiten, das zu beheben:
 <div align="left">
              <img src="../images/wipe-disk.png" alt="Laufwerk löschen" width="800" />
 </div>
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
 
 ## „Unable to resolve dependencies, error code 71“ beim Root-Patching
 

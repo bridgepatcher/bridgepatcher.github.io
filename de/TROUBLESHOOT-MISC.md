@@ -126,6 +126,8 @@ Eine relativ häufige Meldung, die manche Nutzer sehen, ist der Fehler „Volume
 <img src="../images/Hash-Mismatch.png">
 </p>
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Dieser Fehler bedeutet, dass das Betriebssystem erkennt, dass der Hash des Bootvolumes nicht dem erwarteten Wert entspricht. Er ist in der Regel rein kosmetisch und kann ignoriert werden. Stürzt dein System kurz danach jedoch spontan ab, solltest du macOS neu installieren und zunächst keine Daten importieren.
 
 * Beachte, dass dieser Fehler auch nativ unterstützte Macs betrifft und nicht auf nicht unterstützte Macs zurückzuführen ist: [OSX Daily: “Volume Hash Mismatch” Error in MacOS Monterey](https://osxdaily.com/2021/11/10/volume-hash-mismatch-error-in-macos-monterey/)

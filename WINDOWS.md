@@ -41,11 +41,15 @@ Open Disk Utility in macOS and format the USB Drive as ExFat with the Master Boo
 
 ![](./images/windows-mbr-format.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 ### Formatting the Target Drive
 
 Next, select the drive you wish to install Windows in Disk Utility on and partition it as ExFat (If formatting the entire drive, ensure it's using the GUID Partition Table scheme):
 
 ![](./images/windows-partition-1.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 
 :::warning
@@ -64,6 +68,8 @@ Recommended size is 200MB and the partition format **must** be FAT32 for OpenCor
 
 ![](./images/windows-partition-2.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 ## Creating the Windows Installer
 
 The latest Windows installation images can be downloaded from Microsoft using the following links:
@@ -76,6 +82,8 @@ Once the file is downloaded, mount the .iso image:
 
 ![](./images/windows-iso.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with user and Mac names changed.*
+
 Then open terminal and use the `rsync` command with the disk image set as the source and your USB drive set as the target. (Replace "CCCOMA_X64" with the mounted image's partition name, and replace "InstallWin10" with your USB Drive's name).
 
 ```
@@ -83,6 +91,8 @@ rsync -r -P /Volumes/CCCOMA_X64/ /Volumes/InstallWin10
 ```
 
 ![](./images/rsync-progess.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with the user name changed.*
 
 The `rsync` command will take some time, so get some coffee and sit back. Once finished, the root of the USB drive should look as follows:
 
@@ -124,29 +134,43 @@ After your drive/partition is erased, press "New" to create the Windows system p
 
 ![](./images/DISM-1.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 You will be prompted to confirm the creation of the system partitions, press "OK".
 
 ![](./images/DISM-2.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 Once the partitions are created, select the main (largest) partition and press "Format". This will format the partition using the NFTS file system.
 
 ![](./images/DISM-3.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 After the installer formats the partition, open up the Command Prompt by pressing SHIFT + F10. Then run the `diskpart` command, and `list vol`. This will produce a list of volumes in your system, make sure to keep track of the drive letters of the main Windows partition (largest, NTFS), the EFI partition (100MB, FAT32), and the Windows installer (Usually Drive D). Run `exit` to close diskpart
 
 ![](./images/DISM-4.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 Now, get a list of available Windows editions by running `dism /Get-WimInfo /WimFile:D:\Sources\install.wim` (substituting D with the Installer Drive Letter). This guide will use Option 6 for Windows 10 Pro.
 
 ![](./images/DISM-5.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 You can now start the deployment process. Run `dism /Apply-Image /ImageFile:D:\Sources\install.wim /index:6 /ApplyDir:E:`, replacing "D" with the Installer Drive Letter, "6" with the Windows edition option, and "E" with the Windows Partition Drive Letter.
 
 ![](./images/DISM-6.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 Once `dism` finishes its thing, run `bcdboot E:\Windows`, substituting "E" for the drive letter of the main Windows partition to create the boot files.
 
 ![](./images/DISM-7.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 Windows is now installed. It should be recognized as "EFI Boot" or "Windows" with a Boot Camp icon in the BridgePatcher Bootpicker.
 
@@ -166,9 +190,13 @@ Next, enter the EFI Folder by running `C:`, substituting "C" for the EFI Partiti
 
 ![](./images/DISM-8.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 You can verify that the `Boot` folder is removed by running the `dir` command:
 
 ![](./images/DISM-9.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 If, for whatever reason, you are not able to remove the boot files from the Windows setup, shut down your system, boot into macOS, mount your EFI partition with [MountEFI](https://github.com/corpnewt/MountEFI), and remove the `Boot` folder (it should have a recent file modification date, and contain `Bootx64.efi`).
 
@@ -187,9 +215,13 @@ Open up a command prompt window as a standard user and run `cd desktop`.
 
 ![](./images/BOOTCAMP-1.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 Then run `.\brigadier.exe --model=MODEL1,1`, replacing "MODEL1,1" with your machine's SMBIOS model.
 
 ![](./images/BOOTCAMP-2.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 Once the Boot Camp software is downloaded, you can install it by executing `Setup.exe` or `\Drivers\Apple\BootCamp.msi` (`BootCamp64.msi` if present).
 
@@ -205,9 +237,13 @@ Open up a command prompt window as a standard user and run `cd desktop`.
 
 ![](./images/BOOTCAMP-1.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 Then run `.\brigadier.exe --model=MacPro7,1`. This will download the latest BootCamp 6 package.
 
 ![](./images/BOOTCAMP-2.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 Once the Boot Camp software is downloaded, you can install Boot Camp 6 by executing `\Drivers\Apple\BootCamp.msi` in an administrator command prompt window.
 
@@ -219,7 +255,7 @@ If you built OpenCore with Moderate or higher SMBIOS spoofing, you'll get an err
 
 | Setup.exe | BootCamp.msi |
 | :--- | :--- |
-| ![](./images/windows-bootcamp-error.png) | ![](./images/windows-bootcamp-msi.png) |
+| ![](./images/windows-bootcamp-error.png)<br>*Screenshot: Dortania's OpenCore Legacy Patcher documentation.* | ![](./images/windows-bootcamp-msi.png)<br>*Screenshot: Dortania's OpenCore Legacy Patcher documentation.* |
 
 ::: details BootCamp.msi quirks
 

@@ -39,7 +39,7 @@ nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:OCLP-Version
 
 | Version in app | Version in Terminal |
 | :--- | :--- |
-| <img src="./images/OCLP_Booted_Version.png" alt="Build start" width="600" /> | <img src="./images/oclp-version.png" alt="BridgePatcher version" width="900" /> |
+| <img src="./images/OCLP_Booted_Version.png" alt="Build start" width="600" /> | <img src="./images/oclp-version.png" alt="BridgePatcher version" width="900" /><br>*Screenshot: Dortania's OpenCore Legacy Patcher documentation.* |
 
 
 ## Preparing BridgePatcher for macOS update

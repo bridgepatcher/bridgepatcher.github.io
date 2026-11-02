@@ -23,6 +23,8 @@ Time Machine on Sequoia may not function even after uninstalling root patches, l
              <img src="./images/TimeMachine-Transfer-Uncheck.png" alt="Uncheck other files and folders" width="600" />
 </div>
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 Now you should be restored with your user profile, applications and settings. 
 
 
