@@ -46,6 +46,8 @@ Wenn du ein brandneues Laufwerk verwendest, das noch nie benutzt oder nie in ein
              <img src="../images/OCLP_Failed_to_find_applicable_disks.png" alt="Keine passenden Laufwerke gefunden" width="600" />
 </div>
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, App-Name in BridgePatcher geändert.*
+
 Es gibt zwei Möglichkeiten, das zu beheben:
 
 1. Erstelle mit dem Festplattendienstprogramm eine neue FAT32-Partition mit etwa 100 MB; der Name spielt keine Rolle. OpenCore erkennt sie, und du kannst deine EFI dort erstellen.

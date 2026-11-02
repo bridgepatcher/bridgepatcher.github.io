@@ -46,6 +46,8 @@ If you're using a brand new disk that has not been used before or was never form
              <img src="./images/OCLP_Failed_to_find_applicable_disks.png" alt="Failed to find applicable disks" width="600" />
 </div>
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with the app name changed to BridgePatcher.*
+
 There are two ways to to try and resolve this.
 
 1. Create a new FAT32 partition using Disk Utility, sized at around 100MB, naming does not matter. OpenCore will detect it and you will be able to build your EFI there.
