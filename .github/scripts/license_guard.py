@@ -551,6 +551,33 @@ def upstream_image_hashes(cache):
     return out
 
 
+# Disclosed edits: an edited Dortania screenshot is fine when EVERY page that shows it says, right below
+# the image (same line or the next DISCLOSURE_LINES lines), that it is Dortania's screenshot - e.g.
+#   *Screenshot: Dortania's OpenCore Legacy Patcher documentation, folder and user names changed.*
+# Typical case: Finder screenshots from Mykola Grymalyuk's Mac, where his user name and Dortania's folders
+# had to be removed (clause 4), so the unchanged original can't be used either. An image no page uses
+# can't be disclosed and stays a violation.
+DISCLOSURE_RE = re.compile(r"(?i)dortania.{0,160}(?:screenshot|bildschirmfoto)|(?:screenshot|bildschirmfoto).{0,160}dortania")
+DISCLOSURE_LINES = 4
+
+
+def image_references(head):
+    """{image file name: [(page, line number, disclosed)]} for every image reference in a text file."""
+    refs = {}
+    ref_re = re.compile(r"[/\"'(]([\w.-]+\.(?:png|jpe?g|gif|webp|icns|tiff?|bmp|ico))\b", re.I)
+    for row in git("ls-tree", "-r", "-l", head).splitlines():
+        meta, path = row.split("\t", 1)
+        _, kind, sha, size = meta.split()
+        if kind != "blob" or size == "-" or not path.lower().endswith(TEXT_EXT) or is_self(path):
+            continue
+        lines = git("cat-file", "blob", sha).splitlines()
+        for i, line in enumerate(lines):
+            for m in ref_re.finditer(line):
+                near = lines[i:i + 1 + DISCLOSURE_LINES]
+                refs.setdefault(m.group(1), []).append((path, i + 1, any(DISCLOSURE_RE.search(l) for l in near)))
+    return refs
+
+
 def find_old_version_in_image(passes):
     hits = []
     for lines in passes:
@@ -603,6 +630,7 @@ def scan_artwork(head, add):
     cache = _load_cache()
     rows = git("ls-tree", "-r", "-l", head).splitlines()
     upstream_hashes = upstream_image_hashes(cache)
+    image_refs = image_references(head)
     ocr_on = tesseract_available()
     if not ocr_on:
         add("warning", "-", "Image text check skipped: tesseract is not installed")
@@ -709,12 +737,22 @@ def scan_artwork(head, add):
                             if OWN_NAME_IMG_RE.search(l) and not IMG_COPYRIGHT_RE.search(l)]
                 if own_name and upstream_hashes and sha not in upstream_hashes and RELABEL_KEEP.get(path) != sha:
                     d, _ = min((bin(h ^ uh).count("1"), us) for us, uh in upstream_hashes.items())
-                    if d <= RELABEL_MAX:
+                    refs = image_refs.get(path.rsplit("/", 1)[-1], [])
+                    if d <= RELABEL_MAX and refs and all(ok for _, _, ok in refs):
+                        add("info", path, "Dortania's screenshot, edited and disclosed",
+                            [f"  Nearly identical to an image in Dortania's docs (distance {d}/256);",
+                             "  every page that shows it says it is Dortania's screenshot:"] +
+                            [f"  {page}:{n}" for page, n, _ in refs[:6]])
+                    elif d <= RELABEL_MAX:
+                        missing = [f"  no disclosure: {page}:{n}" for page, n, ok in refs if not ok]
                         add("violation", path, "Dortania's screenshot edited to show BridgePatcher",
                             [f"  Nearly identical to an image in Dortania's docs (distance {d}/256), but it reads:",
-                             f"  {show(own_name[0])}",
-                             "  Dortania's screenshot with the name changed is still Dortania's app, Mac and release.",
-                             "  Take a new screenshot of BridgePatcher, or use Dortania's image unchanged and say so."])
+                             f"  {show(own_name[0])}"] + missing[:6] +
+                            (["  (not used on any page)"] if not refs else []) +
+                            ["  Dortania's screenshot with the name changed is still Dortania's app, Mac and release.",
+                             "  Take a new screenshot of BridgePatcher, or say right below the image, on every page",
+                             "  that uses it, that it's Dortania's screenshot, e.g.:",
+                             "  *Screenshot: Dortania's OpenCore Legacy Patcher documentation, names changed.*"])
             # Best match first; similar icons (the drive icons share the logo) found at the same spot
             # are one finding, not one per icon.
             reported = []
@@ -973,7 +1011,7 @@ def main():
     if i:
         # Info is your own additions next to kept notices and relocated files - collapsed, nothing to fix.
         out += ["", f"<details><summary>ℹ️ Info ({len(i)}): copyright lines you added next to kept "
-                "upstream notices, relocated files - nothing to fix</summary>", "", *section(i), "", "</details>"]
+                "upstream notices, relocated files, disclosed Dortania screenshots - nothing to fix</summary>", "", *section(i), "", "</details>"]
     out += ["", "<details><summary>Why this matters</summary>", "",
             f"{HOLDER}'s code is under licenses that require keeping every existing copyright notice and "
             "the license text in redistributed source (e.g. BSD 3-Clause, clause 1). Adding your own "

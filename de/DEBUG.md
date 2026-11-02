@@ -31,6 +31,8 @@ Sobald du die EFI-Partition des Laufwerks eingehängt hast, auf dem macOS instal
              <img src="../images/logs-efi.png" alt="EFI einhängen" width="800" />
 </div>
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Ordner- und Benutzernamen geändert.*
+
 ## Kernel-Logs aus macOS holen
 
 Mit aktiviertem „Enable Kext DEBUG“ werden bei jedem Start deutlich detailliertere Logs im Betriebssystem gespeichert. Um sie zu erhalten, führe einfach den folgenden Befehl aus:
