@@ -197,6 +197,28 @@ UPSTREAM_NAME_OK_RE = re.compile(
     r"|OpenCore Legacy Patcher Licen[sc]e|Lizenz von OpenCore Legacy Patcher"
     r"|\b(?:based on|fork of|forked from|derived from|basiert auf|Fork von|abgeleitet von)\b")
 OLD_NAME_EXT = (".md", ".markdown", ".html", ".htm", ".vue", ".mts", ".ts", ".js", ".json", ".webmanifest", ".xsl")
+# URLs and Markdown link/image targets are removed before the name rules below are matched:
+# Dortania's repo and file names (./images/OCLP-GUI-...png) keep their names.
+URL_RE = re.compile(r"https?://[^\s\"'<>)\]]+|\]\([^)\s]*\)|\bsrc=\"[^\"]*\"")
+# The abbreviation "OCLP" used for THIS project ("With OCLP v0.2.5, we've added ..."): Dortania's
+# name for its own app. Not matched: OCLP-* / OCLP_* identifiers (NVRAM keys such as OCLP-Version,
+# the OCLP-Installer volume), lowercase identifiers and paths, names of other forks (OCLP-Mod, ...).
+# Fine where the line makes clear Dortania's project is meant ("Dortania's OCLP 0.2.5").
+OCLP_RE = re.compile(r"(?<![\w./$-])OCLP(?![\w-])")
+OCLP_OTHER_RE = re.compile(r"(?i)OCLP[ -](?:Plus|Mod|R|GUI)\b|OCLP Self Signed")
+OCLP_OK_RE = re.compile(r"(?i)dortania|upstream|formerly|former names?|früher|ehemals|typosquat|©|copyright")
+# Dortania's app bundle and executable (OpenCore-Patcher.app/Contents/MacOS/OpenCore-Patcher). Telling
+# users to run, open or allow it presents Dortania's app as BridgePatcher (BridgePatcher.app now).
+UPSTREAM_APP_RE = re.compile(r"(?<![\w-])OpenCore-Patcher\.app(?![\w-])|/MacOS/OpenCore-Patcher(?![\w.-])")
+UPSTREAM_APP_OK_RE = re.compile(r"(?i)dortania")
+# Dortania's release numbers presented as BridgePatcher's ("starting from BridgePatcher version 2.1.0",
+# a window title "BridgePatcher (0.6.8)", a banner "... with BridgePatcher 0.5.1"). BridgePatcher's own
+# versions start at 3.0.0 alpha 4.1, so 0.x, 1.x and 2.x after the name are always Dortania's releases
+# (OpenCore Legacy Patcher 0.6.8, 2.1.0, ...) claimed for this project. Used for page text and for the
+# text read in images.
+OWN_NAME_OLD_VERSION_RE = re.compile(
+    r"(?i)\bBridge\s?Patcher(?:'s)?(?:[ \t-]+(?:version|release|Versions?|Release))?[ \t]*[(\[]?[ \t]*v?\.?[ \t]?"
+    r"([0-2]\.\d{1,2}(?:\.\d{1,2})?)(?![\d.]*\s?(?:GB|MB|KB|%))")
 
 # Invite links to the upstream project's Discord server (OpenCore Patcher Paradise, the server
 # Dortania's OCLP docs send users to). Pointing BridgePatcher users there for support implies
@@ -482,6 +504,52 @@ def find_author_in_image(passes):
     return hits
 
 
+# Dortania's own screenshots with the app or folder name edited to "BridgePatcher". The website started
+# as a copy of Dortania's docs/ folder; an image that is (almost) one of Dortania's docs images but now
+# reads "BridgePatcher" is Dortania's screenshot (Dortania's Mac, Dortania's app and releases) passed
+# off as BridgePatcher's. Found by comparing every image with the images in Dortania's docs tree (the
+# left side of the audit range, read at run time) - no copy of them is stored here. Byte-identical
+# copies are left alone: they don't claim to show BridgePatcher.
+# dHash distance (of 256), measured on this repo: Dortania's screenshots with edited names 1-27,
+# BridgePatcher's own screenshots and artwork 40+.
+RELABEL_MAX = 30
+OWN_NAME_IMG_RE = re.compile(r"(?i)bridge\s?patcher")
+
+
+def upstream_image_hashes(cache):
+    """{blob sha: dHash} of every image in the upstream tree (left side of the audit range)."""
+    upstream = re.split(r"\.\.\.?", DIFF_RANGE)[0]
+    out = {}
+    try:
+        rows = git("ls-tree", "-r", "-l", upstream).splitlines()
+    except subprocess.CalledProcessError:
+        return out
+    for row in rows:
+        meta, path = row.split("\t", 1)
+        _, kind, sha, size = meta.split()
+        if kind != "blob" or size == "-" or int(size) > ART_MAX_BYTES or not path.lower().endswith(IMAGE_EXT):
+            continue
+        key = f"dhash:{sha}"
+        if key not in cache:
+            data = subprocess.run(["git", "cat-file", "blob", sha], capture_output=True, check=True).stdout
+            try:
+                cache[key] = format(dhash256(data, (128, 128, 128)), "064x")
+            except Exception:
+                cache[key] = None
+        if cache[key]:
+            out[sha] = int(cache[key], 16)
+    return out
+
+
+def find_old_version_in_image(passes):
+    hits = []
+    for lines in passes:
+        for line in lines:
+            if OWN_NAME_OLD_VERSION_RE.search(line) and not IMG_COPYRIGHT_RE.search(line) and line not in hits:
+                hits.append(line)
+    return hits
+
+
 def tesseract_available():
     try:
         return subprocess.run(["tesseract", "--version"], capture_output=True).returncode == 0
@@ -524,6 +592,7 @@ def scan_artwork(head, add):
         add("warning", "-", "Embedded artwork check skipped: numpy is not installed")
     cache = _load_cache()
     rows = git("ls-tree", "-r", "-l", head).splitlines()
+    upstream_hashes = upstream_image_hashes(cache)
     ocr_on = tesseract_available()
     if not ocr_on:
         add("warning", "-", "Image text check skipped: tesseract is not installed")
@@ -619,6 +688,23 @@ def scan_artwork(head, add):
                         ["  This is a screenshot from Mykola Grymalyuk's Mac (his user name, Mac or account name).",
                          "  The licence forbids using his name to promote BridgePatcher: retake the",
                          "  screenshot on your own Mac or edit the name out. Copyright lines are not affected."])
+                versions = find_old_version_in_image(cache.get(f"ocr{OCR_VERSION}:{sha}", [[], []]))
+                if versions:
+                    add("violation", path, "Dortania's release shown as BridgePatcher's in image",
+                        [f"  Text read in the image: {show(n)}" for n in versions[:3]] +
+                        ["  BridgePatcher's own versions start at 3.0.0 alpha 4.1; 0.x/1.x/2.x are releases of",
+                         "  Dortania's OpenCore Legacy Patcher. This is Dortania's screenshot or banner with the",
+                         "  name changed. Use a screenshot of BridgePatcher itself, or remove the image."])
+                own_name = [l for ps in cache.get(f"ocr{OCR_VERSION}:{sha}", [[], []]) for l in ps
+                            if OWN_NAME_IMG_RE.search(l) and not IMG_COPYRIGHT_RE.search(l)]
+                if own_name and upstream_hashes and sha not in upstream_hashes:
+                    d, _ = min((bin(h ^ uh).count("1"), us) for us, uh in upstream_hashes.items())
+                    if d <= RELABEL_MAX:
+                        add("warning", path, "Dortania's screenshot edited to show BridgePatcher",
+                            [f"  Nearly identical to an image in Dortania's docs (distance {d}/256), but it reads:",
+                             f"  {show(own_name[0])}",
+                             "  Dortania's screenshot with the name changed is still Dortania's app, Mac and release.",
+                             "  Take a new screenshot of BridgePatcher, or use Dortania's image unchanged and say so."])
             # Best match first; similar icons (the drive icons share the logo) found at the same spot
             # are one finding, not one per icon.
             reported = []
@@ -676,14 +762,39 @@ def scan_artwork(head, add):
                      "  Link our GitHub Discussions (https://github.com/bridgepatcher/BridgePatcher/discussions) instead."])
             # The licence pages themselves name Dortania's project on purpose - they must stay as they are.
             if low.endswith(OLD_NAME_EXT) and not LICENSE_FILE_RE.search(path):
-                old, upstream, legacy_app = [], [], []
+                old, upstream, legacy_app, abbrev, upstream_app, old_version = [], [], [], [], [], []
                 for n, l in enumerate(text.splitlines(), 1):
+                    bare = URL_RE.sub(" ", l)
                     if OLD_NAME_RE.search(l):
                         old.append((n, l))
-                    elif UPSTREAM_NAME_RE.search(l) and not UPSTREAM_NAME_OK_RE.search(l):
+                    # Exemptions are checked without URLs too: a link to Dortania's repo on the line
+                    # doesn't make "the OpenCore Legacy Patcher app" mean Dortania's project.
+                    elif UPSTREAM_NAME_RE.search(l) and not UPSTREAM_NAME_OK_RE.search(bare):
                         upstream.append((n, l))
                     if LEGACY_APP_RE.search(l) and not LEGACY_APP_OK_RE.search(l):
                         legacy_app.append((n, l))
+                    if OCLP_RE.search(OCLP_OTHER_RE.sub(" ", bare)) and not OCLP_OK_RE.search(bare):
+                        abbrev.append((n, l))
+                    if UPSTREAM_APP_RE.search(l) and not UPSTREAM_APP_OK_RE.search(bare):
+                        upstream_app.append((n, l))
+                    if OWN_NAME_OLD_VERSION_RE.search(bare):
+                        old_version.append((n, l))
+                if abbrev:
+                    add("violation", path, "Abbreviation OCLP used for this project",
+                        [f"  line {n}: {show(l)}" for n, l in abbrev[:5]] + (["  …"] if len(abbrev) > 5 else []) +
+                        ["  OCLP is Dortania's name for its app. Say BridgePatcher, or \"Dortania's OCLP 0.2.5\" when",
+                         "  Dortania's release is meant. Identifiers like OCLP-Version are fine."])
+                if upstream_app:
+                    add("violation", path, "Dortania's app (OpenCore-Patcher.app) presented as this app",
+                        [f"  line {n}: {show(l)}" for n, l in upstream_app[:5]] +
+                        (["  …"] if len(upstream_app) > 5 else []) +
+                        ["  The app is /Applications/BridgePatcher.app (executable Contents/MacOS/BridgePatcher)."])
+                if old_version:
+                    add("violation", path, "Dortania's release numbers presented as BridgePatcher's",
+                        [f"  line {n}: {show(l)}" for n, l in old_version[:5]] +
+                        (["  …"] if len(old_version) > 5 else []) +
+                        ["  BridgePatcher's own versions start at 3.0.0 alpha 4.1; 0.x/1.x/2.x are releases of",
+                         "  Dortania's OpenCore Legacy Patcher. Say \"Dortania's OpenCore Legacy Patcher 2.1.0\"."])
                 if old:
                     add("violation", path, "Former project name (OpenCore (Legacy) Patcher T2 / OCLP-T2)",
                         [f"  line {n}: {show(l)}" for n, l in old[:5]] + (["  …"] if len(old) > 5 else []) +
@@ -864,7 +975,10 @@ def main():
             "the main-menu button icons such as \"Build and Install OpenCore\").", "",
             "The licence also forbids using the upstream name to endorse or promote the fork, so pages, titles and "
             "screenshots must say BridgePatcher, not \"OpenCore Legacy Patcher\" (or the former name OCLP-T2). "
-            "Naming Dortania's project when crediting it or referring to its releases is fine.", "",
+            "Naming Dortania's project when crediting it or referring to its releases is fine. Calling Dortania's "
+            "app or releases BridgePatcher's is not: \"OCLP\" for this project, Dortania's OpenCore-Patcher.app, "
+            "\"BridgePatcher 0.6.8\" (a Dortania version number) or Dortania's screenshots with the name "
+            "edited to BridgePatcher.", "",
             "For the same reason, pages must not send users to Dortania's Discord server (OpenCore Patcher "
             "Paradise) for help with BridgePatcher; link BridgePatcher's own support channels instead.",
             "", "</details>"]

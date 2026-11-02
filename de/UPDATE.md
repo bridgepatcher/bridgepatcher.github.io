@@ -33,13 +33,13 @@ Status und Version der Root-Patches siehst du im Hauptmenü im Bereich `Post Ins
 # OpenCore-Version
 nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version
 # Patcher-Version
-nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:BridgePatcher-Version
+nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:OCLP-Version
 ```
 
 
-| Version in der App | Version im Terminal | Version der Root-Patches |
-| :--- | :--- | :--- |
-| <img src="../images/OCLP_Booted_Version.png" alt="Gebootete Version" width="600" /> | <img src="../images/oclp-version.png" alt="BridgePatcher-Version" width="900" /> | <img src="../images/OCLP_Root_Patch_Version.png" alt="Version der Root-Patches" width="900" /> |
+| Version in der App | Version im Terminal |
+| :--- | :--- |
+| <img src="../images/OCLP_Booted_Version.png" alt="Gebootete Version" width="600" /> | <img src="../images/oclp-version.png" alt="BridgePatcher-Version" width="900" /> |
 
 
 ## BridgePatcher auf ein macOS-Update vorbereiten

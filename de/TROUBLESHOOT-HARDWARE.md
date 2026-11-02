@@ -25,7 +25,7 @@ Falls du nicht weißt, was als Nicht-Metal-GPU gilt, sieh dir die Übersicht in 
 
 ## Keine Helligkeitssteuerung
 
-Mit OCLP v0.0.22 haben wir für viele Modelle Unterstützung für die Helligkeitssteuerung hinzugefügt. Manche Nutzer haben aber festgestellt, dass ihre Helligkeitstasten nicht funktionieren.
+Dortanias OCLP v0.0.22 hat für viele Modelle Unterstützung für die Helligkeitssteuerung hinzugefügt. Manche Nutzer haben aber festgestellt, dass ihre Helligkeitstasten nicht funktionieren.
 
 Als Workaround empfehlen wir folgende App:
 
@@ -33,13 +33,13 @@ Als Workaround empfehlen wir folgende App:
 
 ## Keine WLAN-Verbindung unter Monterey mit älteren Karten
 
-Mit OCLP v0.2.5 haben wir Unterstützung für ältere WLAN-Karten unter Monterey hinzugefügt. Manche Nutzer haben aber festgestellt, dass sie sich nicht mit Drahtlosnetzwerken verbinden können.
+Dortanias OCLP v0.2.5 hat Unterstützung für ältere WLAN-Karten unter Monterey hinzugefügt. Manche Nutzer haben aber festgestellt, dass sie sich nicht mit Drahtlosnetzwerken verbinden können.
 
 Als Workaround empfehlen wir, dich manuell über die Option „Anderes Netzwerk“ im WLAN-Menü der Menüleiste zu verbinden oder das Netzwerk manuell in den Netzwerkeinstellungen hinzuzufügen.
 
 ## Keine Grafikbeschleunigung
 
-In macOS werden GPU-Treiber oft mit jeder großen Version aus dem System entfernt. Wenn du OCLP v0.4.4 oder neuer nutzt, solltest du nach dem ersten Booten nach der macOS-Installation zur Installation der Root-Volume-Patches aufgefordert worden sein. Falls du das manuell erledigen musst, kannst du es in der Patcher-App tun. Nach dem Neustart sind die Beschleunigung sowie bei Laptops die Helligkeitssteuerung wieder aktiv.
+In macOS werden GPU-Treiber oft mit jeder großen Version aus dem System entfernt. Mit BridgePatcher (wie schon mit Dortanias OCLP v0.4.4 und neuer) solltest du nach dem ersten Booten nach der macOS-Installation zur Installation der Root-Volume-Patches aufgefordert worden sein. Falls du das manuell erledigen musst, kannst du es in der Patcher-App tun. Nach dem Neustart sind die Beschleunigung sowie bei Laptops die Helligkeitssteuerung wieder aktiv.
 
 Weitere Informationen findest du unter [Post-Install-Volume-Patches anwenden](POST-INSTALL.md#post-install-volume-patches-anwenden).
 
@@ -208,7 +208,7 @@ Alternativ kannst du vor dem Update unter Allgemein -> Teilen die Option „Entf
 Verwende folgende Befehle:
 
 1. `ssh username@lan-ip-address` – Verbindet per SSH; ersetze Benutzername und IP-Adresse durch die des Systems
-2. `/Applications/OpenCore-Patcher.app/Contents/MacOS/OpenCore-Patcher --patch_sys_vol` – Installiert die Root-Patches über die Kommandozeile
+2. `/Applications/BridgePatcher.app/Contents/MacOS/BridgePatcher --patch_sys_vol` – Installiert die Root-Patches über die Kommandozeile
 3. `sudo reboot`.
 
 Weitere Informationen findest du hier:

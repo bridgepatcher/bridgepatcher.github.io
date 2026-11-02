@@ -54,10 +54,13 @@ jobs:
           python-version: "3.12"
 
       # Same tools as license-guard.yml, so the site goes offline for exactly the same
-      # findings (numpy: artwork inside images, tesseract: Dortania's app name in images).
-      - name: Install Pillow, numpy and tesseract
+      # findings (numpy: artwork inside images, OpenCV: Dortania's app/button and drive icons
+      # inside screenshots, tesseract: Dortania's app name in images). Without OpenCV the icon
+      # check was silently skipped here, so the site could be published with findings that the
+      # License Guard workflow reports as violations.
+      - name: Install Pillow, numpy, OpenCV and tesseract
         run: |
-          python -m pip install --disable-pip-version-check "pillow==11.3.0" "numpy==2.2.6"
+          python -m pip install --disable-pip-version-check "pillow==11.3.0" "numpy==2.2.6" "opencv-python-headless==4.11.0.86"
           sudo apt-get update -qq
           sudo apt-get install -y -qq --no-install-recommends tesseract-ocr tesseract-ocr-eng
 

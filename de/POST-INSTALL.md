@@ -135,9 +135,9 @@ Wenn du den Migrationsassistenten nutzen musst, um Daten auf deine neue macOS-In
 
 :::
 
-| Automatische Installationsaufforderung | Status | Liste der Patches | Patchen abgeschlossen |
-| :--- | :--- | :--- | :--- |
-| ![](../images/OCLP-GUI-root-patch-update.png) | ![](../images/OCLP-GUI-Root-Patch-Status.png) | ![](../images/OCLP-GUI-Root-Patch.png) | ![](../images/OCLP-GUI-Root-Patch-Finished.png) |
+| Automatische Installationsaufforderung | Patchen abgeschlossen |
+| :--- | :--- |
+| ![](../images/OCLP-GUI-root-patch-update.png) | ![](../images/OCLP-GUI-Root-Patch-Finished.png) |
 
 Du kannst Root-Patches in der App auch manuell installieren und wieder entfernen.
 

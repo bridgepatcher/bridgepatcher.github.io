@@ -25,7 +25,7 @@ For those unfamiliar with what is considered a non-Metal GPU, see the chart in [
 
 ## No Brightness Control
 
-With OCLP v0.0.22, we've added support for brightness control on many models. However, some users may have noticed that their brightness keys do not work.
+Dortania's OCLP v0.0.22 added support for brightness control on many models. However, some users may have noticed that their brightness keys do not work.
 
 As a work-around, we recommend users try out the below app:
 
@@ -33,13 +33,13 @@ As a work-around, we recommend users try out the below app:
 
 ## Cannot connect Wi-Fi on Monterey with legacy cards
 
-With OCLP v0.2.5, we've added support for legacy Wi-Fi on Monterey. However, some users may have noticed that they can't connect to wireless networks.
+Dortania's OCLP v0.2.5 added support for legacy Wi-Fi on Monterey. However, some users may have noticed that they can't connect to wireless networks.
 
 To work-around this, we recommend that users manually connect using the "Other" option in the Wi-Fi menu bar or manually adding the network in the "Network" preference pane.
 
 ## No Graphics Acceleration
 
-In macOS, GPU drivers are often dropped from the OS with each major release of it. If you're using OCLP v0.4.4 or newer, you should have been prompted to install Root Volume patches after the first boot from installation of macOS. If you need to do this manually, you can do so within the patcher app. Once rebooted, acceleration will be re-enabled as well as brightness control for laptops. 
+In macOS, GPU drivers are often dropped from the OS with each major release of it. With BridgePatcher (as with Dortania's OCLP v0.4.4 and newer), you should have been prompted to install Root Volume patches after the first boot from installation of macOS. If you need to do this manually, you can do so within the patcher app. Once rebooted, acceleration will be re-enabled as well as brightness control for laptops. 
 
 See [Applying Post Install Volume Patches](POST-INSTALL.md#applying-post-install-volume-patches) for more information. 
 
@@ -208,7 +208,7 @@ Alternative way for updates is making sure to enable "Remote Login" in General -
 Use the following commands:
 
 1. `ssh username@lan-ip-address` - Connects via SSH, change username and IP address to the system's
-2. `/Applications/OpenCore-Patcher.app/Contents/MacOS/OpenCore-Patcher --patch_sys_vol` - Installs root patches via CLI
+2. `/Applications/BridgePatcher.app/Contents/MacOS/BridgePatcher --patch_sys_vol` - Installs root patches via CLI
 3. `sudo reboot`.
 
 More information can be found here:
