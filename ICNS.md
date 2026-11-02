@@ -93,6 +93,8 @@ Head to `EFI/OC/Resources/Image/` on your drive and you'll see all the custom ic
 
 ![](./images/background-moved.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with folder, user and Mac names changed.*
+
 Now reboot and you should see your updated icon(s)!
 
 ### Updating Mac Boot Picker icons
@@ -100,5 +102,7 @@ Now reboot and you should see your updated icon(s)!
 Updating the Mac Boot Picker icons is actually quite simple. On the root of your drive, simply drop the icon into the root of the drive with the name `.VolumeIcon.icns`
 
 ![](./images/mac-icns-drive.png)
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with folder and user names changed.*
 
 Now reboot and you'll see the new icon!
