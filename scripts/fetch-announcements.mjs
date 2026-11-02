@@ -41,7 +41,7 @@ const OUT_DISCUSSIONS_FEED = path.join(ROOT, 'public', 'discussions.xml')
 const OUT_ISSUES_JSON = path.join(ROOT, '.vitepress', 'issues.json')
 const OUT_ISSUES_FEED = path.join(ROOT, 'public', 'issues.xml')
 
-const REPO = process.env.ANNOUNCEMENTS_REPO || 'oclp-t2/BridgePatcher'
+const REPO = process.env.ANNOUNCEMENTS_REPO || 'bridgepatcher/BridgePatcher'
 const CATEGORY = process.env.ANNOUNCEMENTS_CATEGORY || 'announcements'
 const LIMIT = Number(process.env.ANNOUNCEMENTS_LIMIT || 100)
 // Discussions of all categories are fetched in one go and split afterwards.
@@ -50,7 +50,7 @@ const DISCUSSIONS_LIMIT = Number(process.env.DISCUSSIONS_LIMIT || 300)
 const MAINTAINER_ROLES = new Set(['OWNER', 'MEMBER', 'COLLABORATOR'])
 const TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN
 
-const SITE_URL = 'https://oclp-t2.github.io/'
+const SITE_URL = 'https://bridgepatcher.github.io/'
 const SITE_TITLE = 'BridgePatcher'
 
 const [OWNER, NAME] = REPO.split('/')

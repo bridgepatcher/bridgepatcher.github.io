@@ -27,7 +27,7 @@ Open the BridgePatcher application and go into the Post Install Root Patch menu,
 
 ### Uninstalling the application
 
-To uninstall the BridgePatcher application including LaunchAgent and PrivilegedHelperTool, download the uninstaller package from [the releases page.](https://github.com/oclp-t2/BridgePatcher/releases)
+To uninstall the BridgePatcher application including LaunchAgent and PrivilegedHelperTool, download the uninstaller package from [the releases page.](https://github.com/bridgepatcher/BridgePatcher/releases)
 
 ### Uninstalling the bootloader
 

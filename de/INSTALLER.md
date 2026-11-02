@@ -11,7 +11,7 @@ Bevor du fortfährst, lies bitte die Anforderungen an die Anwendung und an die E
 
 Zuerst brauchst du die App:
 
-* [BridgePatcher Release-Apps](https://github.com/oclp-t2/BridgePatcher/releases)
+* [BridgePatcher Release-Apps](https://github.com/bridgepatcher/BridgePatcher/releases)
 
 Öffne die App nach dem Herunterladen, und du solltest vom Hauptmenü begrüßt werden.
 

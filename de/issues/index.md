@@ -10,7 +10,7 @@ next: false
 # Issues
 
 Alle offenen Issues von BridgePatcher, automatisch gespiegelt aus den
-[GitHub Issues](https://github.com/oclp-t2/BridgePatcher/issues):
+[GitHub Issues](https://github.com/bridgepatcher/BridgePatcher/issues):
 angeheftete zuerst, danach die neuesten. Um zu kommentieren oder ein neues Problem zu melden, nutze GitHub.
 
 Die Beiträge selbst werden so angezeigt, wie sie auf GitHub verfasst wurden (meist auf Englisch).

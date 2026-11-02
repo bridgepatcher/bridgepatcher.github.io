@@ -105,20 +105,9 @@ KNOWN_ART = {
             "40043b607cc1e0f0e31ccb4cc9acdc8cdc8cc9accb4cc31cc0f87cc138004004",
         ],
     },
-    # Apple's macOS wallpapers with the "macOS <name>" wordmark, as used for the
-    # release banners in Dortania's docs (Monterey ... Tahoe).
-    "apple-macos-wallpaper-banner": {
-        "name": "Apple's macOS wallpaper / release banner",
-        "holder": "Apple",
-        "hashes": [
-            "09de09de09fc09fc08dc04dc04bc04bc00bc803c82fce27df01d727d787d387f",  # Monterey
-            "c7cfe7cf67ce674e74ceb4ceb74eb2ce9aac59bc1b3409748fcc8feccfecc7ed",  # Ventura
-            "f48ffe46fa46ff43fcc2fcc4bd6472e0d370d074b2b6a2b6ef7e7b3f533f579f",  # Sonoma
-            "d03fc03fe03ee03ee01ec09fc01fc21fc03d813f813f003e001e000e000f000f",  # Sequoia
-            "383f703fd03fb03fa01fe01fc81fc81fd09f080f040f480f008f000700071007",  # Sequoia (crop)
-            "0dbb05f90bfc89c767cf971f973f873ecc3eb05ce05cc17cc7598ee91ff81ff2",  # Tahoe
-        ],
-    },
+    # Apple's macOS wallpaper release banners ("macOS <name>" on the release wallpaper) are NOT
+    # listed here on purpose: the maintainer decided to keep them on the drop pages, as Dortania
+    # and most other sites do, to identify the macOS version.
 }
 # Hamming distance (of 256 bits). Measured on this repo: copies 0-17, icons that embed
 # the logo 39-51, unrelated icons 59+.
@@ -869,8 +858,8 @@ def main():
             "the license text in redistributed source (e.g. BSD 3-Clause, clause 1). Adding your own "
             "copyright line *alongside* the existing ones is fine; replacing or removing them is not. "
             "Year bumps like `2020-2024` → `2020-2026` are ignored.", "",
-            "Artwork such as Dortania's OpenCore Legacy Patcher icon, Apple's System Settings icon or Apple's "
-            "macOS wallpapers is not covered by the code license and must not be shipped or hotlinked; use your "
+            "Artwork such as Dortania's OpenCore Legacy Patcher icon or Apple's System Settings icon "
+            "is not covered by the code license and must not be shipped or hotlinked; use your "
             "own artwork. Screenshots and banners must not show Dortania's app name or icons either (including "
             "the main-menu button icons such as \"Build and Install OpenCore\").", "",
             "The licence also forbids using the upstream name to endorse or promote the fork, so pages, titles and "

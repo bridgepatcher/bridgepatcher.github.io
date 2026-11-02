@@ -4,7 +4,7 @@ Jetzt, wo wir einen macOS-Installer haben, erstellen wir unsere OpenCore-Konfigu
 
 Falls du BridgePatcher noch nicht heruntergeladen hast, hol das jetzt nach:
 
-* [BridgePatcher Releases](https://github.com/oclp-t2/BridgePatcher/releases)
+* [BridgePatcher Releases](https://github.com/bridgepatcher/BridgePatcher/releases)
 
 Starte als Nächstes die `BridgePatcher.app`.
 

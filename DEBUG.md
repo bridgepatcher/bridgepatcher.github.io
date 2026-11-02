@@ -1,6 +1,6 @@
 # How to debug with OpenCore
 
-For those who've hit an odd bug and are unsure if it's user error or within the patcher, we recommend asking in our [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions) for help.
+For those who've hit an odd bug and are unsure if it's user error or within the patcher, we recommend asking in our [GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions) for help.
 
 ## Debugging yourself
 
@@ -43,7 +43,7 @@ From there, you'll have a log on your desktop.
 
 ## Filing an issue with us
 
-Now that you have proper logs, you can now [file issues with us](https://github.com/oclp-t2/BridgePatcher/issues). This is a reminder to include the following info:
+Now that you have proper logs, you can now [file issues with us](https://github.com/bridgepatcher/BridgePatcher/issues). This is a reminder to include the following info:
 
 * Model that you're patching for (ie. MacBookPro10,1)
 * Target OS (ie. macOS 11.2.3)

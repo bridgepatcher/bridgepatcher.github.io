@@ -9,7 +9,7 @@ Beim Öffnen prüft die App, ob eine neuere Version verfügbar ist. Wird ein Upd
 * Du kannst auch jederzeit über die Schaltfläche `Check for updates` in den Einstellungen nach Updates suchen.
 * Automatische Updates sind deaktiviert, wenn die App aus dem Quellcode oder als Spezial-Build ausgeführt wird.
 
-[Die neueste Version kannst du auch hier manuell herunterladen.](https://github.com/oclp-t2/BridgePatcher/releases)
+[Die neueste Version kannst du auch hier manuell herunterladen.](https://github.com/bridgepatcher/BridgePatcher/releases)
 
 Nach dem Update fragt die App, ob du OpenCore und die Root-Patches aktualisieren möchtest.
 

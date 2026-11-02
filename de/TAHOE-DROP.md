@@ -6,7 +6,7 @@
 
 macOS 26 Tahoe ist das letzte große macOS-Release, das Apple für Intel-Macs ausliefert. Es lässt eine große Zahl von Intel-Macs fallen, die meisten davon mit T2-Sicherheitschip – deshalb ist es der Hauptfokus von BridgePatcher.
 
-Die Unterstützung für macOS Tahoe in BridgePatcher befindet sich derzeit im **Alpha**-Stadium. Rechne mit Fehlern und melde sie bitte in den [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions).
+Die Unterstützung für macOS Tahoe in BridgePatcher befindet sich derzeit im **Alpha**-Stadium. Rechne mit Fehlern und melde sie bitte in den [GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions).
 
 
 ## Neu fallen gelassene Hardware
@@ -62,7 +62,7 @@ panic(cpu 0 caller 0xffffff801cd12509): "AppleSEPManager panic for "AppleKeyStor
 
 Das verbleibende Problem: Die macOS-Installation endet derzeit vor dem Abschluss mit „Failed to install a software update“. Wir können noch nicht abschätzen, wann T2-Installationen vollständig funktionieren werden.
 
-Wenn du beim Testen helfen oder Ergebnisse teilen möchtest, nutze bitte die [GitHub Discussions](https://github.com/oclp-t2/BridgePatcher/discussions).
+Wenn du beim Testen helfen oder Ergebnisse teilen möchtest, nutze bitte die [GitHub Discussions](https://github.com/bridgepatcher/BridgePatcher/discussions).
 
 ### Audiounterstützung
 

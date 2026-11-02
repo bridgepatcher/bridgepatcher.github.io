@@ -27,7 +27,7 @@ Die manuelle Deinstallation von BridgePatcher besteht aus drei Teilen: der Anwen
 
 ### Die Anwendung deinstallieren
 
-Um die BridgePatcher-Anwendung einschließlich LaunchAgent und PrivilegedHelperTool zu deinstallieren, lade das Deinstallationspaket von [der Releases-Seite](https://github.com/oclp-t2/BridgePatcher/releases) herunter.
+Um die BridgePatcher-Anwendung einschließlich LaunchAgent und PrivilegedHelperTool zu deinstallieren, lade das Deinstallationspaket von [der Releases-Seite](https://github.com/bridgepatcher/BridgePatcher/releases) herunter.
 
 ### Den Bootloader deinstallieren
 

@@ -75,7 +75,7 @@ const TRANSLATED_PAGES = [...Object.keys(titles), 'TROUBLESHOOTING']
 // Public URL of the deployed site (GitHub Pages user site at the domain root).
 // Used for the sitemap, canonical links and Open Graph tags so search engines
 // and link previews always see absolute, stable URLs.
-const SITE_URL = 'https://oclp-t2.github.io/'
+const SITE_URL = 'https://bridgepatcher.github.io/'
 const SITE_TITLE = 'BridgePatcher'
 const SITE_DESCRIPTION = 'Guide to put macOS on unsupported devices'
 const SITE_DESCRIPTION_DE = 'Anleitung, um macOS auf nicht unterstützte Geräte zu bringen'
@@ -397,11 +397,11 @@ export default defineConfig({
                     { text: 'Issues', link: '/de/issues/', activeMatch: '^/de/issues/' },
                 ],
                 socialLinks: [
-                    { icon: 'github', link: 'https://github.com/oclp-t2/BridgePatcher/' },
+                    { icon: 'github', link: 'https://github.com/bridgepatcher/BridgePatcher/' },
                     { icon: { svg: RSS_ICON }, link: `${SITE_URL}announcements.xml`, ariaLabel: 'RSS-Feed der Ankündigungen' },
                 ],
                 editLink: {
-                    pattern: 'https://github.com/oclp-t2/oclp-t2.github.io/edit/main/:path',
+                    pattern: 'https://github.com/bridgepatcher/bridgepatcher.github.io/edit/main/:path',
                     text: 'Hilf uns, diese Seite zu verbessern!',
                 },
                 footer: {
@@ -488,11 +488,11 @@ export default defineConfig({
             { text: 'Issues', link: '/issues/', activeMatch: '^/issues/' },
         ],
         socialLinks: [
-            { icon: 'github', link: 'https://github.com/oclp-t2/BridgePatcher/' },
+            { icon: 'github', link: 'https://github.com/bridgepatcher/BridgePatcher/' },
             { icon: { svg: RSS_ICON }, link: `${SITE_URL}announcements.xml`, ariaLabel: 'Announcements RSS feed' },
         ],
         editLink: {
-            pattern: 'https://github.com/oclp-t2/oclp-t2.github.io/edit/main/:path',
+            pattern: 'https://github.com/bridgepatcher/bridgepatcher.github.io/edit/main/:path',
             text: 'Help us improve this page!',
         },
         search: {
