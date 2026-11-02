@@ -382,7 +382,7 @@ def find_embedded(data, known_bits):
 IMG_NAME_RE = re.compile(r"(?i)\bOpen\s?Core\s+Legacy\s+Patcher\b")
 IMG_NAME_WRAP = (re.compile(r"(?i)\bOpen\s?Core(\s+Legacy)?\s*$"), re.compile(r"(?i)^\s*(Legacy\s+)?Patcher\b"))
 IMG_COPYRIGHT_RE = re.compile(r"(?i)(©|\(c\))\s*\d|copyright|contributors")
-OCR_VERSION = 2   # bump to invalidate cached OCR results after changing the OCR settings
+OCR_VERSION = 3   # bump to invalidate cached OCR results after changing the OCR settings
 
 
 def ocr_lines(data):
@@ -410,6 +410,17 @@ def ocr_lines(data):
         images.append(g.point(lambda v: 0 if v > median + 25 else 255))
     elif median > 160:   # light UI: anything clearly darker than the background is text
         images.append(g.point(lambda v: 0 if v < median - 40 else 255))
+    # Local-contrast passes: text is what is clearly darker (or brighter) than its own surroundings,
+    # not than the whole image. Needed for dim text on a grey band, e.g. the title of an inactive
+    # window ("OpenCore Legacy Patcher T2 ..." in grey ~136 on a ~202 title bar in a mostly white
+    # screenshot): tesseract's global threshold and the median pass above both turn the whole bar
+    # black and lose the title.
+    import numpy as np
+    from PIL import ImageFilter
+    a = np.asarray(g, np.int16)
+    local = np.asarray(g.filter(ImageFilter.BoxBlur(12 * s)), np.int16)
+    images.append(Image.fromarray(np.where(a < local - 20, 0, 255).astype(np.uint8)))   # dark on light
+    images.append(Image.fromarray(np.where(a > local + 20, 0, 255).astype(np.uint8)))   # light on dark
     passes = []
     for img in images:
         buf = io.BytesIO()
@@ -447,7 +458,9 @@ def find_old_name_in_image(passes):
 # (NVRAM keys OCLP-Version/-Settings/..., the OCLP-Installer volume) - a screenshot showing those is accurate.
 IMG_FOLDER_RE = re.compile(r"(?i)(?<![\w/.-])Open\s?Core[-_]Legacy(?:[-_][A-Za-z]*)?(?![\w-])(?!\.[A-Za-z])")
 IMG_OCLP_TOKEN_RE = re.compile(r"(?<![\w/.-])((?:[A-Za-z0-9]+[-_\u2013\u2014])*OCLP(?:[-_\u2013\u2014][A-Za-z0-9]+)*)(?![\w/-])")
-IMG_OCLP_OK_RE = re.compile(r"^OCLP-(?:Version|Settings|Model|Spoofed-\w+|Installer|Helper|MOD)$")
+# "Install(er)" also matches an OCR read that drops the last letter(s) at the end of a line
+# ("... with name OCLP-Installe").
+IMG_OCLP_OK_RE = re.compile(r"^OCLP-(?:Version|Settings|Model|Spoofed-\w+|Install(?:er?)?|Helper|MOD)$")
 
 
 def find_upstream_folder_in_image(passes):
