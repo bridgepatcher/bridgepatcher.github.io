@@ -93,6 +93,8 @@ Wähle das Laufwerk aus, auf dem du OpenCore installiert hast, und hänge es ein
 
 ![](../images/background-moved.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Ordner-, Benutzer- und Mac-Namen geändert.*
+
 Starte jetzt neu, und du solltest deine aktualisierten Symbole sehen!
 
 ### Mac-Bootpicker-Symbole aktualisieren

@@ -93,6 +93,8 @@ Head to `EFI/OC/Resources/Image/` on your drive and you'll see all the custom ic
 
 ![](./images/background-moved.png)
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with folder, user and Mac names changed.*
+
 Now reboot and you should see your updated icon(s)!
 
 ### Updating Mac Boot Picker icons
