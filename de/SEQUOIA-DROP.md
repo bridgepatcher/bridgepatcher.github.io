@@ -6,6 +6,10 @@ Ein neues Jahr, ein neues Release.
 
 Diesmal hat Apple überraschend wenige Macs fallen gelassen. Mit der Veröffentlichung von Dortanias OpenCore Legacy Patcher 2.0.0 wurde erste Unterstützung für macOS Sequoia implementiert.
 
+::: info
+BridgePatcher basiert auf Dortanias OpenCore Legacy Patcher. Versionsnummern wie 2.0.0 auf dieser Seite sind Versionen von Dortanias OpenCore Legacy Patcher, keine BridgePatcher-Versionen. Die eigenen Versionen von BridgePatcher beginnen bei 3.0.0 Alpha 4.1.
+:::
+
 
 ## Neu fallen gelassene Hardware
 

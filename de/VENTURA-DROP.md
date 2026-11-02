@@ -4,6 +4,10 @@
 
 Mit der Veröffentlichung von Dortanias OpenCore Legacy Patcher v0.5.0 und neuer wurde erste Unterstützung für macOS Ventura auf den meisten Metal-fähigen Macs implementiert. Diese Seite informiert über aktuelle Probleme und wird aktualisiert, sobald neue Patch-Sets entwickelt und in den Patcher aufgenommen werden.
 
+::: info
+BridgePatcher basiert auf Dortanias OpenCore Legacy Patcher. Versionsnummern wie v0.5.0 und v0.6.0 auf dieser Seite sind Versionen von Dortanias OpenCore Legacy Patcher, keine BridgePatcher-Versionen. Die eigenen Versionen von BridgePatcher beginnen bei 3.0.0 Alpha 4.1.
+:::
+
 ## Neu fallen gelassene Hardware
 
 Mit Ventura wurde eine große Menge Intel-Hardware fallen gelassen, sodass auf den folgenden Modellen (zusätzlich zu den bereits zuvor entfernten) BridgePatcher nötig ist:

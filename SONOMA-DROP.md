@@ -6,6 +6,10 @@
 
 Apple has yet again dropped a bunch of models, continuing their journey on discontinuing Intel Macs. With the release of Dortania's OpenCore Legacy Patcher 1.0.0, early support for macOS Sonoma has been implemented.
 
+::: info
+BridgePatcher is based on Dortania's OpenCore Legacy Patcher. Version numbers such as 1.0.0 on this page are releases of Dortania's OpenCore Legacy Patcher, not BridgePatcher versions. BridgePatcher's own versions start at 3.0.0 alpha 4.1.
+:::
+
 ## Newly dropped hardware
 
 * MacBook10,1:       MacBook (Retina, 12-inch, 2017)
