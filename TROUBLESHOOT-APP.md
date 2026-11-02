@@ -25,6 +25,8 @@ In some cases, a following error saying "The bless of the installer disk failed"
              <img src="./images/Error-No-Permission-To-Save.png" alt="NoPermissionToSave" width="600" />
 </div>
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 
 To resolve this, you may try adding Full Disk Access permission for BridgePatcher. To add it, first go to the settings
 
@@ -57,6 +59,8 @@ There are two ways to to try and resolve this.
 <div align="left">
              <img src="./images/wipe-disk.png" alt="Wipe disk" width="800" />
 </div>
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 ## "Unable to resolve dependencies, error code 71" when root patching
 

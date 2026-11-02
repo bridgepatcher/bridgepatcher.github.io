@@ -193,6 +193,8 @@ Applicable models include:
              <img src="./images/usb11-chart.png" alt="USB1.1 chart" width="800" />
 </div>
 
+*Chart: Dortania's OpenCore Legacy Patcher documentation.*
+
 ::: warning Note
 
 In macOS Sonoma, this seems to have been further weakened and some hubs may not be functional. If you encounter this issue, try another hub.
@@ -228,6 +230,8 @@ To prevent this from happening in the future, with T1 systems only wipe the volu
 <div align="left">
              <img src="./images/wipe-volume.png" alt="WipeVolume" width="800" />
 </div>
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 
 
@@ -314,7 +318,7 @@ A somewhat strange issue on Intel HD3000-based Macs, on 3rd party displays somet
 
 | Default Color Profile | Display/Display P3 Profile |
 | :---                  | :---                       |
-| ![](./images/HD3000-Default-Colors.png) | ![](./images/HD3000-Display-Colors.png) |
+| ![](./images/HD3000-Default-Colors.png)<br>*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with the Mac name and the app icon in the Dock changed.* | ![](./images/HD3000-Display-Colors.png)<br>*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with the Mac name and the app icon in the Dock changed.* |
 
 ## Cannot Pair Bluetooth Devices
 

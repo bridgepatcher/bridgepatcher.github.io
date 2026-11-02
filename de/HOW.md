@@ -7,3 +7,5 @@ BridgePatcher selbst ist eigentlich ein recht „dummes“ Programm. Im Wesentli
 Um besser zu verstehen, wie OpenCore ältere Macs so nativ wiederbeleben kann, schauen wir uns an, *wie* OpenCore mit deinem Mac zusammenarbeitet:
 
 ![](../images/oc-explained.png)
+
+*Diagramm: Dokumentation von Dortanias OpenCore Legacy Patcher.*

@@ -16,7 +16,7 @@ Wenn du alle Anforderungen erfüllst, kannst du die universelle Steuerung in den
 
 | Display-Einstellungen | Einstellungen der universellen Steuerung |
 | :--- | :--- |
-| ![](../images/UC-enable-1.png) | ![Einstellungen der universellen Steuerung](../images/UC-enable-2.png) |
+| ![](../images/UC-enable-1.png)<br>*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.* | ![Einstellungen der universellen Steuerung](../images/UC-enable-2.png)<br>*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.* |
 
 
 Die meisten Mac-Modelle ab 2011 sollten ohne Weiteres funktionieren. Ältere Macs wie die MacBook Pros von 2008 bis 2011 benötigen jedoch eine neuere WLAN-/Bluetooth-Karte. Mehr dazu im [Abschnitt zu den Anforderungen.](#anforderungen-fur-die-universelle-steuerung)

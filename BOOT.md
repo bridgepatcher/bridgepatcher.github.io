@@ -11,6 +11,8 @@ Reboot the machine while holding `⌥` to select the EFI Boot entry with the Ope
              <img src="./images/efi-boot.png" alt="EFI boot" width="800" />
 </div>
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with the boot picker icon changed to BridgePatcher's.*
+
 ::: details Note for Mac Pros/Xserves/iMacs with unflashed GPUs
 
 (Adapted from the [OpenCore on the Mac Pro guide](https://forums.macrumors.com/threads/opencore-on-the-mac-pro.2207814/))
@@ -35,6 +37,8 @@ The command should produce a list of drives installed in your system:
              <img src="./images/Unflashed-Boot-1.png" alt="Unflashed boot" width="800" />
 </div>
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 Keep track of the drive with the BridgePatcher install. You will need the drive identifer for later.
 
 Now you'll want to mount the EFI partition (where BridgePatcher is installed, though it may differ if you've installed BridgePatcher to a FAT-32 volume).
@@ -48,6 +52,8 @@ diskutil mount diskXs1
              <img src="./images/Unflashed-Boot-2.png" alt="Unflashed boot 2" width="800" />
 </div>
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 If everything is correct, the EFI partion should be mounted.
 
 Now you'll want to use the `bless` command to set the default boot device:
@@ -59,6 +65,8 @@ Once the command is run, it should produce no output.
 <div align="left">
              <img src="./images/Unflashed-Boot-3.png" alt="Unflashed boot 3" width="800" />
 </div>
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 If the command produces an output, ensure that you've typed it in correctly.
 
@@ -73,6 +81,8 @@ Now that you've loaded OpenCore, "select Install macOS":
              <img src="./images/oc-boot.png" alt="OpenCore boot" width="800" />
 </div>
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 
 You will soon reach the installer screen! If you enabled verbose mode when building BridgePatcher, a lot of text will run across the screen. From there, it's just like any normal macOS install. For an example of how the boot process looks, see the following video:
 
@@ -85,6 +95,8 @@ You will soon reach the installer screen! If you enabled verbose mode when build
              <img src="./images/wipe-disk.png" alt="Wipe disk" width="800" />
 </div>
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
+
 ::: warning Warning for T1 Macs
 
 When installing macOS Sonoma or newer on a T1 system (2016-2017), full disk wipe will remove T1 functionality (touchbar etc). Therefore when installing, only wipe the volume containing the operating system.  
@@ -92,6 +104,8 @@ When installing macOS Sonoma or newer on a T1 system (2016-2017), full disk wipe
 <div align="left">
              <img src="./images/wipe-volume.png" alt="WipeVolume" width="800" />
 </div>
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 [More info here](TROUBLESHOOT-HARDWARE.md#no-t1-functionality-after-installing-sonoma-or-newer)
 
@@ -103,6 +117,8 @@ If your Mac is looping back into the beginning of the setup after the first rebo
 <div align="left">
              <img src="./images/oclp-stuck-firstreboot.png" alt="Stuck on first reboot" width="800" />
 </div>
+
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*
 
 
 ::: warning

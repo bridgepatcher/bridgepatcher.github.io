@@ -193,6 +193,8 @@ Betroffen sind unter anderem diese Modelle:
              <img src="../images/usb11-chart.png" alt="USB-1.1-Übersicht" width="800" />
 </div>
 
+*Grafik: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 ::: warning Hinweis
 
 Unter macOS Sonoma scheint sich das weiter verschlechtert zu haben, und manche Hubs funktionieren möglicherweise nicht. Falls das bei dir auftritt, probiere einen anderen Hub.
@@ -228,6 +230,8 @@ Damit das künftig nicht passiert, lösche bei T1-Systemen nur das Volume, das d
 <div align="left">
              <img src="../images/wipe-volume.png" alt="Volume löschen" width="800" />
 </div>
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
 
 
 
@@ -314,7 +318,7 @@ Ein etwas merkwürdiges Problem auf Macs mit Intel HD3000: Auf Bildschirmen von 
 
 | Standard-Farbprofil | Profil Display/Display P3 |
 | :---                | :---                      |
-| ![](../images/HD3000-Default-Colors.png) | ![](../images/HD3000-Display-Colors.png) |
+| ![](../images/HD3000-Default-Colors.png)<br>*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Mac-Name und App-Symbol im Dock geändert.* | ![](../images/HD3000-Display-Colors.png)<br>*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Mac-Name und App-Symbol im Dock geändert.* |
 
 ## Bluetooth-Geräte lassen sich nicht koppeln
 

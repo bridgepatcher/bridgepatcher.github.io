@@ -16,7 +16,7 @@ If you meet all the requirements, in most cases you can go to Display Preference
 
 | Display Preferences | Universal Control settings |
 | :--- | :--- |
-| ![](./images/UC-enable-1.png) | ![BridgePatcher GUI Build Finished](./images/UC-enable-2.png) |
+| ![](./images/UC-enable-1.png)<br>*Screenshot: Dortania's OpenCore Legacy Patcher documentation.* | ![BridgePatcher GUI Build Finished](./images/UC-enable-2.png)<br>*Screenshot: Dortania's OpenCore Legacy Patcher documentation.* |
 
 
 Most Mac models from 2011 and above should work out of the box. However, older Macs like the 2008-2011 MacBook Pros require upgrading the Wi-Fi/Bluetooth card to a newer model. More info in the [requirements section.](#requirements-for-universal-control)

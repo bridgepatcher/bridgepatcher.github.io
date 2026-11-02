@@ -2,6 +2,8 @@
 
 ![](../images/macos-monterey.png)
 
+*Banner: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Mit Dortanias OpenCore Legacy Patcher v0.1.7 und neuer hat Dortania eine Beta-Unterstützung für macOS Monterey implementiert. Beachte bitte, dass Apple mit diesem Release viel Hardware fallen gelassen und zudem viele von Dortanias bisherigen Patch-Sets unbrauchbar gemacht hat. Diese Seite informiert über aktuelle Probleme und wird aktualisiert, sobald neue Patch-Sets entwickelt und in den Patcher aufgenommen werden.
 
 ## Neu fallen gelassene Hardware

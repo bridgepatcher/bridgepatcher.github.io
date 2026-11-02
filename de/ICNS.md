@@ -62,9 +62,13 @@ Um Symbole für ältere Macs zu erzeugen, brauchst du Folgendes:
 
 ![](../images/graphics-download.png)
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Öffne nach dem Download das Disk-Image, dort findest du Icon Composer.app:
 
 ![Graphics öffnen](../images/graphics-open.png)
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
 
 Starte jetzt die App und ziehe die Bilder einfach in die jeweiligen Bereiche:
 
@@ -81,6 +85,8 @@ Stelle vor der Installation sicher, dass Vault beim Erstellen von OpenCore deakt
 Nachdem du sichergestellt hast, dass du OpenCore gefahrlos bearbeiten kannst, musst du das Laufwerk einhängen, auf dem OpenCore liegt. Lade dazu [MountEFI](https://github.com/corpnewt/MountEFI) herunter und starte es:
 
 ![](../images/mountefi.png)
+
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher, Benutzername geändert.*
 
 Wähle das Laufwerk aus, auf dem du OpenCore installiert hast, und hänge es ein.
 

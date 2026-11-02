@@ -23,6 +23,8 @@ Time Machine funktioniert unter Sequoia möglicherweise selbst nach dem Entferne
              <img src="../images/TimeMachine-Transfer-Uncheck.png" alt="Andere Dateien und Ordner deaktivieren" width="600" />
 </div>
 
+*Screenshot: Dokumentation von Dortanias OpenCore Legacy Patcher.*
+
 Jetzt sollten dein Benutzerprofil, deine Programme und Einstellungen wiederhergestellt sein.
 
 

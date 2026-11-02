@@ -25,6 +25,8 @@ With "Enable OpenCore DEBUG" set, on every boot there will be a .txt file genera
              <img src="./images/mountefi.png" alt="Mount EFI" width="600" />
 </div>
 
+*Screenshot: Dortania's OpenCore Legacy Patcher documentation, with the user name changed.*
+
 Once you've mounted the EFI Partition of the drive you have macOS on, you should see some nice logs:
 
 <div align="left">

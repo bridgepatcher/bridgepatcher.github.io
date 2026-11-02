@@ -39,6 +39,6 @@ Now the patcher will start the installer flashing!
 
 | Flashing | Success Prompt | Finished Flashing |
 | :--- | :--- | :--- |
-| ![](./images/OCLP-GUI-Installer-Flashing-Process.png) | ![](./images/OCLP-GUI-Installer-Sucess-Prompt.png) | ![](./images/OCLP-GUI-Installer-Finished-Script.png) |
+| ![](./images/OCLP-GUI-Installer-Flashing-Process.png) | ![](./images/OCLP-GUI-Installer-Sucess-Prompt.png)<br>*Screenshot: Dortania's OpenCore Legacy Patcher documentation.* | ![](./images/OCLP-GUI-Installer-Finished-Script.png) |
 
 # Once finished, head to [Building and installing OpenCore](./BUILD.md)
