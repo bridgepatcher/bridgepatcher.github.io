@@ -265,6 +265,20 @@ UPSTREAM_DISCORD_RE = re.compile(
     r"(?i:(?:https?://)?(?:www\.)?(?:discord\.gg/|discord(?:app)?\.com/invite/))(?:"
     + "|".join(map(re.escape, UPSTREAM_DISCORD_CODES)) + r")(?![A-Za-z0-9])")
 
+# Videos by Dortania's author: Mykola Grymalyuk's YouTube video of a Mac booting into the macOS installer
+# with Dortania's OpenCore Legacy Patcher, which BOOT.md embedded as "an example of how the boot process looks".
+# Shown without a credit it passes his Mac and Dortania's app off as BridgePatcher's (licence clause 4), so
+# every page that links or embeds it must disclose it within DISCLOSURE_LINES lines below, e.g.
+# "*Video: Mykola Grymalyuk's (Dortania) boot of OpenCore Legacy Patcher, not BridgePatcher.*". Better: use
+# BridgePatcher's own video. Video IDs are case-sensitive, so the ID is matched exactly; the domain is not.
+UPSTREAM_VIDEO_IDS = ("AN3zsbQV_n4",)
+UPSTREAM_VIDEO_RE = re.compile(
+    r"(?i:(?:https?://)?(?:www\.|m\.)?(?:youtu\.be/|youtube(?:-nocookie)?\.com/"
+    r"(?:embed/|shorts/|live/|v/|watch\?(?:[^\s\"'<>]*?&)?v=)))(?:"
+    + "|".join(map(re.escape, UPSTREAM_VIDEO_IDS)) + r")(?![\w-])")
+VIDEO_DISCLOSURE_RE = re.compile(
+    r"(?i)\bvideo\s*:.{0,160}(?:dortania|mykola|grymalyuk)|(?:dortania|mykola|grymalyuk).{0,160}\bvideo")
+
 # BSD 4-Clause condition 3: "All advertising materials mentioning features or use of this software must
 # display the following acknowledgement". This site is such material (the homepage lists the patcher's
 # features), so the footer - shown on the homepage and every page without a sidebar - must display the
@@ -960,6 +974,19 @@ def scan_artwork(head, add):
                     [f"  line {n}: {show(l)}" for n, l in invites[:5]] + (["  …"] if len(invites) > 5 else []) +
                     ["  Don't send BridgePatcher users to the upstream project's Discord for support.",
                      "  Link our GitHub Discussions (https://github.com/bridgepatcher/BridgePatcher/discussions) instead."])
+            lines = text.splitlines()
+            videos = [(n, l, any(VIDEO_DISCLOSURE_RE.search(x) for x in lines[n - 1:n + DISCLOSURE_LINES]))
+                      for n, l in enumerate(lines, 1) if UPSTREAM_VIDEO_RE.search(l)]
+            hidden = [(n, l) for n, l, ok in videos if not ok]
+            if hidden:
+                add("violation", path, "Mykola Grymalyuk's video shown without disclosure",
+                    [f"  line {n}: {show(l)}" for n, l in hidden[:5]] + (["  …"] if len(hidden) > 5 else []) +
+                    ["  This YouTube video is Mykola Grymalyuk's (Dortania) and shows Dortania's OpenCore Legacy",
+                     "  Patcher, not BridgePatcher. Replace it with BridgePatcher's own video, or credit it below",
+                     "  the embed/link, e.g. \"*Video: Mykola Grymalyuk's (Dortania) OpenCore Legacy Patcher boot.*\""])
+            elif videos:
+                add("info", path, "Mykola Grymalyuk's video, disclosed",
+                    [f"  line {n}" for n, _, _ in videos[:5]])
             # The licence pages themselves name Dortania's project on purpose - they must stay as they are.
             if low.endswith(OLD_NAME_EXT) and not LICENSE_FILE_RE.search(path):
                 old, upstream, legacy_app, abbrev, upstream_app, old_version = [], [], [], [], [], []

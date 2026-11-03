@@ -86,7 +86,7 @@ Nachdem OpenCore geladen ist, wähle „Install macOS“:
 
 Bald erreichst du den Installationsbildschirm! Falls du beim Erstellen von BridgePatcher den Verbose-Modus aktiviert hast, läuft viel Text über den Bildschirm. Ab hier verläuft alles wie bei einer normalen macOS-Installation. Ein Beispiel, wie der Bootvorgang aussieht, zeigt das folgende Video:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/AN3zsbQV_n4?si=VAB9ge7Snpj_GrAE" title="YouTube-Videoplayer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Hn9q1yESdyU?si=oEdgtFcOefzjVRal" title="YouTube-Videoplayer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 **Wichtig:** Wenn du ein brandneues, bisher unbenutztes Laufwerk verwendest, wähle im Festplattendienstprogramm „Darstellung -> Alle Geräte einblenden“ und formatiere das gesamte Laufwerk, indem du den obersten Eintrag in der Seitenleiste auswählst. So vermeidest du, dass später beim Installieren von OpenCore auf das interne Laufwerk die interne EFI-Partition fehlt.
 
