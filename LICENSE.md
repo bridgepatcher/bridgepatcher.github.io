@@ -1,3 +1,11 @@
+# OpenCore Legacy Patcher and BridgePatcher License
+
+BridgePatcher is based on Dortania's OpenCore Legacy Patcher. BridgePatcher, both Dortania's code it is built on and BridgePatcher's own changes, is distributed under the [BSD 4-Clause license in BridgePatcher's repository](https://github.com/bridgepatcher/BridgePatcher/blob/main/LICENSE.txt). It contains Dortania's OpenCore Legacy Patcher license word for word, followed by the terms for BridgePatcher's modifications and a note on third-party components.
+
+This product includes software developed by Dortania and OpenCore Legacy Patcher contributors.
+
+Below is Dortania's original license page for OpenCore Legacy Patcher, unchanged. Its list of third-party components applies to BridgePatcher too.
+
 # OpenCore Legacy Patcher License
 
 This patcher is made of multiple external applications from different people and organizations. See each program for their licensing:

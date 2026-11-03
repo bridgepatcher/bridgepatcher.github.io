@@ -194,7 +194,7 @@ LEGACY_APP_OK_RE = re.compile(
 UPSTREAM_NAME_RE = re.compile(r"(?i)(?<![\w/#.-])Open\s?Core[ \t]+Legacy[ \t]+Patcher(?![\w-])")
 UPSTREAM_NAME_OK_RE = re.compile(
     r"(?i)dortania|©|\(c\)\s*\d|copyright|contributors|mitwirkende"
-    r"|OpenCore Legacy Patcher Licen[sc]e|Lizenz von OpenCore Legacy Patcher"
+    r"|OpenCore Legacy Patcher(?: and BridgePatcher)? Licen[sc]e|Lizenz von OpenCore Legacy Patcher"
     r"|\b(?:based on|fork of|forked from|derived from|basiert auf|Fork von|abgeleitet von)\b")
 OLD_NAME_EXT = (".md", ".markdown", ".html", ".htm", ".vue", ".mts", ".ts", ".js", ".json", ".webmanifest", ".xsl")
 # URLs and Markdown link/image targets are removed before the name rules below are matched:

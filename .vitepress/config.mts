@@ -28,7 +28,7 @@ const titles: Record<string, string> = {
     "ICNS": "Creating custom icons for OpenCore and Mac Boot Picker",
     "WINDOWS": "Installing Windows in UEFI Mode",
     "UNIVERSALCONTROL": "Universal Control on unsupported Macs",
-    "LICENSE": "OpenCore Legacy Patcher License",
+    "LICENSE": "OpenCore Legacy Patcher and BridgePatcher License",
     "TERMS": "BridgePatcher Terminology",
     "HOW": "Boot Process with BridgePatcher",
     "PATCHEXPLAIN": "Explaining the patches in BridgePatcher"
@@ -61,7 +61,7 @@ const titlesDe: Record<string, string> = {
     "ICNS": "Eigene Symbole für OpenCore und den Mac-Bootpicker",
     "WINDOWS": "Windows im UEFI-Modus installieren",
     "UNIVERSALCONTROL": "Universelle Steuerung auf nicht unterstützten Macs",
-    "LICENSE": "Lizenz von OpenCore Legacy Patcher",
+    "LICENSE": "Lizenz von OpenCore Legacy Patcher und BridgePatcher",
     "TERMS": "BridgePatcher-Terminologie",
     "HOW": "Bootvorgang mit BridgePatcher",
     "PATCHEXPLAIN": "Erklärung der Patches in BridgePatcher"
