@@ -45,7 +45,7 @@ Wie du App und Patches aktualisierst, erfährst du unter [OpenCore und Patches a
 
 ## Wo werden die Einstellungen der Oberfläche gespeichert?
 
-In jeder Version von BridgePatcher werden die Einstellungen unter ```/Users/Shared/.com.dortania.opencore-legacy-patcher.plist``` gespeichert. Die App nutzt diese Datei, um Einstellungen über Neustarts und App-Updates hinweg beizubehalten, sodass du sie nicht jedes Mal neu konfigurieren musst. Die Oberfläche wird zurückgesetzt, wenn ein anderes Modell als „Host Model“ ausgewählt ist, da das Erstellen für ein anderes Modell andere Einstellungen erfordert.
+BridgePatcher speichert die Einstellungen unter ```/Users/Shared/.com.bridgepatcher.bridgepatcher.plist``` (Versionen vor der Umbenennung in BridgePatcher nutzten ```/Users/Shared/.com.dortania.opencore-legacy-patcher.plist```; vorhandene Einstellungen werden beim ersten Start übernommen). Die App nutzt diese Datei, um Einstellungen über Neustarts und App-Updates hinweg beizubehalten, sodass du sie nicht jedes Mal neu konfigurieren musst. Die Oberfläche wird zurückgesetzt, wenn ein anderes Modell als „Host Model“ ausgewählt ist, da das Erstellen für ein anderes Modell andere Einstellungen erfordert.
 
 Bei Problemen lösche die Datei und starte die App neu, um die Oberfläche auf die Standardeinstellungen zurückzusetzen. Erstelle OpenCore anschließend mit den neu konfigurierten Einstellungen neu.
 

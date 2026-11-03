@@ -12,7 +12,7 @@
 If the application won't launch (e.g. icon will bounce in the Dock), try launching BridgePatcher via Terminal by typing the following command.
 
 ```sh
-/Library/Application\ Support/albert-mueller/OpenCore-Patcher-T2/BridgePatcher.app/Contents/MacOS/BridgePatcher
+/Library/Application\ Support/albert-mueller/BridgePatcher/BridgePatcher.app/Contents/MacOS/BridgePatcher
 ```
 
 

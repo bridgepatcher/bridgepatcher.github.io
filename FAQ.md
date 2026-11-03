@@ -45,7 +45,7 @@ Refer to [Updating OpenCore and patches](UPDATE.md) for how to update the applic
 
 ## Where are the GUI settings saved?
 
-In every version of BridgePatcher, the status of settings are saved under ```/Users/Shared/.com.dortania.opencore-legacy-patcher.plist```. The application will utilize this file to keep track of and retain settings for relaunches and application updates, no longer requiring a reconfiguring each time. The user interface will reset if any model other than "Host Model" is selected, as building for a different model will require different settings.
+BridgePatcher saves the status of settings under ```/Users/Shared/.com.bridgepatcher.bridgepatcher.plist``` (versions before the rename to BridgePatcher used ```/Users/Shared/.com.dortania.opencore-legacy-patcher.plist```; existing settings are copied over on first launch). The application will utilize this file to keep track of and retain settings for relaunches and application updates, no longer requiring a reconfiguring each time. The user interface will reset if any model other than "Host Model" is selected, as building for a different model will require different settings.
 
 In case of issues, delete the file and restart the application to revert the GUI to default settings, then rebuild OpenCore with newly configured settings.
 

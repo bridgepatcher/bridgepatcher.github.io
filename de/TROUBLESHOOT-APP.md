@@ -12,7 +12,7 @@
 Wenn die App nicht startet (z. B. das Symbol im Dock nur hüpft), versuche, BridgePatcher über das Terminal mit folgendem Befehl zu starten:
 
 ```sh
-/Library/Application\ Support/albert-mueller/OpenCore-Patcher-T2/BridgePatcher.app/Contents/MacOS/BridgePatcher
+/Library/Application\ Support/albert-mueller/BridgePatcher/BridgePatcher.app/Contents/MacOS/BridgePatcher
 ```
 
 

@@ -176,7 +176,7 @@ OLD_NAME_RE = re.compile(
     r"|OCLP[- ]?T2)(?![\w])")
 # The app bundle/executable was called OpenCore-Patcher-T2 before the rename; it is BridgePatcher.app
 # (executable BridgePatcher) now. Telling users to run, find or allow "OpenCore-Patcher-T2" is out of
-# date. Still correct and never matched: the install directory (.../OpenCore-Patcher-T2/), the legacy
+# date. Never matched: the legacy install directory (.../OpenCore-Patcher-T2/, now .../BridgePatcher/), the legacy
 # installer asset OpenCore-Patcher-T2.pkg, and lines that talk about builds from before the rename.
 LEGACY_APP_RE = re.compile(
     r"OpenCore-Patcher-T2\.app(?![\w-])"
@@ -984,8 +984,8 @@ def scan_artwork(head, add):
                     add("warning", path, "Former app name (OpenCore-Patcher-T2)",
                         [f"  line {n}: {show(l)}" for n, l in legacy_app[:5]] +
                         (["  …"] if len(legacy_app) > 5 else []) +
-                        ["  The app is BridgePatcher.app (executable BridgePatcher) now. The install folder",
-                         "  .../OpenCore-Patcher-T2/ and OpenCore-Patcher-T2.pkg keep their names."])
+                        ["  The app is BridgePatcher.app (executable BridgePatcher) now, installed in",
+                         "  /Library/Application Support/albert-mueller/BridgePatcher/ (previously .../OpenCore-Patcher-T2/)."])
                 if upstream:
                     add("violation", path, "Dortania's app name used for this project (OpenCore Legacy Patcher)",
                         [f"  line {n}: {show(l)}" for n, l in upstream[:5]] + (["  …"] if len(upstream) > 5 else []) +

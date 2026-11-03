@@ -33,6 +33,8 @@ Check the status and version of root patches from `Post Install Volume Patch` se
 # OpenCore Version
 nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version
 # Patcher Version
+nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:BridgePatcher-Version
+# Patcher Version (EFI built by a version from before the rename to BridgePatcher)
 nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:OCLP-Version
 ```
 

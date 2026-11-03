@@ -33,6 +33,8 @@ Status und Version der Root-Patches siehst du im Hauptmenü im Bereich `Post Ins
 # OpenCore-Version
 nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version
 # Patcher-Version
+nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:BridgePatcher-Version
+# Patcher-Version (EFI, das von einer Version vor der Umbenennung in BridgePatcher gebaut wurde)
 nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:OCLP-Version
 ```
 
