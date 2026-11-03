@@ -79,6 +79,11 @@ const SITE_URL = 'https://bridgepatcher.github.io/'
 const SITE_TITLE = 'BridgePatcher'
 const SITE_DESCRIPTION = 'Guide to put macOS on unsupported devices'
 const SITE_DESCRIPTION_DE = 'Anleitung, um macOS auf nicht unterstützte Geräte zu bringen'
+// BSD 4-Clause condition 3 of Dortania's licence: advertising materials that mention features or use
+// of the software (this site, starting with the homepage's feature list) must display this exact
+// acknowledgement. It stays in English on the German pages too - the licence prescribes the wording.
+// The License Guard checks that every footer shows it.
+const ACKNOWLEDGEMENT = 'This product includes software developed by Dortania and OpenCore Legacy Patcher contributors.'
 const COPYRIGHT = 'Copyright © Dortania 2020-2025 · BridgePatcher © 2026 Albert Müller and BridgePatcher contributors'
 const COPYRIGHT_DE = 'Copyright © Dortania 2020–2025 · BridgePatcher © 2026 Albert Müller und BridgePatcher-Mitwirkende'
 
@@ -405,6 +410,7 @@ export default defineConfig({
                     text: 'Hilf uns, diese Seite zu verbessern!',
                 },
                 footer: {
+                    message: ACKNOWLEDGEMENT,
                     copyright: COPYRIGHT_DE,
                 },
                 outline: { level: [2, 2], label: 'Auf dieser Seite' },
@@ -519,6 +525,7 @@ export default defineConfig({
             },
         },
         footer: {
+            message: ACKNOWLEDGEMENT,
             copyright: COPYRIGHT,
         },
         sidebar: {

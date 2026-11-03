@@ -147,7 +147,7 @@ jobs:
       # matching RSS feeds in public/. Announcements = Announcements category,
       # maintainers only; everything else goes to /discussions/.
       # Uses the ANNOUNCEMENTS_TOKEN secret if set (fine-grained PAT with
-      # read-only Discussions access to OpenCore-Legacy-Patcher-T2),
+      # read-only Discussions access to bridgepatcher/BridgePatcher),
       # otherwise the job's own token.
       - name: Fetch announcements from GitHub Discussions
         if: steps.license.outputs.offline != 'true'

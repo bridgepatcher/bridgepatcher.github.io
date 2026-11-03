@@ -28,9 +28,11 @@ features:
     details: "Deine jahrzehntealte Grafikkarte, WLAN- und Bluetooth-Chipsätze bekommen neues Leben eingehaucht. Selbst aufgerüstete Hardware profitiert – durch spannende Funktionen wie Hardwarebeschleunigung, AirDrop, Entsperren mit der Apple Watch, Sidecar und vieles mehr!"
   - title: Neuere Funktionen freischalten
     details: "Schalte neuere Funktionen wie Sidecar, AirPlay zum Mac, Night Shift und die universelle Steuerung frei – sogar auf nativ unterstützten Modellen!"
-  - title: Eine hilfsbereite Community
-    details: "Ob beim Einstieg oder bei den Details: Antworten findest du jederzeit in unserer großartigen Community aus Bastlern, Entwicklern und Träumern."
-footer: Copyright © Dortania 2020–2025 · BridgePatcher © 2026 Albert Müller und BridgePatcher-Mitwirkende
+  - title: Hilfe, wenn du sie brauchst
+    details: "Ob beim Einstieg oder bei den Details: Frag in den GitHub-Diskussionen von BridgePatcher, wo sich Nutzer und Maintainer dieses Projekts gegenseitig helfen."
+    link: /de/discussions/
+    linkText: Zu den Diskussionen
+footer: "This product includes software developed by Dortania and OpenCore Legacy Patcher contributors. Copyright © Dortania 2020–2025 · BridgePatcher © 2026 Albert Müller und BridgePatcher-Mitwirkende"
 ---
 
 <HomeAnnouncements />

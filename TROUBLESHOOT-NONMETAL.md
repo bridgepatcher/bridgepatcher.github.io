@@ -29,7 +29,7 @@ Many Apple apps now have direct reliance on Metal for proper functioning, howeve
 
 * [Apple Apps for Non-Metal Macs](https://archive.org/details/apple-apps-for-non-metal-macs)
 
-Note: This archive assumes that you own these copies of these apps through the Mac App Store, Dortania does not condone piracy
+Note: This archive assumes that you own these copies of these apps through the Mac App Store, BridgePatcher does not condone piracy.
 
 ## Unable to run Zoom
 

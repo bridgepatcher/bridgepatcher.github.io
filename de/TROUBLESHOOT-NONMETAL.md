@@ -29,7 +29,7 @@ Viele Apple-Apps sind inzwischen direkt auf Metal angewiesen, ältere Builds die
 
 * [Apple-Apps für Nicht-Metal-Macs](https://archive.org/details/apple-apps-for-non-metal-macs)
 
-Hinweis: Dieses Archiv setzt voraus, dass du diese Apps über den Mac App Store besitzt. Dortania duldet keine Raubkopien.
+Hinweis: Dieses Archiv setzt voraus, dass du diese Apps über den Mac App Store besitzt. BridgePatcher duldet keine Raubkopien.
 
 ## Zoom startet nicht
 

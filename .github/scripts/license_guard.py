@@ -265,6 +265,44 @@ UPSTREAM_DISCORD_RE = re.compile(
     r"(?i:(?:https?://)?(?:www\.)?(?:discord\.gg/|discord(?:app)?\.com/invite/))(?:"
     + "|".join(map(re.escape, UPSTREAM_DISCORD_CODES)) + r")(?![A-Za-z0-9])")
 
+# BSD 4-Clause condition 3: "All advertising materials mentioning features or use of this software must
+# display the following acknowledgement". This site is such material (the homepage lists the patcher's
+# features), so the footer - shown on the homepage and every page without a sidebar - must display the
+# exact sentence, in English on the German pages too. Checked in SITE_CONFIG: the sentence must be there,
+# and every footer that has a "copyright" must also have a "message" that resolves to it (a string literal
+# or a const holding it). The homepage frontmatter "footer:" key is a VuePress leftover VitePress ignores.
+ACKNOWLEDGEMENT = "This product includes software developed by Dortania and OpenCore Legacy Patcher contributors."
+SITE_CONFIG = ".vitepress/config.mts"
+FOOTER_RE = re.compile(r"\bfooter\s*:\s*\{([^{}]*)\}")
+FOOTER_MESSAGE_RE = re.compile(r"\bmessage\s*:\s*(?:(['\"`])(.*?)\1|([A-Za-z_$][\w$]*))", re.S)
+CONST_RE = r"\b(?:const|let|var)\s+{}\s*(?::\s*\w+\s*)?=\s*(['\"`])(.*?)\1"
+
+# Statements made in Dortania's name: Dortania as the one who condones, recommends, supports or
+# guarantees something on THIS site ("Dortania does not condone piracy", "Dortania empfiehlt ...").
+# Copied from Dortania's docs, such a line makes the site speak for Dortania - as if Dortania wrote,
+# stands behind or answers for BridgePatcher's pages (licence clause 4: Dortania's name must not be used
+# to endorse or promote the fork). Facts about Dortania's releases ("Dortania's OpenCore Legacy Patcher
+# 2.0.0 supports Sequoia", "Dortania implemented ...") don't match: the verb must follow Dortania (or
+# "Dortania's team") directly. Say what BridgePatcher's position is instead.
+_VOICE_VERBS = (r"condone|endorse|recommend|approve|guarantee|vouch|stand\s+behind|take\s+responsibility|warrant"
+                r"|permit|forbid|prohibit|duldet|billigt|empfiehlt|unterstützt|garantiert|übernimmt|haftet"
+                r"|erlaubt|verbietet|befürwortet|rät")
+DORTANIA_VOICE_RE = re.compile(
+    r"(?i)\bDortania(?:'s|s)?(?:\s+(?:team|maintainers|developers|devs|Team|Entwickler))?\s+"
+    r"(?:(?:(?:does|do|will|would|can|is|are)(?:\s+not|n't)|never|cannot)\s+(?:" + _VOICE_VERBS + r"|support)"
+    r"|(?:" + _VOICE_VERBS + r")|supports\b)\w*")
+# "Our community", "unsere Community", "join us": Dortania's docs say this about Dortania's community and
+# Discord server. Copied to this site (the homepage's "A helpful community" card was), it sends readers to
+# a community that isn't BridgePatcher's. Fine when the same line or the next COMMUNITY_LINK_LINES lines
+# link BridgePatcher's own channels (GitHub Discussions/Issues, the mirrored /discussions/ pages).
+COMMUNITY_RE = re.compile(
+    r"(?i)\b(?:our|unserer?[nmrs]?)\b(?:\s+[\w-]+){0,3}?\s+(?:community|discord|forum|support\s+(?:server|channel)"
+    r"|chat|subreddit|telegram|server)\b|\bjoin\s+us\b|\b(?:ask|contact|reach\s+out\s+to)\s+us\b")
+OWN_CHANNEL_RE = re.compile(
+    r"(?i)github\.com/bridgepatcher/|(?:^|[\s(\"':])/(?:de/)?(?:discussions|issues|announcements)/")
+COMMUNITY_LINK_LINES = 3
+VOICE_EXT = (".md", ".markdown", ".html", ".htm", ".vue", ".mts", ".ts", ".js", ".json", ".webmanifest", ".xsl", ".yml")
+
 # Dortania's images used directly from their repo or website (e.g. the old README logo).
 HOTLINK_RE = re.compile(
     r"(?:raw\.githubusercontent\.com/dortania/|github\.com/dortania/[^\s\"'()<>]*/(?:raw|blob)/"
@@ -994,6 +1032,70 @@ def scan_artwork(head, add):
     _save_cache(cache)
 
 
+def check_acknowledgement(head, add):
+    """BSD condition 3: the site's footer must display Dortania's acknowledgement (see ACKNOWLEDGEMENT)."""
+    try:
+        text = git("show", f"{head}:{SITE_CONFIG}")
+    except subprocess.CalledProcessError:
+        add("violation", SITE_CONFIG, "Acknowledgement required by Dortania's licence not shown (BSD condition 3)",
+            [f"  {SITE_CONFIG} not found, so the footer can't be checked."])
+        return
+    want = " ".join(ACKNOWLEDGEMENT.split())
+    problems = []
+    footers = [m for m in FOOTER_RE.finditer(text) if re.search(r"\bcopyright\s*:", m.group(1))]
+    if want not in " ".join(text.split()):
+        problems.append(f"  The sentence isn't in {SITE_CONFIG} at all.")
+    if not footers:
+        problems.append("  No footer with a copyright line found.")
+    for m in footers:
+        line = text.count("\n", 0, m.start()) + 1
+        msg = FOOTER_MESSAGE_RE.search(m.group(1))
+        value = None
+        if msg and msg.group(3):
+            const = re.search(CONST_RE.format(re.escape(msg.group(3))), text, re.S)
+            value = const.group(2) if const else None
+        elif msg:
+            value = msg.group(2)
+        if value is None or want not in " ".join(value.split()):
+            problems.append(f"  line {line}: footer without the acknowledgement as its message")
+    if problems:
+        add("violation", SITE_CONFIG, "Acknowledgement required by Dortania's licence not shown (BSD condition 3)",
+            problems + ["  This site mentions the patcher's features, so it is advertising material: every footer",
+                        f"  must show, word for word: \"{ACKNOWLEDGEMENT}\"",
+                        "  e.g. footer: { message: ACKNOWLEDGEMENT, copyright: COPYRIGHT }."])
+
+
+def scan_dortania_voice(head, add):
+    """Lines that speak in Dortania's name, and "our community" claims copied from Dortania's docs."""
+    for row in git("ls-tree", "-r", "-l", head).splitlines():
+        meta, path = row.split("\t", 1)
+        _, kind, sha, size = meta.split()
+        low = path.lower()
+        if (kind != "blob" or size == "-" or int(size) > ART_MAX_BYTES or is_self(path)
+                or LICENSE_FILE_RE.search(path) or not low.endswith(VOICE_EXT)):
+            continue
+        lines = git("cat-file", "blob", sha).splitlines()
+        voice, community = [], []
+        for n, l in enumerate(lines, 1):
+            bare = URL_RE.sub(" ", l)
+            if DORTANIA_VOICE_RE.search(bare):
+                voice.append((n, l))
+            if COMMUNITY_RE.search(bare) and not any(
+                    OWN_CHANNEL_RE.search(x) for x in lines[n - 1:n + COMMUNITY_LINK_LINES]):
+                community.append((n, l))
+        if voice:
+            add("violation", path, "Statement made in Dortania's name",
+                [f"  line {n}: {show(l)}" for n, l in voice[:5]] + (["  …"] if len(voice) > 5 else []) +
+                ["  Copied from Dortania's docs, this makes the site speak for Dortania (licence clause 4).",
+                 "  Say what BridgePatcher's position is, e.g. \"BridgePatcher does not condone piracy\"."])
+        if community:
+            add("warning", path, "\"Our community\" without a link to BridgePatcher's own channels",
+                [f"  line {n}: {show(l)}" for n, l in community[:5]] + (["  …"] if len(community) > 5 else []) +
+                ["  Dortania's docs say this about Dortania's community and Discord. Link BridgePatcher's",
+                 "  GitHub Discussions (/discussions/ or https://github.com/bridgepatcher/BridgePatcher/discussions)",
+                 f"  on the same line or within {COMMUNITY_LINK_LINES} lines below, or reword it."])
+
+
 YEAR_RE = re.compile(r"\b(19|20)\d{2}\b")
 
 
@@ -1115,6 +1217,11 @@ def main():
     # 4) Known copyrighted artwork anywhere in the audited tree
     scan_artwork(re.split(r"\.\.\.?", DIFF_RANGE)[-1], add)
 
+    # 5) Whole-tree text checks: Dortania's acknowledgement in the footer, statements in Dortania's name
+    head = re.split(r"\.\.\.?", DIFF_RANGE)[-1]
+    check_acknowledgement(head, add)
+    scan_dortania_voice(head, add)
+
     v = [x for x in findings if x[0] == "violation"]
     w = [x for x in findings if x[0] == "warning"]
     i = [x for x in findings if x[0] == "info"]
@@ -1166,6 +1273,11 @@ def main():
             "*Screenshot: Dortania's OpenCore Legacy Patcher documentation.*), or use your own screenshot.", "",
             "For the same reason, pages must not send users to Dortania's Discord server (OpenCore Patcher "
             "Paradise) for help with BridgePatcher; link BridgePatcher's own support channels instead.",
+            "", "Pages must not speak in Dortania's name either (\"Dortania does not condone piracy\", copied from "
+            "Dortania's docs) or call Dortania's community theirs (\"our amazing community\" without a link to "
+            "BridgePatcher's own Discussions).", "",
+            "Condition 3 of the licence requires advertising materials that mention the software's features - "
+            "this site - to display \"" + ACKNOWLEDGEMENT + "\" The site footer must show it.",
             "", "</details>"]
 
     report = "\n".join(out) + "\n"
