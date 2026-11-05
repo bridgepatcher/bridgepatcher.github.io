@@ -159,10 +159,6 @@ jobs:
       - name: Build with VitePress
         if: steps.license.outputs.offline != 'true'
         run: yarn run build
-        env:
-          # Read-only lookup of the newest patcher release, so the homepage
-          # download button points at the installer it actually contains.
-          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
