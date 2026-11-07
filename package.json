@@ -45,7 +45,7 @@
       "run-script-os": "^1.1.6",
       "spellchecker-cli": "^7.0.4",
       "vitepress": "^1.6.4",
-      "vue": "^3.5.44"
+      "vue": "^3.5.45"
    },
    "resolutions": {
       "vitepress/vite": "^6.4.3",
@@ -61,7 +61,8 @@
    "dependencies": {
       "basic-ftp": "^6.2.2",
       "js-yaml": "^5.5.0",
+      "minimatch": "^11.0.1",
       "smol-toml": "^1.9.1",
-      "vite": "^8.3.5"
+      "vite": "^8.3.6"
    }
 }
