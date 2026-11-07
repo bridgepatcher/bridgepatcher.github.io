@@ -202,6 +202,9 @@ export default defineConfig({
         ['link', { rel: 'alternate', type: 'application/rss+xml', title: `${SITE_TITLE} – Discussions`, href: `${SITE_URL}discussions.xml` }],
         ['link', { rel: 'alternate', type: 'application/rss+xml', title: `${SITE_TITLE} – Issues`, href: `${SITE_URL}issues.xml` }],
         ['meta', { name: 'theme-color', content: '#3eaf7c' }],
+        // Standard tag; Chrome warns that the apple- prefixed one alone is
+        // deprecated. The apple- one stays for older iOS Safari versions.
+        ['meta', { name: 'mobile-web-app-capable', content: 'yes' }],
         ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
         ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
         // Explicitly allow indexing (also the default) and large image previews.
