@@ -71,12 +71,60 @@ jobs:
           TARGET: ${{ inputs.include-major && 'latest' || 'minor' }}
         run: |
           echo "Update target: $TARGET"
+          # Keep the original package.json for the downgrade check below
+          cp package.json "$RUNNER_TEMP/package.before.json"
           # Raise the version ranges in package.json
           npx --yes npm-check-updates@17 --target "$TARGET" --upgrade
           yarn install --ignore-scripts --non-interactive
           # Also refresh indirect dependencies to the newest versions their
-          # ranges (and the "resolutions" in package.json) allow
+          # ranges (and the "resolutions" in package.json) allow.
+          # Yarn 1's "yarn upgrade" also rewrites the ranges in package.json,
+          # and with "resolutions" it can write a resolution's range over a
+          # direct dependency (e.g. "vitepress/vite": "^6.x" downgraded the
+          # top-level "vite" from ^8 to ^6). npm-check-updates already set
+          # package.json, so restore it afterwards and re-sync the lockfile.
+          cp package.json "$RUNNER_TEMP/package.ncu.json"
           yarn upgrade --ignore-scripts --non-interactive
+          cp "$RUNNER_TEMP/package.ncu.json" package.json
+          yarn install --ignore-scripts --non-interactive
+          # The lockfile must now match package.json exactly
+          yarn install --frozen-lockfile --ignore-scripts --non-interactive
+
+      - name: Guard against downgrades
+        run: |
+          node - "$RUNNER_TEMP/package.before.json" package.json <<'EOF'
+          const fs = require('fs');
+          const [beforeFile, afterFile] = process.argv.slice(2);
+          const before = JSON.parse(fs.readFileSync(beforeFile, 'utf8'));
+          const after = JSON.parse(fs.readFileSync(afterFile, 'utf8'));
+          // Lowest version a range like "^8.3.6" allows, as [8, 3, 6]
+          const floor = (range) => {
+            const m = String(range).match(/(\d+)(?:\.(\d+))?(?:\.(\d+))?/);
+            return m ? [m[1], m[2], m[3]].map((n) => Number(n || 0)) : null;
+          };
+          const lower = (a, b) => {
+            for (let i = 0; i < 3; i++) if (a[i] !== b[i]) return a[i] < b[i];
+            return false;
+          };
+          let failed = false;
+          for (const field of ['dependencies', 'devDependencies', 'resolutions']) {
+            for (const [name, oldRange] of Object.entries(before[field] || {})) {
+              const newRange = (after[field] || {})[name];
+              if (newRange === undefined) {
+                console.log(`::error::${field}.${name} was removed (was ${oldRange})`);
+                failed = true;
+                continue;
+              }
+              const a = floor(newRange), b = floor(oldRange);
+              if (a && b && lower(a, b)) {
+                console.log(`::error::${field}.${name} was downgraded: ${oldRange} -> ${newRange}`);
+                failed = true;
+              }
+            }
+          }
+          if (failed) process.exit(1);
+          console.log('No dependency was downgraded or removed.');
+          EOF
 
       - name: Check for changes
         id: diff
