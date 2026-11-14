@@ -70,6 +70,32 @@ If you want to help test or share results, please use [GitHub Discussions](https
 
 macOS Tahoe no longer includes AppleHDA.kext, the driver used for built-in audio on Intel Macs. On affected Macs, BridgePatcher restores audio through the "Modern Audio" root patch, so make sure to run root patching after installing Tahoe.
 
+#### iMac (2019): audio without root patching
+
+On the iMac (Retina 5K, 27-inch, 2019) and the iMac (Retina 4K, 21.5-inch, 2019) (`iMac19,1` and `iMac19,2`), the "Modern Audio" root patch may fail to install, or leave the Mac stuck at the "no entry" symbol after a restart. A community member [got audio working on an iMac19,2](https://github.com/orgs/bridgepatcher/discussions/315) without root patching by loading [SimpleHDA](https://github.com/laobamac/SimpleHDA) together with AppleALC from the EFI partition instead.
+
+::: warning Community workaround
+
+This method is not built into BridgePatcher yet. It has been reported working on the iMac19,2. The iMac19,1 is untested, so please share your results in the [discussion](https://github.com/orgs/bridgepatcher/discussions/315). Make a backup before you start.
+
+:::
+
+1. Install Tahoe with BridgePatcher, without SMBIOS spoofing. If you already ran the "Modern Audio" root patch, revert it first, so that AppleHDA isn't loaded twice.
+2. Install the [Kernel Debug Kit (KDK)](https://github.com/dortania/KdkSupportPkg/releases) that matches your exact Tahoe version.
+3. Mount the EFI partition and copy `AppleALC.kext` and `SimpleHDA.kext` to `EFI/OC/Kexts`.
+4. Open `EFI/OC/config.plist` in a plist editor (for example OpenCore Configurator) and add both kexts under `Kernel -> Add`, **in this order: Lilu, AppleALC, SimpleHDA**. The order matters: if it's wrong, the kexts don't load correctly. The SimpleHDA download includes an example entry.
+5. Make sure `Kernel -> Quirks -> DisableLinkeditJettison` is set to `true`. BridgePatcher already sets it when building OpenCore.
+6. Under `NVRAM -> Add -> 7C436110-AB2A-4BBB-A880-FE41995C9F82 -> boot-args`, add `alcid=7` (the layout reported working on the iMac19,2). Save the file.
+7. Restart and **reset NVRAM** from the OpenCore boot picker (Reset NVRAM entry, or <kbd>Option</kbd>+<kbd>Command</kbd>+<kbd>P</kbd>+<kbd>R</kbd>). If you skip this step, there will be no sound.
+
+The reporter also lowered SIP to `0x3` in BridgePatcher's settings (the first two options, allowing unsigned kexts and file system changes). Only change this if audio doesn't work with your current SIP setting.
+
+::: tip Rebuilding OpenCore
+
+When you build and install OpenCore again with BridgePatcher, the EFI partition is replaced and these manual changes are lost. Repeat steps 3 to 7 after every OpenCore update.
+
+:::
+
 ### Dual socket CPUs with Mac Pro 2008 and Xserve 2008
 
 As with macOS Sequoia, booting Tahoe on Mac Pro 2008 (MacPro3,1) or Xserve 2008 (Xserve2,1) with more than 4 cores will cause a kernel panic. BridgePatcher will automatically disable additional cores.
