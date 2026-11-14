@@ -66,7 +66,27 @@ Wenn du beim Testen helfen oder Ergebnisse teilen möchtest, nutze bitte die [Gi
 
 ### Audiounterstützung
 
-macOS Tahoe enthält AppleHDA.kext nicht mehr, den Treiber für die eingebaute Audioausgabe von Intel-Macs. Auf betroffenen Macs stellt BridgePatcher den Ton über den Root-Patch „Modern Audio“ wieder her – führe nach der Installation von Tahoe also unbedingt das Root-Patching aus.
+macOS Tahoe enthält AppleHDA.kext nicht mehr, den Treiber für die eingebaute Audioausgabe von Intel-Macs. Auf betroffenen Macs stellt BridgePatcher den Ton über den Root-Patch „Modern Audio“ wieder her – führe nach der Installation von Tahoe also unbedingt das Root-Patching aus. Ausnahme ist der iMac (2019), siehe unten.
+
+#### iMac (2019): Ton ohne Root-Patching
+
+Ab BridgePatcher **4.0.0.2000003.3**, und in der aktuellen Version 4.0.0.2000003.4, wird der Ton auf dem iMac (Retina 5K, 27", 2019) und dem iMac (Retina 4K, 21,5", 2019) (`iMac19,1` und `iMac19,2`) von OpenCore statt vom Root-Patch „Modern Audio“ wiederhergestellt. Auf diesen Macs ließ sich der Root-Patch unter Umständen nicht installieren, oder der Mac blieb nach dem Neustart beim Verbotszeichen hängen.
+
+Wenn du OpenCore für einen dieser iMacs erstellst, fügt BridgePatcher [SimpleHDA](https://github.com/laobamac/SimpleHDA) von laobamac zusammen mit AppleALC (Layout `alcid=7`) hinzu – die Methode, die ein Community-Mitglied [auf einem iMac19,2 gefunden und getestet hat](https://github.com/orgs/bridgepatcher/discussions/315). Am System-Volume ändert sich nichts, für den Ton sind also kein Root-Patching, kein Kernel Debug Kit und keine SIP-Änderung nötig.
+
+1. Aktualisiere BridgePatcher auf 4.0.0.2000003.3 oder neuer.
+2. Falls der Root-Patch „Modern Audio“ installiert ist, mache die Root-Patches zuerst rückgängig. Solange er installiert ist, behält BridgePatcher den funktionierenden Root-Patch und fügt SimpleHDA nicht hinzu, damit AppleHDA nicht doppelt geladen wird.
+3. Stelle sicher, dass der Mac mit dem Internet verbunden ist, und erstelle und installiere dann OpenCore.
+4. Starte neu. Falls kein Ton kommt, setze den NVRAM einmal über die OpenCore-Bootauswahl zurück.
+
+::: tip Gut zu wissen
+
+* SimpleHDA ist nicht in BridgePatcher enthalten, weil seine Lizenz die Weitergabe nicht erlaubt. Es wird beim Erstellen von OpenCore aus den GitHub-Releases von laobamac heruntergeladen und nur verwendet, wenn seine Prüfsumme stimmt. Ohne Internetverbindung wird OpenCore ohne SimpleHDA erstellt, und der Root-Patch „Modern Audio“ bleibt verfügbar.
+* AppleALC und SimpleHDA werden nur unter macOS Tahoe geladen, ältere macOS-Versionen im Dual-Boot behalten also ihren nativen Ton.
+* Die Funktion ist standardmäßig aktiv und lässt sich unter Settings -> Extras -> „SimpleHDA Tahoe Audio“ abschalten. Die Einstellung wird nur angezeigt, wenn du für einen dieser iMacs erstellst.
+* Auf dem iMac19,2 wurde sie als funktionierend gemeldet. Der iMac19,1 ist noch ungetestet – bitte teile deine Ergebnisse in der [Diskussion](https://github.com/orgs/bridgepatcher/discussions/315).
+
+:::
 
 ### Dual-Socket-CPUs bei Mac Pro 2008 und Xserve 2008
 
