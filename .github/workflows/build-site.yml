@@ -156,6 +156,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ANNOUNCEMENTS_TOKEN || github.token }}
           ANNOUNCEMENTS_CATEGORY: announcements
 
+      # Writes .vitepress/download.json: the newest release that still has
+      # BridgePatcher.pkg, for the homepage's download button (falls back to
+      # /releases/latest/download/ if the releases can't be read).
+      - name: Resolve download link
+        if: steps.license.outputs.offline != 'true'
+        run: node scripts/fetch-download.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
       - name: Build with VitePress
         if: steps.license.outputs.offline != 'true'
         run: yarn run build
