@@ -1,3 +1,4 @@
+import fs from 'node:fs'
 import { defineConfig } from 'vitepress'
 import multimdTable from 'markdown-it-multimd-table'
 import { loadAnnouncements, loadDiscussions, loadIssues } from './announcements'
@@ -136,6 +137,21 @@ const announcements = loadAnnouncements()
 const discussions = loadDiscussions()
 const issues = loadIssues()
 
+// Direct download of the newest release that still has the .pkg (written by
+// scripts/fetch-download.mjs before the build). /releases/latest/download/
+// 404s while the newest release has no .pkg, so the homepage buttons link to
+// this release instead. Without the file (local build, API error) the buttons
+// keep their /releases/latest/download/ link.
+const LATEST_DOWNLOAD = /\/releases\/latest\/download\/BridgePatcher\.pkg$/
+const downloadUrl: string | null = (() => {
+    try {
+        const { url } = JSON.parse(fs.readFileSync(new URL('./download.json', import.meta.url), 'utf8'))
+        return typeof url === 'string' && url.startsWith('https://github.com/') ? url : null
+    } catch {
+        return null
+    }
+})()
+
 // Titles and excerpts of discussions and issues come from anyone with a GitHub
 // account. VitePress renders sidebar `text` as raw HTML (v-html), so an
 // unescaped title like `<img src=x onerror=...>` would run script on the
@@ -218,6 +234,11 @@ export default defineConfig({
     // so every guide page is indexed under exactly one address. Translated
     // guide pages also link to each other via hreflang.
     transformPageData(pageData) {
+        if (downloadUrl && Array.isArray(pageData.frontmatter.hero?.actions)) {
+            for (const action of pageData.frontmatter.hero.actions) {
+                if (typeof action.link === 'string' && LATEST_DOWNLOAD.test(action.link)) action.link = downloadUrl
+            }
+        }
         // Announcement pages get their title/description from the discussion.
         if (/^(de\/)?(announcements|discussions|issues)\//.test(pageData.relativePath) && pageData.params?.title) {
             pageData.title = plainText(pageData.params.title)

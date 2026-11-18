@@ -14,9 +14,11 @@ hero:
     - theme: alt
       text: Announcements
       link: /announcements/
-    # Direct download of the newest release. /releases/latest/download/ always
-    # resolves to the latest (non-pre-)release on the server side, so it also
-    # works in old Safari versions that can't render github.com pages.
+    # Direct download of the newest release that has BridgePatcher.pkg, so it
+    # also works in old Safari versions that can't render github.com pages.
+    # At build time this link is replaced by the newest release that still has
+    # the .pkg (scripts/fetch-download.mjs), since /releases/latest/download/
+    # 404s while the newest release has none.
     - theme: alt
       text: Download latest version
       link: https://github.com/bridgepatcher/BridgePatcher/releases/latest/download/BridgePatcher.pkg

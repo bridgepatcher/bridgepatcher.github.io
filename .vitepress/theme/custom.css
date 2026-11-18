@@ -364,9 +364,10 @@ svg.t2-fig .term {
 
 /* Homepage direct download of the macOS .pkg (README.md / de/index.md):
    hidden on Windows, Android, iOS, iPadOS and watchOS, where the class is set by HIDE_MAC_DOWNLOAD
-   in config.mts. The :has() rule also removes the empty gap; the second rule
+   in config.mts. Matched by the file name, since the link points either to
+   /releases/latest/download/ or to a specific release (see fetch-download.mjs). The :has() rule also removes the empty gap; the second rule
    is the fallback for browsers without :has(). */
-html.hide-mac-download .VPHero .action:has(a[href*="/releases/latest/download/"]),
-html.hide-mac-download .VPHero a[href*="/releases/latest/download/"] {
+html.hide-mac-download .VPHero .action:has(a[href$="/BridgePatcher.pkg"]),
+html.hide-mac-download .VPHero a[href$="/BridgePatcher.pkg"] {
     display: none !important;
 }
