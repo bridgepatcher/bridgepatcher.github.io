@@ -217,24 +217,60 @@ query ($owner: String!, $name: String!) {
 }
 ${ISSUE_FIELDS}`
 
-async function graphql(query, variables) {
-  const res = await fetch('https://api.github.com/graphql', {
-    method: 'POST',
-    headers: {
-      'Authorization': `bearer ${TOKEN}`,
-      'Content-Type': 'application/json',
-      'User-Agent': 'oclp-t2-website',
-    },
-    body: JSON.stringify({ query, variables }),
-  })
+// GitHub now and then cuts large GraphQL responses off mid-body or answers
+// with a 5xx, which made a whole build fail. Such errors are retried a few
+// times; GraphQL errors and other HTTP errors are not.
+const GRAPHQL_ATTEMPTS = 4
+
+class RetryableError extends Error {}
+
+async function graphqlOnce(query, variables) {
+  let res
+  let text
+  try {
+    res = await fetch('https://api.github.com/graphql', {
+      method: 'POST',
+      headers: {
+        'Authorization': `bearer ${TOKEN}`,
+        'Content-Type': 'application/json',
+        'User-Agent': 'bridgepatcher-website',
+      },
+      body: JSON.stringify({ query, variables }),
+      signal: AbortSignal.timeout(60_000),
+    })
+    text = await res.text()
+  } catch (err) {
+    throw new RetryableError(`Request to the GitHub API failed: ${err.message}`)
+  }
+  if (res.status >= 500) {
+    throw new RetryableError(`GitHub API responded with ${res.status} ${res.statusText}`)
+  }
   if (!res.ok) {
     throw new Error(`GitHub API responded with ${res.status} ${res.statusText}`)
   }
-  const json = await res.json()
+  let json
+  try {
+    json = JSON.parse(text)
+  } catch (err) {
+    throw new RetryableError(`Incomplete response from the GitHub API (${text.length} bytes): ${err.message}`)
+  }
   if (json.errors?.length) {
     throw new Error(json.errors.map((e) => e.message).join('; '))
   }
   return json.data
+}
+
+async function graphql(query, variables) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await graphqlOnce(query, variables)
+    } catch (err) {
+      if (!(err instanceof RetryableError) || attempt >= GRAPHQL_ATTEMPTS) throw err
+      const delay = 2 ** attempt * 1000
+      console.warn(`::warning::${err.message} - retrying in ${delay / 1000}s (attempt ${attempt + 1}/${GRAPHQL_ATTEMPTS})`)
+      await new Promise((resolve) => setTimeout(resolve, delay))
+    }
+  }
 }
 
 // GitHub renders uploaded images/videos as private-user-images.githubusercontent.com
